@@ -46,8 +46,8 @@ const LightTheme: Theme = {
     secondary: '#94a3b8',
     tertiary: '#deff26',
     bgPrimary: '#ffffff',
-    bgSecondary: '#1e293b',
-    btnPrimary: '#0ea5e9',
+    bgSecondary: '#f2f2f2',
+    btnPrimary: '#4955f5',
     btnSecondary: '#334155'
   }
 }
