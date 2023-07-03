@@ -5,6 +5,8 @@
     "paths": {
       "*": ["./*"],
       "@components/*": ["components/*"],
+      "@context/*": ["context/*"],
+      "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"]
     },
     "strict": true

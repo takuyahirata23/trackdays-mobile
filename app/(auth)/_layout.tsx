@@ -1,0 +1,15 @@
+import React from 'react'
+import { Stack } from 'expo-router'
+
+export default function AuthStackLayout() {
+  return (
+    <Stack>
+      <Stack.Screen
+        name="sign-in"
+        options={{
+          title: 'Sign in'
+        }}
+      />
+    </Stack>
+  )
+}

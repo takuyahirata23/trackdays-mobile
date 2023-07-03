@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 
-export default function Login() {
+export default function SignIn() {
   return (
     <View>
       <Text>login</Text>
