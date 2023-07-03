@@ -4,6 +4,7 @@ module.exports = function (api) {
     presets: ['babel-preset-expo'],
     plugins: [
       require.resolve('expo-router/babel'),
+      'transform-inline-environment-variables',
       [
         'module-resolver',
         {
@@ -12,6 +13,7 @@ module.exports = function (api) {
           alias: {
             '@components': './components',
             '@context': './context',
+            '@graphql': './graphql',
             '@hooks': './hooks',
             '@utils': './utils'
           }

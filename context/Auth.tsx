@@ -1,28 +1,50 @@
 import React from 'react'
 
-import { useProtectRoute } from '../hooks/useProtectRoute'
+import { saveToken } from '@utils/secureStore'
 
-const AuthContext = React.createContext({
-  user: null,
+type User = {
+  email: string
+  name: string
+}
+
+export const AuthContext = React.createContext({
   signIn: () => {},
   signOut: () => {}
 })
 
 type Props = {
   children: React.ReactNode
+  setUser: (user: User | null) => void
 }
 
-export function AuthProvider({ children }: Props) {
-  const [user, setUser] = React.useState(null)
+const path = `${process.env.DOMAIN_URL}/auth/login`
 
-  useProtectRoute(user)
+const body = JSON.stringify({ email: 'admin@test.com', password: 'Pass1234!' })
+
+const fetchUser = () =>
+  fetch(path, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body
+  })
+
+export function AuthProvider({ children, setUser }: Props) {
+  const signIn = () =>
+    fetchUser()
+      .then(x => x.json())
+      .then(d => {
+        saveToken(d.token)
+        setUser(d.user)
+      })
+      .catch(console.error)
 
   return (
     <AuthContext.Provider
       value={{
-        user,
-        signIn: () => setUser(null),
-        signOut: () => setUser(null)
+        signIn,
+        signOut: () => {}
       }}
     >
       {children}

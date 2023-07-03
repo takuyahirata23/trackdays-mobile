@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter, useSegments } from 'expo-router'
 
-export function useProtectRoute(user: null & object) {
+export function useProtectRoute(user: null | object) {
   const segments = useSegments()
   const router = useRouter()
 

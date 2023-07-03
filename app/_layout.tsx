@@ -9,34 +9,23 @@ import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
 import { useColorScheme } from 'react-native'
+import { ApolloProvider } from '@apollo/client'
+
+import { useProtectRoute } from '@hooks/useProtectRoute'
+import { client } from '@graphql/client'
+import { USER_QUERY } from '@graphql/queries'
+import { getToken } from '@utils/secureStore'
 import { AuthProvider } from '@context/Auth'
-import * as SecureStore from 'expo-secure-store'
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary
-} from 'expo-router'
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)'
+type User = {
+  email: string
+  name: string
 }
 
-const path = `${process.env.DOMAIN_URL}/auth/login`
+export { ErrorBoundary } from 'expo-router'
 
-const body = JSON.stringify({ email: 'admin@test.com', password: 'Pass1234!' })
-
-const fetchUser = () =>
-  fetch(path, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body
-  })
-
-function getToken() {
-  return SecureStore.getItemAsync('token')
+export const unstable_settings = {
+  initialRouteName: '(tabs)'
 }
 
 export default function RootLayout() {
@@ -45,8 +34,9 @@ export default function RootLayout() {
     ...FontAwesome.font
   })
 
-  const [isReady, setIsReady] = React.useState(true)
+  const [isReady, setIsReady] = React.useState(false)
   const [token, setToken] = React.useState<null | string>(null)
+  const [user, setUser] = React.useState(null)
 
   useEffect(() => {
     if (error) {
@@ -60,44 +50,48 @@ export default function RootLayout() {
         setIsReady(true)
       } else {
         setToken(x)
-        setIsReady(true)
       }
     })
   }, [])
 
-  // useEffect(() => {
-  //   fetchUser()
-  //     .then(x => x.json())
-  //     .then(res => {
-  //       const { error, token } = res
-  //       if (!error && token) {
-  //         setToken(token)
-  //         setIsTokenLoading(false)
-  //       }
-  //     })
-  //     .catch(console.error)
-  // }, [])
+  useEffect(() => {
+    if (token) {
+      client
+        .query({
+          query: USER_QUERY
+        })
+        .then(x => {
+          setUser(x.data.user)
+          setIsReady(true)
+        })
+        .catch(console.error)
+    }
+  }, [token])
 
   return (
     <>
       {!font || (!isReady && <SplashScreen />)}
-      {font && isReady && <RootLayoutNav token={token} />}
+      {font && isReady && <RootLayoutNav user={user} setUser={setUser} />}
     </>
   )
 }
 
-function RootLayoutNav({ token }: { token: string | null }) {
+function RootLayoutNav({ user, setUser }: { user: null | User; setUser: any }) {
   const colorScheme = useColorScheme()
+
+  useProtectRoute(user)
 
   return (
     <>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <AuthProvider>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-          </Stack>
+        <AuthProvider setUser={setUser}>
+          <ApolloProvider client={client}>
+            <Stack>
+              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+            </Stack>
+          </ApolloProvider>
         </AuthProvider>
       </ThemeProvider>
     </>

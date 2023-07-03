@@ -6,6 +6,7 @@
       "*": ["./*"],
       "@components/*": ["components/*"],
       "@context/*": ["context/*"],
+      "@graphql/*": ["graphql/*"],
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"]
     },
