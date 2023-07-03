@@ -1,14 +1,23 @@
 import React from 'react'
-import { TouchableOpacity, StyleSheet } from 'react-native'
+import {
+  TouchableOpacity,
+  StyleSheet,
+  TouchableOpacityProps
+} from 'react-native'
 
 import { Text } from '@components/Text'
 
-export function Button() {
+export function Button({ children, ...rest }: TouchableOpacityProps) {
   return (
-    <TouchableOpacity>
-      <Text>yo</Text>
+    <TouchableOpacity style={styles.wrapper} {...rest}>
+      <Text>{children}</Text>
     </TouchableOpacity>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  wrapper: {
+    paddingHorizontal: 16,
+    paddingVertical: 8
+  }
+})
