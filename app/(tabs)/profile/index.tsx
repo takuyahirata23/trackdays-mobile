@@ -10,15 +10,22 @@ import { Button } from '@components/Button'
 
 export default function ProfileIndex() {
   const { signOut } = React.useContext(AuthContext)
-  const {
-    data: { user }
-  } = useQuery(USER_QUERY, {
-    fetchPolicy: 'cache-only'
-  })
+  const { loading, data, error } = useQuery(USER_QUERY)
+
+  if (error) {
+    console.error(error)
+    return null
+  }
+
+  if (loading) {
+    return null
+  }
+
+  const { name } = data.user
 
   return (
     <Container>
-      <Text style={styles.heading}>{user.name}</Text>
+      <Text style={styles.heading}>{name}</Text>
       <Button onPress={signOut}>Sign out</Button>
     </Container>
   )
