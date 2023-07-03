@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { saveToken } from '@utils/secureStore'
+import { saveToken, deleteToken } from '@utils/secureStore'
 
 type User = {
   email: string
@@ -40,11 +40,16 @@ export function AuthProvider({ children, setUser }: Props) {
       })
       .catch(console.error)
 
+  const signOut = async () => {
+    await deleteToken()
+    setUser(null)
+  }
+
   return (
     <AuthContext.Provider
       value={{
         signIn,
-        signOut: () => {}
+        signOut
       }}
     >
       {children}
