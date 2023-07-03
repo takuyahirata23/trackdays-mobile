@@ -1,14 +1,8 @@
 import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider
-} from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
-import { useColorScheme } from 'react-native'
 import { ApolloProvider } from '@apollo/client'
 
 import { useProtectRoute } from '@hooks/useProtectRoute'
@@ -16,6 +10,7 @@ import { client } from '@graphql/client'
 import { USER_QUERY } from '@graphql/queries'
 import { getToken } from '@utils/secureStore'
 import { AuthProvider } from '@context/Auth'
+import { ThemeProvider } from '@context/Theme'
 
 type User = {
   email: string
@@ -77,13 +72,11 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav({ user, setUser }: { user: null | User; setUser: any }) {
-  const colorScheme = useColorScheme()
-
   useProtectRoute(user)
 
   return (
     <>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeProvider>
         <AuthProvider setUser={setUser}>
           <ApolloProvider client={client}>
             <Stack>
