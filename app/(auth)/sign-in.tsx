@@ -9,12 +9,14 @@ import { Button } from '@components/Button'
 import { useTheme } from '@hooks/useTheme'
 
 export default function SignIn() {
-  const { signIn } = React.useContext(AuthContext)
+  const { signIn, error } = React.useContext(AuthContext)
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const {
     colors: { bgPrimary }
   } = useTheme()
+
+  const onPress = () => signIn({ email, password })
 
   return (
     <SafeAreaView style={[{ backgroundColor: bgPrimary }, styles.safeArea]}>
@@ -37,7 +39,12 @@ export default function SignIn() {
           />
         </View>
         <View style={styles.button}>
-          <Button onPress={signIn}>Sign in</Button>
+          {error && (
+            <View style={styles.error}>
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          )}
+          <Button onPress={onPress}>Sign in</Button>
         </View>
       </Container>
     </SafeAreaView>
@@ -61,5 +68,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600'
+  },
+  error: {
+    marginBottom: 20
+  },
+  errorText: {
+    textAlign: 'center'
   }
 })

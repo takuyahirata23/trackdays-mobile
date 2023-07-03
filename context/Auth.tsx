@@ -7,38 +7,60 @@ type User = {
   name: string
 }
 
-export const AuthContext = React.createContext({
-  signIn: () => {},
-  signOut: () => {}
-})
+type SignInFields = {
+  email: string
+  password: string
+}
 
 type Props = {
   children: React.ReactNode
   setUser: (user: User | null) => void
 }
 
+type AuthContextType = {
+  signIn: (form: SignInFields) => void
+  signOut: () => void
+  error: null | string
+}
+
+export const AuthContext = React.createContext<AuthContextType>({
+  signIn: (_form: SignInFields) => {},
+  signOut: () => {},
+  error: null
+})
+
 const path = `${process.env.DOMAIN_URL}/auth/login`
 
-const body = JSON.stringify({ email: 'admin@test.com', password: 'Pass1234!' })
-
-const fetchUser = () =>
+const fetchUser = (body: SignInFields) =>
   fetch(path, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body
+    body: JSON.stringify(body)
   })
 
 export function AuthProvider({ children, setUser }: Props) {
-  const signIn = () =>
-    fetchUser()
-      .then(x => x.json())
+  const [error, setError] = React.useState<null | string>(null)
+
+  const signIn = (body: SignInFields) =>
+    fetchUser(body)
+      .then(x => {
+        if (x.status === 200) {
+          return x.json()
+        } else {
+          throw new Error()
+        }
+      })
       .then(d => {
         saveToken(d.token)
+        setError(null)
         setUser(d.user)
       })
-      .catch(console.error)
+      .catch(e => {
+        console.error(e)
+        setError('User not found. Please try again.')
+      })
 
   const signOut = async () => {
     await deleteToken()
@@ -48,6 +70,7 @@ export function AuthProvider({ children, setUser }: Props) {
   return (
     <AuthContext.Provider
       value={{
+        error,
         signIn,
         signOut
       }}
