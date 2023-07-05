@@ -42,15 +42,19 @@ const LightTheme: Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#0f172a',
-    secondary: '#94a3b8',
-    tertiary: '#deff26',
-    bgPrimary: '#ffffff',
+    text: '#4d4b4a',
+    background: '#ffffff',
+    primary: '#4d4b4a',
+    secondary: '#304fff',
+    tertiary: '#1012a3',
+    bgPrimary: '#f9f9fb',
     bgSecondary: '#f2f2f2',
-    btnPrimary: '#4955f5',
+    btnPrimary: '#ffd000',
     btnSecondary: '#334155'
   }
 }
+//Box shadow
+//0 2px 6px 0 rgba(27,27,34,.2)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const colorScheme = useColorScheme()
