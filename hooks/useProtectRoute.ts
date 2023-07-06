@@ -12,5 +12,5 @@ export function useProtectRoute(user: null | object) {
     } else if (user && inAuthGroup) {
       router.replace('/')
     }
-  }, [user, segments])
+  }, [user, segments, router])
 }

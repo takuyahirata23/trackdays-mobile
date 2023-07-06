@@ -3,12 +3,14 @@ import { Text as RNText, TextProps, StyleSheet } from 'react-native'
 
 import { useTheme } from '@hooks/useTheme'
 
-export function Text({ children, style }: TextProps) {
-  const {
-    colors: { primary }
-  } = useTheme()
+type Props = {
+  color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+} & TextProps
+
+export function Text({ children, style, color = 'primary' }: Props) {
+  const { colors } = useTheme()
   return (
-    <RNText style={[{ color: primary }, styles.primary, style]}>
+    <RNText style={[{ color: colors[color] }, styles.primary, style]}>
       {children}
     </RNText>
   )

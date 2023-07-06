@@ -56,10 +56,13 @@ export default function RootLayout() {
           query: USER_QUERY
         })
         .then(x => {
+          console.log(x)
           setUser(x.data.user)
           setIsReady(true)
         })
-        .catch(console.error)
+        .catch(() => {
+          setIsReady(true)
+        })
     }
   }, [token])
 

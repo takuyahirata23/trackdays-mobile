@@ -11,7 +11,7 @@ import { Text } from '@components/Text'
 
 export function Button({ children, ...rest }: TouchableOpacityProps) {
   const {
-    colors: { btnPrimary, bgPrimary }
+    colors: { btnPrimary, tertiary }
   } = useTheme()
 
   return (
@@ -19,7 +19,7 @@ export function Button({ children, ...rest }: TouchableOpacityProps) {
       style={[{ backgroundColor: btnPrimary }, styles.wrapper]}
       {...rest}
     >
-      <Text style={[{ color: bgPrimary }, styles.text]}>{children}</Text>
+      <Text style={[{ color: tertiary }, styles.text]}>{children}</Text>
     </TouchableOpacity>
   )
 }

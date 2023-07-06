@@ -7,16 +7,49 @@ import { Text } from '@components/Text'
 import { Field } from '@components/Field'
 import { Button } from '@components/Button'
 import { useTheme } from '@hooks/useTheme'
+import { validateSignInForm } from '../../functions/validations'
+
+export type SignInFormErrors = {
+  isValid: boolean
+  email?: string
+  password?: string
+}
 
 export default function SignIn() {
   const { signIn, error } = React.useContext(AuthContext)
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const [form, setForm] = React.useState({ email: '', password: '' })
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [formErrors, setFormErrors] = React.useState<SignInFormErrors>({
+    isValid: false,
+    email: '',
+    password: ''
+  })
+
+  const onChagneText = (field: 'email' | 'password') => (value: string) =>
+    setForm(prev => ({ ...prev, [field]: value }))
+
   const {
     colors: { bgPrimary }
   } = useTheme()
 
-  const onPress = () => signIn({ email, password })
+  const onPress = () => setFormErrors(validateSignInForm(form))
+
+  React.useEffect(() => {
+    if (formErrors.isValid) {
+      setIsLoading(true)
+    }
+  }, [formErrors])
+
+  React.useEffect(() => {
+    if (isLoading) {
+      signIn(form)
+    }
+
+    return () => {
+      setIsLoading(false)
+      setFormErrors({ isValid: false })
+    }
+  }, [isLoading, form, signIn])
 
   return (
     <SafeAreaView style={[{ backgroundColor: bgPrimary }, styles.safeArea]}>
@@ -26,16 +59,18 @@ export default function SignIn() {
           <Field
             label="Email"
             keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
+            value={form.email}
+            onChangeText={onChagneText('email')}
             placeholder="your-email@domain.com"
+            error={formErrors.email}
           />
           <Field
             secureTextEntry
             label="Password"
-            value={password}
-            onChangeText={setPassword}
+            value={form.password}
+            onChangeText={onChagneText('password')}
             placeholder="YoUR.PASSword!"
+            error={formErrors.password}
           />
         </View>
         <View style={styles.button}>

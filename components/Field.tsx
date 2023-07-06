@@ -6,19 +6,30 @@ import { Text } from '@components/Text'
 
 type Props = {
   label: string
+  error?: string
 } & TextInputProps
 
-export function Field({ label, ...rest }: Props) {
-  const {
-    colors: { bgSecondary }
-  } = useTheme()
+export function Field({ label, error, ...rest }: Props) {
+  const { colors } = useTheme()
   return (
     <View>
       <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={[{ backgroundColor: bgSecondary }, styles.input]}
+        style={[
+          {
+            backgroundColor: colors.bgSecondary,
+            borderWidth: 1.5,
+            borderColor: error ? colors.error : colors.bgSecondary
+          },
+          styles.input
+        ]}
         {...rest}
       />
+      {error && (
+        <Text color="error" style={styles.label}>
+          {error}
+        </Text>
+      )}
     </View>
   )
 }

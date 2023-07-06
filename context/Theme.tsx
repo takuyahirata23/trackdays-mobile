@@ -17,6 +17,7 @@ export type Theme = {
     notification: string
     secondary: string
     tertiary: string
+    error: string
     bgPrimary: string
     bgSecondary: string
     btnPrimary: string
@@ -31,6 +32,7 @@ const DarkTheme: Theme = {
     primary: '#ffffff',
     secondary: '#94a3b8',
     tertiary: '#deff26',
+    error: '#FF3333',
     bgPrimary: '#0f172a',
     bgSecondary: '#1e293b',
     btnPrimary: '#0ea5e9',
@@ -47,6 +49,7 @@ const LightTheme: Theme = {
     primary: '#4d4b4a',
     secondary: '#304fff',
     tertiary: '#1012a3',
+    error: '#FF3333',
     bgPrimary: '#f9f9fb',
     bgSecondary: '#f2f2f2',
     btnPrimary: '#ffd000',
