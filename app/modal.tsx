@@ -1,11 +1,25 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Platform, StyleSheet } from 'react-native'
+import { useSearchParams, useNavigation } from 'expo-router'
 
 import EditScreenInfo from '../components/EditScreenInfo'
 import { Text, View } from '../components/Themed'
 
+const titleMap: { [key: string]: string } = {
+  registerMotorcycle: 'Add Motorcycle'
+}
+
 export default function ModalScreen() {
+  const { name } = useSearchParams()
+  const { setOptions } = useNavigation()
+
+  React.useEffect(() => {
+    setOptions({
+      title: titleMap[String(name)]
+    })
+  }, [name, setOptions])
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>
