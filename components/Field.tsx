@@ -18,7 +18,6 @@ export function Field({ label, error, ...rest }: Props) {
         style={[
           {
             backgroundColor: colors.bgSecondary,
-            borderWidth: 1.5,
             borderColor: error ? colors.error : colors.bgSecondary
           },
           styles.input
@@ -42,6 +41,7 @@ const styles = StyleSheet.create({
     height: 46,
     fontSize: 18,
     padding: 8,
-    borderRadius: 4
+    borderRadius: 4,
+    borderWidth: 1.5
   }
 })

@@ -3,7 +3,7 @@ import { Text as RNText, TextProps, StyleSheet } from 'react-native'
 
 import { useTheme } from '@hooks/useTheme'
 
-type Props = {
+export type Props = {
   color?: 'primary' | 'secondary' | 'tertiary' | 'error'
 } & TextProps
 

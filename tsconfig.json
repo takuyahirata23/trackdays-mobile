@@ -4,12 +4,13 @@
     "baseUrl": ".",
     "paths": {
       "*": ["./*"],
-      "@components/*": ["components/*"],
+      "@components": ["components"],
       "@context/*": ["context/*"],
       "@graphql/*": ["graphql/*"],
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"]
     },
-    "strict": true
+    "strict": true,
+    "moduleResolution": "node"
   }
 }
