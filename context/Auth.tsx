@@ -49,7 +49,7 @@ export function AuthProvider({ children, setUser }: Props) {
         if (x.status === 200) {
           return x.json()
         } else {
-          throw new Error()
+          throw new Error('There was a problem sigining in')
         }
       })
       .then(d => {

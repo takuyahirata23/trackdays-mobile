@@ -3,7 +3,7 @@ import { Container } from '@components/Container'
 import { Text } from '@components/Text'
 import { Card } from '@components/Card'
 
-export default function TabOneScreen() {
+export default function MotorcycleScreen() {
   return (
     <Container>
       <Card>
