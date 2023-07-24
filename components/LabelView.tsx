@@ -10,25 +10,21 @@ type Props = {
 
 export function LableView({ label, value, style, ...rest }: Props) {
   return (
-    <View style={[styles.wrapper, style]} {...rest}>
-      <Text style={styles.label}>{label}:</Text>
-      <Text style={styles.value}>{value}</Text>
+    <View style={style} {...rest}>
+      <Text numberOfLines={1} ellipsizeMode="tail">
+        <Text style={styles.label}>{label}:&nbsp;</Text>
+        <Text style={styles.value}>{value}</Text>
+      </Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: 8
-  },
   label: {
     fontWeight: '500',
     fontSize: 18
   },
   value: {
-    fontWeight: '500',
-    fontSize: 16
+    fontSize: 18
   }
 })
