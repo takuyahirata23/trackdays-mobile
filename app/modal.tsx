@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { useQuery, useLazyQuery } from '@apollo/client'
+import { useQuery, useLazyQuery, useMutation, gql } from '@apollo/client'
 import { useSearchParams, useNavigation } from 'expo-router'
 import { Picker } from '@react-native-picker/picker'
 
@@ -13,6 +13,7 @@ import {
   LableView
 } from '@components'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
+import { REGISTER_MOTORCYCLE } from '@graphql/mutations'
 import { motorcycleValidations } from 'functions/validations'
 
 import type { Make, Model } from '@type/vehicle'
@@ -35,6 +36,32 @@ export default function ModalScreen() {
   const [getModels, modelRes] = useLazyQuery(MODELS_QUERY, {
     variables: {
       makeId: make
+    }
+  })
+
+  const [registerMotorcycle] = useMutation(REGISTER_MOTORCYCLE, {
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          motorcycles(existingMotorcycles = []) {
+            const newMotorcycleRef = cache.writeFragment({
+              data: data.registerMotorcycle,
+              fragment: gql`
+                fragment NewMotorcycle on Motorcycle {
+                  id
+                  year
+                  model
+                  make
+                }
+              `
+            })
+            return [...existingMotorcycles, newMotorcycleRef]
+          }
+        }
+      })
+    },
+    onCompleted() {
+      goBack()
     }
   })
 
@@ -68,7 +95,16 @@ export default function ModalScreen() {
         setModel(modelRes?.data?.models?.[0].id)
       }
       setPhase(3)
-    }
+    },
+    () =>
+      registerMotorcycle({
+        variables: {
+          registerMotorcycleInput: {
+            modelId: model,
+            year: Number(year)
+          }
+        }
+      })
   ]
 
   React.useEffect(() => {
