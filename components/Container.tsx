@@ -22,6 +22,8 @@ export function Container({ children }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 30
   }
 })
