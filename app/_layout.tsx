@@ -12,10 +12,7 @@ import { getToken } from '@utils/secureStore'
 import { AuthProvider } from '@context/Auth'
 import { ThemeProvider } from '@context/Theme'
 
-type User = {
-  email: string
-  name: string
-}
+import { User } from '@type/accounts'
 
 export { ErrorBoundary } from 'expo-router'
 

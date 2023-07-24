@@ -9,7 +9,8 @@
       "@context/*": ["context/*"],
       "@graphql/*": ["graphql/*"],
       "@hooks/*": ["hooks/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@type/*": ["type/*"]
     },
     "strict": true,
     "moduleResolution": "node"

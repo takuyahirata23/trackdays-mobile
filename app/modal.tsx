@@ -8,18 +8,10 @@ import { Container, Button, Text, Field } from '@components'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
 import { motorcycleValidations } from 'functions/validations'
 
+import type { Make, Model } from '@type/vehicle'
+
 const titleMap: { [key: string]: string } = {
   registerMotorcycle: 'Add Motorcycle'
-}
-
-type Make = {
-  id: string
-  name: string
-}
-
-type Model = {
-  id: string
-  name: string
 }
 
 const currentYear = new Date().getFullYear().toString()
