@@ -8,13 +8,20 @@ import { MOTORCYCLES_QUERY } from '@graphql/queries'
 import type { Motorcycle } from '@type/vehicle'
 
 export default function MotorcycleScreen() {
-  const { loading, data } = useQuery(MOTORCYCLES_QUERY)
+  const { loading, data, error } = useQuery(MOTORCYCLES_QUERY)
 
+  if (loading) {
+    return null
+  }
+
+  if (error) {
+    return null
+  }
   return (
     <Container style={styles.container}>
-      {data?.motorcycles?.map(({ id, make, model }: Motorcycle) => (
-        <Card>
-          <LableView key={id} label={make} value={model} />
+      {data?.motorcycles?.map(({ id, make, model, year }: Motorcycle) => (
+        <Card key={id}>
+          <LableView label={make} value={`${model} (${year})`} />
         </Card>
       ))}
     </Container>
