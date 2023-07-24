@@ -1,14 +1,31 @@
 import React from 'react'
-import { Container } from '@components/Container'
-import { Text } from '@components/Text'
-import { Card } from '@components/Card'
+import { StyleSheet } from 'react-native'
+import { useQuery } from '@apollo/client'
+
+import { Container, Card, LableView } from '@components'
+import { MOTORCYCLES_QUERY } from '@graphql/queries'
+
+import type { Motorcycle } from '@type/vehicle'
 
 export default function MotorcycleScreen() {
+  const { loading, data } = useQuery(MOTORCYCLES_QUERY)
+
   return (
-    <Container>
-      <Card>
-        <Text>Tab One</Text>
-      </Card>
+    <Container style={styles.container}>
+      {data?.motorcycles?.map(({ id, make, model }: Motorcycle) => (
+        <Card>
+          <LableView key={id} label={make} value={model} />
+        </Card>
+      ))}
     </Container>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    rowGap: 8
+  },
+  divider: {
+    marginTop: 12
+  }
+})

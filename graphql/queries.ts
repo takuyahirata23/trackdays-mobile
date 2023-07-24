@@ -26,3 +26,14 @@ export const MODELS_QUERY = gql`
     }
   }
 `
+
+export const MOTORCYCLES_QUERY = gql`
+  query getMotorcycles {
+    motorcycles {
+      id
+      year
+      model
+      make
+    }
+  }
+`

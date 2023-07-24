@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     columnGap: 8
   },
   label: {
-    fontWeight: '600',
+    fontWeight: '500',
     fontSize: 18
   },
   value: {
