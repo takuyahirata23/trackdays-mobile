@@ -14,6 +14,7 @@ import {
 } from '@components'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
 import { REGISTER_MOTORCYCLE } from '@graphql/mutations'
+import { MOTORCYCLE } from 'graphql/fragments'
 import { motorcycleValidations } from 'functions/validations'
 
 import type { Make, Model } from '@type/vehicle'
@@ -46,16 +47,9 @@ export default function ModalScreen() {
           motorcycles(existingMotorcycles = []) {
             const newMotorcycleRef = cache.writeFragment({
               data: data.registerMotorcycle,
-              fragment: gql`
-                fragment NewMotorcycle on Motorcycle {
-                  id
-                  year
-                  model
-                  make
-                }
-              `
+              fragment: MOTORCYCLE
             })
-            return [...existingMotorcycles, newMotorcycleRef]
+            return [newMotorcycleRef, ...existingMotorcycles]
           }
         }
       })
