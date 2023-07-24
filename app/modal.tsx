@@ -4,14 +4,21 @@ import { useQuery, useLazyQuery } from '@apollo/client'
 import { useSearchParams, useNavigation } from 'expo-router'
 import { Picker } from '@react-native-picker/picker'
 
-import { Container, Button, Text, Field } from '@components'
+import {
+  Container,
+  KeyboardAvoidingView,
+  Button,
+  Card,
+  Field,
+  LableView
+} from '@components'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
 import { motorcycleValidations } from 'functions/validations'
 
 import type { Make, Model } from '@type/vehicle'
 
 const titleMap: { [key: string]: string } = {
-  registerMotorcycle: 'Add Motorcycle'
+  registerMotorcycle: 'Register Motorcycle'
 }
 
 const currentYear = new Date().getFullYear().toString()
@@ -71,80 +78,103 @@ export default function ModalScreen() {
   }, [name, setOptions])
 
   React.useEffect(() => {
-    if (!modelRes.loading && modelRes.data) {
+    if (!modelRes.loading && modelRes.data && make) {
       setPhase(2)
     }
-  }, [modelRes.loading, modelRes.data])
+  }, [modelRes.loading, modelRes.data, make])
 
   const getName = (data: Make[] | Model[]) => (id: string) =>
     data.find((x: Make | Model) => x.id === id)?.name || ''
 
   return (
-    <Container>
-      <Text>Register Motorcycle</Text>
-      <View>
-        <Text>Year: {year}</Text>
-        <Text>Make: {getName(makeRes?.data?.makes || [])(make)}</Text>
-        <Text>Model: {getName(modelRes?.data?.models || [])(model)}</Text>
-      </View>
-      {phase === 0 && (
-        <Field
-          returnKeyType="done"
-          error={yearError}
-          keyboardType="numeric"
-          label="Year"
-          value={year}
-          onChangeText={setYear}
-          placeholder={currentYear}
-        />
-      )}
-      {phase === 1 && (
-        <View style={styles.pickerWrapper}>
-          <Picker selectedValue={make} onValueChange={setMake}>
-            {makeRes?.data?.makes.map((m: Make) => (
-              <Picker.Item value={m.id} label={m.name} key={m.id} />
-            ))}
-          </Picker>
-        </View>
-      )}
-      {phase === 2 ? (
-        modelRes.loading ? null : (
-          <View style={styles.pickerWrapper}>
-            <Picker selectedValue={model} onValueChange={setModel}>
-              {modelRes?.data?.models?.map((m: Model) => (
-                <Picker.Item value={m.id} label={m.name} key={m.id} />
-              ))}
-            </Picker>
+    <KeyboardAvoidingView>
+      <Container style={styles.container}>
+        <Card>
+          <View>
+            <LableView label="Year" value={year} />
+            <LableView
+              label="Make"
+              value={getName(makeRes?.data?.makes || [])(make)}
+              style={styles.divider}
+            />
+            <LableView
+              label="Model"
+              value={getName(modelRes?.data?.models || [])(model)}
+              style={styles.divider}
+            />
           </View>
-        )
-      ) : null}
-      <View style={styles.btns}>
-        <View style={styles.btnWrapper}>
-          {phase >= 0 && phase <= 2 && (
-            <Button onPress={onPressHandlers[phase]}>Next</Button>
-          )}
-          {phase > 0 && phase < 3 && (
-            <Button onPress={backToPreviousField} variant="secondary">
-              Back
-            </Button>
-          )}
-          {phase === 3 && (
-            <>
-              <Button onPress={onPressHandlers[phase]}>Register</Button>
-              <Button onPress={goBack} variant="secondary">
-                Cancel
+        </Card>
+        {phase <= 2 && (
+          <Card style={styles.fieldWrapper}>
+            {phase === 0 && (
+              <Field
+                returnKeyType="done"
+                error={yearError}
+                keyboardType="numeric"
+                label="Year"
+                value={year}
+                onChangeText={setYear}
+                placeholder={currentYear}
+              />
+            )}
+            {phase === 1 && (
+              <View style={styles.pickerWrapper}>
+                <Picker selectedValue={make} onValueChange={setMake}>
+                  {makeRes?.data?.makes.map((m: Make) => (
+                    <Picker.Item value={m.id} label={m.name} key={m.id} />
+                  ))}
+                </Picker>
+              </View>
+            )}
+            {phase === 2 ? (
+              modelRes.loading ? null : (
+                <View style={styles.pickerWrapper}>
+                  <Picker selectedValue={model} onValueChange={setModel}>
+                    {modelRes?.data?.models?.map((m: Model) => (
+                      <Picker.Item value={m.id} label={m.name} key={m.id} />
+                    ))}
+                  </Picker>
+                </View>
+              )
+            ) : null}
+          </Card>
+        )}
+        <View style={styles.btns}>
+          <View style={styles.btnWrapper}>
+            {phase >= 0 && phase <= 2 && (
+              <Button onPress={onPressHandlers[phase]}>Next</Button>
+            )}
+            {phase > 0 && phase < 3 && (
+              <Button onPress={backToPreviousField} variant="secondary">
+                Back
               </Button>
-            </>
-          )}
+            )}
+            {phase === 3 && (
+              <>
+                <Button onPress={onPressHandlers[phase]}>Register</Button>
+                <Button onPress={goBack} variant="secondary">
+                  Cancel
+                </Button>
+              </>
+            )}
+          </View>
         </View>
-      </View>
-    </Container>
+      </Container>
+    </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    rowGap: 16
+  },
+  divider: {
+    marginTop: 8
+  },
+  fieldWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    marginBottom: 24
   },
   pickerWrapper: {
     width: '100%'

@@ -3,7 +3,7 @@ import { View, ViewProps, StyleSheet } from 'react-native'
 
 import { useTheme } from '@hooks/useTheme'
 
-export function Card({ children }: ViewProps) {
+export function Card({ children, style }: ViewProps) {
   const {
     colors: { background, primary }
   } = useTheme()
@@ -11,7 +11,8 @@ export function Card({ children }: ViewProps) {
     <View
       style={[
         { backgroundColor: background, shadowColor: primary },
-        styles.card
+        styles.card,
+        style
       ]}
     >
       {children}
