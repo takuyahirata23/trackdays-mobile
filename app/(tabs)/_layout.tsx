@@ -74,11 +74,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="trackday"
         options={{
-          title: 'Tab Two',
+          title: 'Trackday',
           tabBarIcon: ({ color }) => (
-            <FontAwesomeTabBarIcon name="code" color={color} />
+            <TabIcons
+              variant="materialCommunity"
+              name="go-kart-track"
+              color={color}
+            />
           )
         }}
       />
@@ -87,7 +91,11 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => (
-            <FontAwesomeTabBarIcon name="user-o" color={color} />
+            <TabIcons
+              variant="materialCommunity"
+              name="racing-helmet"
+              color={color}
+            />
           )
         }}
       />

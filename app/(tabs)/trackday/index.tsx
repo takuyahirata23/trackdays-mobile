@@ -1,0 +1,58 @@
+import React from 'react'
+import { useQuery } from '@apollo/client'
+import { View, StyleSheet, FlatList } from 'react-native'
+
+import { TRACKDAYS } from '@graphql/queries'
+import { Container, Text, Card } from '@components'
+
+export default function TrackdayIndex() {
+  const { loading, data, error } = useQuery(TRACKDAYS)
+  const Separator = () => <View style={styles.cardSeparator} />
+
+  if (error) {
+    return null
+  }
+
+  if (loading) {
+    return (
+      <Container>
+        <Text>Loading</Text>
+      </Container>
+    )
+  }
+
+  return (
+    <Container>
+      <Text>Trackdays</Text>
+      <FlatList
+        data={data.trackdays}
+        keyExtractor={({ id }) => id}
+        ItemSeparatorComponent={Separator}
+        renderItem={({ item: { date, track, motorcycle } }) => (
+          <Card style={styles.card}>
+            <View style={styles.cardFirstRow}>
+              <Text>{track.facility.name}</Text>
+              <Text>{date}</Text>
+            </View>
+            <Text>
+              {motorcycle.model.make.name}: {motorcycle.model.name}
+            </Text>
+          </Card>
+        )}
+      />
+    </Container>
+  )
+}
+
+const styles = StyleSheet.create({
+  cardSeparator: {
+    marginTop: 16
+  },
+  card: {
+    rowGap: 8
+  },
+  cardFirstRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
+})
