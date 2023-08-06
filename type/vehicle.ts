@@ -6,11 +6,11 @@ export type Make = {
 export type Model = {
   id: string
   name: string
+  make: Make
 }
 
 export type Motorcycle = {
   id: string
   year: string
-  make: Make
   model: Model
 }

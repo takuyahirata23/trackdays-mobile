@@ -32,7 +32,7 @@ export default function TrackdayIndex() {
           <Card style={styles.card}>
             <View style={styles.cardFirstRow}>
               <Text>{track.facility.name}</Text>
-              <Text>{date}</Text>
+              <Text style={styles.date}>{date}</Text>
             </View>
             <Text>
               {motorcycle.model.make.name}: {motorcycle.model.name}
@@ -53,6 +53,10 @@ const styles = StyleSheet.create({
   },
   cardFirstRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  date: {
+    fontSize: 14
   }
 })
