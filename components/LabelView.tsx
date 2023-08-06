@@ -21,7 +21,7 @@ export function LableView({ label, value, style, ...rest }: Props) {
 
 const styles = StyleSheet.create({
   label: {
-    fontWeight: '500',
+    fontWeight: '600',
     fontSize: 18
   },
   value: {

@@ -17,11 +17,15 @@ export default function MotorcycleScreen() {
   if (error) {
     return null
   }
+
   return (
     <Container style={styles.container}>
-      {data?.motorcycles?.map(({ id, make, model, year }: Motorcycle) => (
+      {data?.motorcycles?.map(({ id, model, year }: Motorcycle) => (
         <Card key={id}>
-          <LableView label={make} value={`${model} (${year})`} />
+          <LableView
+            label={model.make.name}
+            value={`${model.name} (${year})`}
+          />
         </Card>
       ))}
     </Container>

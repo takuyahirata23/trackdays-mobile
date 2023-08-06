@@ -32,8 +32,14 @@ export const MOTORCYCLES_QUERY = gql`
     motorcycles {
       id
       year
-      model
-      make
+      model {
+        id
+        name
+        make {
+          id
+          name
+        }
+      }
     }
   }
 `
