@@ -11,6 +11,6 @@ export type Model = {
 export type Motorcycle = {
   id: string
   year: string
-  model: string
-  make: string
+  make: Make
+  model: Model
 }

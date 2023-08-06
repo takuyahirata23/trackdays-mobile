@@ -38,26 +38,54 @@ export const MOTORCYCLES_QUERY = gql`
   }
 `
 
-export const FACILITIES_QUERY = gql`
-  query getFacilities {
-    facilities {
-      id
-      name
-      description
-    }
-  }
-`
+// export const FACILITIES_QUERY = gql`
+//   query getFacilities {
+//     facilities {
+//       id
+//       name
+//       description
+//     }
+//   }
+// `
 
-export const FACILITI_QUERY = gql`
-  query getFacility($id: ID!) {
-    facility(id: $id) {
+// export const FACILITI_QUERY = gql`
+//   query getFacility($id: ID!) {
+//     facility(id: $id) {
+//       id
+//       name
+//       description
+//       tracks {
+//         id
+//         name
+//         length
+//       }
+//     }
+//   }
+// `
+
+export const TRACKDAYS = gql`
+  query getTrackdays {
+    trackdays {
       id
-      name
-      description
-      tracks {
+      date
+      track {
         id
-        name
-        length
+        facility {
+          id
+          name
+        }
+      }
+      motorcycle {
+        id
+        year
+        model {
+          id
+          name
+          make {
+            id
+            name
+          }
+        }
       }
     }
   }
