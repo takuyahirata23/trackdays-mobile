@@ -9,10 +9,10 @@ type Props = {
   error?: string
 } & TextInputProps
 
-export function Field({ label, error, ...rest }: Props) {
+export function Field({ label, error, style, ...rest }: Props) {
   const { colors } = useTheme()
   return (
-    <View>
+    <View style={style}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         style={[
