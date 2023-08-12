@@ -4,7 +4,13 @@ export const MOTORCYCLE = gql`
   fragment NewMotorcycle on Motorcycle {
     id
     year
-    model
-    make
+    model {
+      id
+      name
+      make {
+        id
+        name
+      }
+    }
   }
 `

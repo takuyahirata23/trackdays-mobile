@@ -83,6 +83,26 @@ export default function TabLayout() {
               name="go-kart-track"
               color={color}
             />
+          ),
+          headerRight: () => (
+            <Link
+              href={{
+                pathname: '/modal',
+                params: { name: 'saveTrackday' }
+              }}
+              asChild
+            >
+              <Pressable>
+                {({ pressed }) => (
+                  <Ion
+                    name="add-circle-outline"
+                    size={25}
+                    color={Colors[colorScheme ?? 'light'].text}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
           )
         }}
       />

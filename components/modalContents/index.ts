@@ -1,0 +1,1 @@
+export { RegisterMotorcycle } from './RegisterMotorcycle'
