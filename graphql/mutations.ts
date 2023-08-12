@@ -7,8 +7,14 @@ export const REGISTER_MOTORCYCLE = gql`
     registerMotorcycle(registerMotorcycleInput: $registerMotorcycleInput) {
       id
       year
-      model
-      make
+      model {
+        id
+        name
+        make {
+          id
+          name
+        }
+      }
     }
   }
 `
