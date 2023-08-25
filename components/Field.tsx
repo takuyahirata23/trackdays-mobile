@@ -1,5 +1,11 @@
 import React from 'react'
-import { View, StyleSheet, TextInput, TextInputProps } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  ViewStyle
+} from 'react-native'
 
 import { useTheme } from '@hooks/useTheme'
 import { Text } from '@components/Text'
@@ -7,9 +13,16 @@ import { Text } from '@components/Text'
 type Props = {
   label: string
   error?: string
+  inputStyle?: ViewStyle
 } & TextInputProps
 
-export function Field({ label, error, style, ...rest }: Props) {
+export function Field({
+  label,
+  error,
+  style,
+  inputStyle = {},
+  ...rest
+}: Props) {
   const { colors } = useTheme()
   return (
     <View style={style}>
@@ -20,7 +33,8 @@ export function Field({ label, error, style, ...rest }: Props) {
             backgroundColor: colors.bgSecondary,
             borderColor: error ? colors.error : colors.bgSecondary
           },
-          styles.input
+          styles.input,
+          inputStyle
         ]}
         {...rest}
       />
