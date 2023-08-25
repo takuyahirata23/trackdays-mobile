@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
+import { useNavigation } from 'expo-router'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -9,6 +10,8 @@ import {
   TRACKS_QUERY,
   MOTORCYCLES_QUERY
 } from '@graphql/queries'
+import { SAVE_TRACKDAY } from 'graphql/mutations'
+import { TRACKDAY } from 'graphql/fragments'
 import { Button, Card, Field, Text } from '@components'
 
 import type { Motorcycle } from '@type/vehicle'
@@ -25,6 +28,7 @@ enum SaveTrackdaySteps {
 }
 
 export function SaveTrackday() {
+  const { goBack } = useNavigation()
   const motorcycleRes = useQuery(MOTORCYCLES_QUERY)
   const facilityRes = useQuery(FACILITIES_QUERY)
   const [currentStep, setCurrentStep] = React.useState(SaveTrackdaySteps.Date)
@@ -42,11 +46,41 @@ export function SaveTrackday() {
     }
   })
 
+  const [saveTrackday] = useMutation(SAVE_TRACKDAY, {
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          trackdays(existingTrackdays = []) {
+            const newTrackdayRef = cache.writeFragment({
+              data: data.saveTrackday,
+              fragment: TRACKDAY
+            })
+            return [newTrackdayRef, ...existingTrackdays]
+          }
+        }
+      })
+    },
+    onCompleted() {
+      goBack()
+    }
+  })
+
   React.useEffect(() => {
     if (facility) {
       getTracks()
     }
   }, [facility])
+
+  const minutesToMilliseconds = (minute: number) => minute * 60000
+  const secondsToMilliseconds = (seconds: number) => seconds * 1000
+  const millisecondsToMinute = (x: number) => x / 1000 / 60
+  const millisecondsToSeconds = (x: number) => (x / 1000) % 60
+  const formatDate = () => date.toISOString().split('T')[0]
+
+  const laptimeToMilliseconds = () =>
+    minutesToMilliseconds(Number(minutes)) +
+    secondsToMilliseconds(Number(seconds)) +
+    Number(milliseconds)
 
   const onPressHandlers = () => {
     switch (currentStep) {
@@ -77,18 +111,50 @@ export function SaveTrackday() {
         return () => setCurrentStep(SaveTrackdaySteps.Note)
       case SaveTrackdaySteps.Note:
         return () => setCurrentStep(SaveTrackdaySteps.Submit)
+      case SaveTrackdaySteps.Submit:
+        return () => {
+          saveTrackday({
+            variables: {
+              saveTrackdayInput: {
+                date: formatDate(),
+                lapTime: laptimeToMilliseconds(),
+                motorcycleId: motorcycle,
+                trackId: track,
+                note: note
+              }
+            }
+          })
+        }
     }
   }
+
+  // TODO: refactor to make them reusable
+  const getName = (data: any) => (id: string) =>
+    data.find((x: any) => x.id === id)?.name || ''
+
+  const getMotorcycleName = (data: any) => (id: string) =>
+    data.find((x: any) => x.id === id)?.model.name || ''
 
   return (
     <View style={styles.container}>
       <Card>
         <View style={styles.fieldDisplay}>
           <Text>Date: {date.toDateString()}</Text>
-          <Text>Track: {track}</Text>
-          <Text>Motorcycle: {motorcycle}</Text>
+          <Text>Track: {getName(tracksRes.data?.tracks || [])(track)}</Text>
+          <Text>
+            Motorcycle:{' '}
+            {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
+              motorcycle
+            )}
+          </Text>
           <Text>
             {minutes}:{seconds}:{milliseconds}
+          </Text>
+          <Text>
+            In millisedonds:{' '}
+            {minutesToMilliseconds(Number(minutes)) +
+              secondsToMilliseconds(Number(seconds)) +
+              Number(milliseconds)}
           </Text>
           {currentStep === SaveTrackdaySteps.Submit && <Text>{note}</Text>}
         </View>
