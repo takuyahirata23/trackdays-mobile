@@ -44,7 +44,7 @@ export default function TrackdayLayout() {
       <Stack.Screen
         name="[id]"
         options={{
-          headerBackVisible: true
+          headerShown: false
         }}
       />
     </Stack>
