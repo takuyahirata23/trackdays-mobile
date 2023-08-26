@@ -89,3 +89,33 @@ export const TRACKDAYS = gql`
     }
   }
 `
+export const TRACKDAY_QUERY = gql`
+  query getTrackday($id: ID!) {
+    trackday(id: $id) {
+      id
+      date
+      lapTime
+      note
+      motorcycle {
+        id
+        year
+        model {
+          id
+          name
+          make {
+            id
+            name
+          }
+        }
+      }
+      track {
+        id
+        name
+        facility {
+          id
+          name
+        }
+      }
+    }
+  }
+`
