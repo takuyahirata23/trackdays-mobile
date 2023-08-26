@@ -37,6 +37,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        headerShown: false,
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint
       }}
     >
@@ -44,6 +45,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Motorcycle',
+          headerShown: true,
           tabBarIcon: ({ color }) => (
             <TabIcons
               variant="materialCommunity"
