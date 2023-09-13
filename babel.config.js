@@ -16,7 +16,8 @@ module.exports = function (api) {
             '@graphql': './graphql',
             '@hooks': './hooks',
             '@utils': './utils',
-            '@type': './type'
+            '@type': './type',
+            '@functions': './functions'
           }
         }
       ]

@@ -10,7 +10,8 @@
       "@graphql/*": ["graphql/*"],
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
-      "@type/*": ["type/*"]
+      "@type/*": ["type/*"],
+      "@functions/*": ["functions/*"]
     },
     "strict": true,
     "moduleResolution": "node"

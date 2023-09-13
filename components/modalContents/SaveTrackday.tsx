@@ -13,6 +13,10 @@ import {
 import { SAVE_TRACKDAY } from 'graphql/mutations'
 import { TRACKDAY } from 'graphql/fragments'
 import { Button, Card, Field, Text } from '@components'
+import {
+  minutesToMilliseconds,
+  secondsToMilliseconds
+} from '@functions/lapTimeConverters'
 
 import type { Motorcycle } from '@type/vehicle'
 import type { Facility, Track } from '@type/park'
@@ -71,10 +75,6 @@ export function SaveTrackday() {
     }
   }, [facility])
 
-  const minutesToMilliseconds = (minute: number) => minute * 60000
-  const secondsToMilliseconds = (seconds: number) => seconds * 1000
-  const millisecondsToMinute = (x: number) => x / 1000 / 60
-  const millisecondsToSeconds = (x: number) => (x / 1000) % 60
   const formatDate = () => date.toISOString().split('T')[0]
 
   const laptimeToMilliseconds = () =>
