@@ -12,6 +12,7 @@ export type Theme = {
     primary: string
     background: string
     card: string
+    subcard: string
     text: string
     border: string
     notification: string
@@ -22,6 +23,8 @@ export type Theme = {
     bgSecondary: string
     btnPrimary: string
     btnSecondary: string
+    btnBgPrimary: string
+    btnBgSecondary: string
   }
 }
 
@@ -33,10 +36,14 @@ const DarkTheme: Theme = {
     secondary: '#94a3b8',
     tertiary: '#deff26',
     error: '#FF3333',
+    card: '#ffffff',
+    subcard: '#ffffff',
     bgPrimary: '#0f172a',
     bgSecondary: '#1e293b',
     btnPrimary: '#0ea5e9',
-    btnSecondary: '#334155'
+    btnSecondary: '#334155',
+    btnBgPrimary: '#0ea5e9',
+    btnBgSecondary: '#334155'
   }
 }
 
@@ -50,10 +57,14 @@ const LightTheme: Theme = {
     secondary: '#304fff',
     tertiary: '#1012a3',
     error: '#FF3333',
+    card: '#ffffff',
+    subcard: '#f9f9fb',
     bgPrimary: '#f9f9fb',
     bgSecondary: '#f2f2f2',
-    btnPrimary: '#ffd000',
-    btnSecondary: '#b2cfc6'
+    btnPrimary: '#1012a3',
+    btnSecondary: '#b2cfc6',
+    btnBgPrimary: '#ffd000',
+    btnBgSecondary: '#334155'
   }
 }
 //Box shadow

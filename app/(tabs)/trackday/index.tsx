@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import { View, StyleSheet, FlatList } from 'react-native'
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { Link } from 'expo-router'
 
 import { TRACKDAYS } from '@graphql/queries'
@@ -30,23 +30,25 @@ export default function TrackdayIndex() {
         keyExtractor={({ id }) => id}
         ItemSeparatorComponent={Separator}
         renderItem={({ item: { id, date, track, motorcycle } }) => (
-          <Card>
-            <Link
-              href={{
-                pathname: '/trackday/[id]',
-                params: { id }
-              }}
-              style={styles.card}
-            >
-              <View style={styles.cardFirstRow}>
-                <Text>{track.facility.name}</Text>
-                <Text style={styles.date}>{date}</Text>
-              </View>
-              <Text>
-                {motorcycle.model.make.name}: {motorcycle.model.name}
-              </Text>
-            </Link>
-          </Card>
+          <Link
+            href={{
+              pathname: '/trackday/[id]',
+              params: { id }
+            }}
+            asChild
+          >
+            <TouchableOpacity>
+              <Card>
+                <View style={styles.cardFirstRow}>
+                  <Text>{track.facility.name}</Text>
+                  <Text style={styles.date}>{date}</Text>
+                </View>
+                <Text>
+                  {motorcycle.model.make.name}: {motorcycle.model.name}
+                </Text>
+              </Card>
+            </TouchableOpacity>
+          </Link>
         )}
       />
     </Container>
