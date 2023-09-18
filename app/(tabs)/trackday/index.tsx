@@ -1,14 +1,14 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import { Link } from 'expo-router'
+import {  StyleSheet } from 'react-native'
+import { Calendar, DateData } from 'react-native-calendars'
 
 import { TRACKDAYS } from '@graphql/queries'
 import { Container, Text, Card } from '@components'
 
 export default function TrackdayIndex() {
   const { loading, data, error } = useQuery(TRACKDAYS)
-  const Separator = () => <View style={styles.cardSeparator} />
+  const [date, setDate] = React.useState(new Date().toISOString().split('T')[0])
 
   if (error) {
     return null
@@ -22,33 +22,21 @@ export default function TrackdayIndex() {
     )
   }
 
+  const events = data.trackdays.reduce((acc: any, x: any) => {
+    return {
+      ...acc,
+      [x.date]: { selectedColor: 'blue', selected: true }
+    }
+  }, {})
+
+  const onDayPress = (d: DateData) => console.log(d)
+
   return (
     <Container>
-      <FlatList
-        data={data.trackdays}
-        keyExtractor={({ id }) => id}
-        ItemSeparatorComponent={Separator}
-        renderItem={({ item: { id, date, track, motorcycle } }) => (
-          <Link
-            href={{
-              pathname: '/trackday/[id]',
-              params: { id }
-            }}
-            asChild
-          >
-            <TouchableOpacity>
-              <Card>
-                <View style={styles.cardFirstRow}>
-                  <Text>{track.facility.name}</Text>
-                  <Text style={styles.date}>{date}</Text>
-                </View>
-                <Text>
-                  {motorcycle.model.make.name}: {motorcycle.model.name}
-                </Text>
-              </Card>
-            </TouchableOpacity>
-          </Link>
-        )}
+      <Calendar
+        initialDate={date}
+        markedDates={events}
+        onDayPress={onDayPress}
       />
     </Container>
   )
