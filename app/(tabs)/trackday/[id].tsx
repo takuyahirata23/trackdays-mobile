@@ -1,7 +1,8 @@
 import React from 'react'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
+import { SafeAreaView, StyleSheet } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@apollo/client'
+import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 
 import { Container, Card, Text } from '@components'
 import { TRACKDAY_QUERY } from '@graphql/queries'
@@ -29,17 +30,23 @@ export default function TrackdayDetail() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Container>
+      <Container style={styles.container}>
         <Card style={styles.card}>
-          <Text>{`${motorcycle.model.make.name} ${motorcycle.model.name}(${motorcycle.year})`}</Text>
-          <View>
-            <Text>{date}</Text>
-            <Text>{formatLapTime(lapTime)}</Text>
-          </View>
-        </Card>
-        <Card style={styles.card}>
-          <Text>{track.facility.name}</Text>
+          <Text style={styles.heading}>{track.facility.name}</Text>
           <Text>{track.name}</Text>
+        </Card>
+
+        <Card style={styles.iconCard}>
+          <MaterialCommunity name="calendar-today" size={24} color="black" />
+          <Text>{date}</Text>
+        </Card>
+        <Card style={styles.iconCard}>
+          <MaterialCommunity name="motorbike" size={24} />
+          <Text>{`${motorcycle.model.make.name} ${motorcycle.model.name}(${motorcycle.year})`}</Text>
+        </Card>
+        <Card style={styles.iconCard}>
+          <MaterialCommunity name="timer" size={24} />
+          <Text>{formatLapTime(lapTime)}</Text>
         </Card>
         {note && (
           <Card>
@@ -52,8 +59,19 @@ export default function TrackdayDetail() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    rowGap: 16
+  },
   card: {
     flexDirection: 'column',
     rowGap: 8
+  },
+  heading: {
+    fontWeight: '500'
+  },
+  iconCard: {
+    flexDirection: 'row',
+    columnGap: 8,
+    alignItems: 'center'
   }
 })

@@ -3,15 +3,23 @@ import { View, ViewProps, StyleSheet } from 'react-native'
 
 import { useTheme } from '@hooks/useTheme'
 
-export function Card({ children, style }: ViewProps) {
+type Props = {
+  variant?: 'primary' | 'secondary'
+} & ViewProps
+
+export function Card({ children, style, variant = 'primary' }: Props) {
   const {
-    colors: { background, primary }
+    colors: { card, subcard, primary }
   } = useTheme()
+
+  const isPrimary = variant === 'primary'
+
   return (
     <View
       style={[
-        { backgroundColor: background, shadowColor: primary },
+        { backgroundColor: isPrimary ? card : subcard, shadowColor: primary },
         styles.card,
+        isPrimary ? styles.primary : styles.secondary,
         style
       ]}
     >
@@ -28,6 +36,12 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1
     },
-    shadowOpacity: 0.1
+    shadowOpacity: 0.15
+  },
+  primary: {
+    padding: 16
+  },
+  secondary: {
+    padding: 8
   }
 })

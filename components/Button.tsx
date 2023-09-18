@@ -15,7 +15,7 @@ type Props = {
 
 export function Button({ children, variant = 'primary', ...rest }: Props) {
   const {
-    colors: { btnPrimary, btnSecondary, tertiary, secondary }
+    colors: { btnPrimary, btnSecondary, btnBgPrimary, btnBgSecondary }
   } = useTheme()
 
   const isPrimary = variant === 'primary'
@@ -23,12 +23,14 @@ export function Button({ children, variant = 'primary', ...rest }: Props) {
   return (
     <TouchableOpacity
       style={[
-        { backgroundColor: isPrimary ? btnPrimary : btnSecondary },
+        { backgroundColor: isPrimary ? btnBgPrimary : btnBgSecondary },
         styles.wrapper
       ]}
       {...rest}
     >
-      <Text style={[{ color: isPrimary ? tertiary : secondary }, styles.text]}>
+      <Text
+        style={[{ color: isPrimary ? btnPrimary : btnSecondary }, styles.text]}
+      >
         {children}
       </Text>
     </TouchableOpacity>
