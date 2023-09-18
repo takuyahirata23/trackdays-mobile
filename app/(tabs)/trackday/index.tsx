@@ -24,7 +24,6 @@ export default function TrackdayIndex() {
 
   return (
     <Container>
-      <Text>Trackdays</Text>
       <FlatList
         data={data.trackdays}
         keyExtractor={({ id }) => id}
