@@ -34,7 +34,7 @@ export default function TrackdayIndex() {
   })
 
   const {
-    colors: { btnBgSecondary }
+    colors: { btnBgSecondary, primary }
   } = useTheme()
 
   const [trackday, setTrackday] = React.useState<null | Trackday>(null)
@@ -108,13 +108,25 @@ export default function TrackdayIndex() {
               <View style={styles.cardDetail}>
                 <Card variant="secondary">
                   <IconLabel
-                    icon={<MaterialCommunity name="motorbike" size={24} />}
+                    icon={
+                      <MaterialCommunity
+                        name="motorbike"
+                        size={24}
+                        color={primary}
+                      />
+                    }
                     label={trackday.motorcycle.model.name}
                   />
                 </Card>
                 <Card variant="secondary">
                   <IconLabel
-                    icon={<MaterialCommunity name="timer" size={24} />}
+                    icon={
+                      <MaterialCommunity
+                        name="timer"
+                        size={24}
+                        color={primary}
+                      />
+                    }
                     label={formatLapTime(Number(trackday.lapTime))}
                   />
                 </Card>
@@ -128,9 +140,6 @@ export default function TrackdayIndex() {
 }
 
 const styles = StyleSheet.create({
-  cardSeparator: {
-    marginTop: 16
-  },
   card: {
     marginTop: 24,
     rowGap: 6
@@ -142,13 +151,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     columnGap: 8,
     alignItems: 'center'
-  },
-  cardFirstRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  date: {
-    fontSize: 14
   }
 })

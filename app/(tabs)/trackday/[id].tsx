@@ -4,12 +4,16 @@ import { useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@apollo/client'
 import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 
-import { Container, Card, Text } from '@components'
+import { Container, Card, Text, IconLabel } from '@components'
 import { TRACKDAY_QUERY } from '@graphql/queries'
 import { formatLapTime } from '@functions/lapTimeConverters'
+import { useTheme } from '@hooks/useTheme'
 
 export default function TrackdayDetail() {
   const { id } = useLocalSearchParams()
+  const {
+    colors: { primary }
+  } = useTheme()
 
   const { data, error, loading } = useQuery(TRACKDAY_QUERY, {
     variables: {
@@ -36,17 +40,31 @@ export default function TrackdayDetail() {
           <Text>{track.name}</Text>
         </Card>
 
-        <Card style={styles.iconCard}>
-          <MaterialCommunity name="calendar-today" size={24} color="black" />
-          <Text>{date}</Text>
+        <Card>
+          <IconLabel
+            icon={
+              <MaterialCommunity
+                name="calendar-today"
+                size={24}
+                color={primary}
+              />
+            }
+            label={date}
+          />
         </Card>
-        <Card style={styles.iconCard}>
-          <MaterialCommunity name="motorbike" size={24} />
-          <Text>{`${motorcycle.model.make.name} ${motorcycle.model.name}(${motorcycle.year})`}</Text>
+        <Card>
+          <IconLabel
+            icon={
+              <MaterialCommunity name="motorbike" size={24} color={primary} />
+            }
+            label={`${motorcycle.model.make.name} ${motorcycle.model.name}(${motorcycle.year})`}
+          />
         </Card>
-        <Card style={styles.iconCard}>
-          <MaterialCommunity name="timer" size={24} />
-          <Text>{formatLapTime(lapTime)}</Text>
+        <Card>
+          <IconLabel
+            icon={<MaterialCommunity name="timer" size={24} color={primary} />}
+            label={formatLapTime(lapTime)}
+          />
         </Card>
         {note && (
           <Card>
@@ -68,10 +86,5 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontWeight: '500'
-  },
-  iconCard: {
-    flexDirection: 'row',
-    columnGap: 8,
-    alignItems: 'center'
   }
 })
