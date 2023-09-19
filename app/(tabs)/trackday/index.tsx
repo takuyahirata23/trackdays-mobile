@@ -8,6 +8,7 @@ import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 import { TRACKDAYS_BY_MONTH } from '@graphql/queries'
 import { Container, Text, Card, IconLabel } from '@components'
 import { formatLapTime } from '@functions/lapTimeConverters'
+import { useTheme } from '@hooks/useTheme'
 
 import type { Trackday } from '@type/event'
 
@@ -16,8 +17,14 @@ const dateArray = today.split('-')
 const year = Number(dateArray[0])
 const month = Number(dateArray[1])
 
+type TrackdayDate = {
+  selectedColor: string
+  marked: boolean
+  selected: boolean
+}
+
 export default function TrackdayIndex() {
-  const { loading, data, error } = useQuery(TRACKDAYS_BY_MONTH, {
+  const { loading, data, error, refetch } = useQuery(TRACKDAYS_BY_MONTH, {
     variables: {
       getTrackdaysByMonthInput: {
         year,
@@ -25,6 +32,10 @@ export default function TrackdayIndex() {
       }
     }
   })
+
+  const {
+    colors: { btnBgSecondary }
+  } = useTheme()
 
   const [trackday, setTrackday] = React.useState<null | Trackday>(null)
 
@@ -48,26 +59,39 @@ export default function TrackdayIndex() {
     )
   }
 
-  const events = data.trackdaysByMonth.reduce((acc: any, x: any) => {
-    return {
-      ...acc,
-      [x.date]: {
-        selectedColor: 'blue',
-        marked: true,
-        selected: x.date === date
+  const events = data.trackdaysByMonth.reduce(
+    (acc: TrackdayDate, x: Trackday) => {
+      return {
+        ...acc,
+        [x.date]: {
+          selectedColor: btnBgSecondary,
+          marked: true,
+          selected: x.date === date
+        }
       }
-    }
-  }, {})
+    },
+    {}
+  )
 
   const onDayPress = (d: DateData) => setDate(d.dateString)
+  const onMonthChange = (d: DateData) =>
+    refetch({
+      getTrackdaysByMonthInput: {
+        year: Number(d.year),
+        month: Number(d.month)
+      }
+    })
 
   return (
     <Container>
-      <Calendar
-        initialDate={today}
-        markedDates={events}
-        onDayPress={onDayPress}
-      />
+      <Card>
+        <Calendar
+          initialDate={today}
+          markedDates={events}
+          onDayPress={onDayPress}
+          onMonthChange={onMonthChange}
+        />
+      </Card>
       {trackday && (
         <Link
           href={{
