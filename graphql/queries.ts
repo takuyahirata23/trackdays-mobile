@@ -89,6 +89,33 @@ export const TRACKDAYS = gql`
     }
   }
 `
+
+export const TRACKDAYS_BY_MONTH = gql`
+  query getTrackdaysByMonth(
+    $getTrackdaysByMonthInput: GetTrackdaysByMonthInput!
+  ) {
+    trackdaysByMonth(getTrackdaysByMonthInput: $getTrackdaysByMonthInput) {
+      id
+      date
+      lapTime
+      motorcycle {
+        id
+        model {
+          id
+          name
+        }
+      }
+      track {
+        id
+        facility {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
 export const TRACKDAY_QUERY = gql`
   query getTrackday($id: ID!) {
     trackday(id: $id) {
