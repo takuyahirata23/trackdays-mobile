@@ -8,39 +8,28 @@ import {
 import { useRouter } from 'expo-router'
 
 import { AuthContext } from '@context/Auth'
-import { Container } from '@components/Container'
-import { Text } from '@components/Text'
-import { Field } from '@components/Field'
-import { Button } from '@components/Button'
+import { Container, Text, Field, Button } from '@components'
 import { useTheme } from '@hooks/useTheme'
-import { validateSignInForm } from '../../functions/validations'
+import { validateRegisterForm } from '../../functions/validations'
 
-export type SignInFormErrors = {
+export type RegisterFormErrors = {
   isValid: boolean
+  name?: string
   email?: string
   password?: string
 }
 
-export default function SignIn() {
-  const { signIn, error } = React.useContext(AuthContext)
-  const [form, setForm] = React.useState({ email: '', password: '' })
+export default function Register() {
+  const { register, error } = React.useContext(AuthContext)
+  const [form, setForm] = React.useState({ email: '', password: '', name: '' })
   const [isLoading, setIsLoading] = React.useState(false)
-  const [formErrors, setFormErrors] = React.useState<SignInFormErrors>({
+  const [formErrors, setFormErrors] = React.useState<RegisterFormErrors>({
     isValid: false,
     email: '',
     password: ''
   })
 
-  const onChagneText = (field: 'email' | 'password') => (value: string) =>
-    setForm(prev => ({ ...prev, [field]: value }))
-
-  const {
-    colors: { bgPrimary }
-  } = useTheme()
-
   const { push } = useRouter()
-
-  const onPress = () => setFormErrors(validateSignInForm(form))
 
   React.useEffect(() => {
     if (formErrors.isValid) {
@@ -50,27 +39,44 @@ export default function SignIn() {
 
   React.useEffect(() => {
     if (isLoading) {
-      signIn(form)
+      register(form)
     }
 
     return () => {
       setIsLoading(false)
       setFormErrors({ isValid: false })
     }
-  }, [isLoading, form, signIn])
+  }, [isLoading, form, register])
+
+  const {
+    colors: { bgPrimary }
+  } = useTheme()
+
+  const onChagneText =
+    (field: 'email' | 'password' | 'name') => (value: string) =>
+      setForm(prev => ({ ...prev, [field]: value }))
+
+  const onPress = () => setFormErrors(validateRegisterForm(form))
 
   return (
     <SafeAreaView style={[{ backgroundColor: bgPrimary }, styles.safeArea]}>
       <Container>
-        <Text style={styles.title}>Welcome back👋</Text>
+        <Text style={styles.title}>Register</Text>
         <View style={styles.form}>
+          <Field
+            label="Name"
+            value={form.name}
+            onChangeText={onChagneText('name')}
+            placeholder="Your Name"
+            error={formErrors.name || error?.fields?.name}
+          />
           <Field
             label="Email"
             keyboardType="email-address"
             value={form.email}
             onChangeText={onChagneText('email')}
             placeholder="your-email@domain.com"
-            error={formErrors.email}
+            error={formErrors.email || error?.fields?.email}
           />
           <Field
             secureTextEntry
@@ -78,7 +84,7 @@ export default function SignIn() {
             value={form.password}
             onChangeText={onChagneText('password')}
             placeholder="YoUR.PASSword!"
-            error={formErrors.password}
+            error={formErrors.password || error?.fields?.password}
           />
         </View>
         <View style={styles.button}>
@@ -87,12 +93,12 @@ export default function SignIn() {
               <Text style={styles.errorText}>{error.message}</Text>
             </View>
           )}
-          <Button onPress={onPress}>Sign in</Button>
+          <Button onPress={onPress}>Register</Button>
         </View>
         <View style={styles.routerButton}>
           <RNButton
-            onPress={() => push('/register')}
-            title="Need an account? Register from here"
+            onPress={() => push('/sign-in')}
+            title="Have an account? Log in from here"
           />
         </View>
       </Container>

@@ -12,26 +12,39 @@ type SignInFields = {
   password: string
 }
 
+type RegisterFields = {
+  name: string
+} & SignInFields
+
 type Props = {
   children: React.ReactNode
   setUser: (user: User | null) => void
 }
 
+type Error = {
+  message?: string
+  fields?: { [key: string]: string[] }
+}
+
 type AuthContextType = {
   signIn: (form: SignInFields) => void
   signOut: () => void
-  error: null | string
+  register: (form: RegisterFields) => void
+  error: null | Error
 }
 
 export const AuthContext = React.createContext<AuthContextType>({
   signIn: (_form: SignInFields) => {},
   signOut: () => {},
+  register: (_from: RegisterFields) => {},
   error: null
 })
 
-const path = `${process.env.DOMAIN_URL}/auth/login`
+const base = `${process.env.DOMAIN_URL}/auth/`
+const loginPath = base.concat('login')
+const registerPath = base.concat('register')
 
-const fetchUser = (body: SignInFields) =>
+const fetchUser = (path: string, body: SignInFields) =>
   fetch(path, {
     method: 'POST',
     headers: {
@@ -41,10 +54,10 @@ const fetchUser = (body: SignInFields) =>
   })
 
 export function AuthProvider({ children, setUser }: Props) {
-  const [error, setError] = React.useState<null | string>(null)
+  const [error, setError] = React.useState<null | Error>(null)
 
   const signIn = (body: SignInFields) =>
-    fetchUser(body)
+    fetchUser(loginPath, body)
       .then(x => {
         if (x.status === 200) {
           return x.json()
@@ -59,7 +72,7 @@ export function AuthProvider({ children, setUser }: Props) {
       })
       .catch(e => {
         console.error(e)
-        setError('User not found. Please try again.')
+        setError({ message: 'User not found. Please try again.' })
       })
 
   const signOut = async () => {
@@ -67,12 +80,35 @@ export function AuthProvider({ children, setUser }: Props) {
     setUser(null)
   }
 
+  const register = (body: RegisterFields) =>
+    fetchUser(registerPath, body)
+      .then(x => {
+        return x.json()
+      })
+      .then(d => {
+        if (!d.error) {
+          saveToken(d.token)
+          setError(null)
+          setUser(d.user)
+        } else {
+          setError({
+            message: d.message,
+            fields: d.errors
+          })
+        }
+      })
+      .catch(e => {
+        console.log(e)
+        setError({ message: 'Registration failed. Please try again.' })
+      })
+
   return (
     <AuthContext.Provider
       value={{
         error,
         signIn,
-        signOut
+        signOut,
+        register
       }}
     >
       {children}
