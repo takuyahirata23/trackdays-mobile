@@ -24,6 +24,12 @@ const signInValidations = {
   password: Predicate(validateMinLength(4))
 }
 
+const registerValidation = {
+  name: Predicate(validateMinLength(2)),
+  email: Predicate(isEmail),
+  password: Predicate(validateMinLength(4))
+}
+
 export const motorcycleValidations = {
   year: Predicate(isValidYearFormat).concat(Predicate(moreThanAvaialbeYear))
 }
@@ -39,3 +45,4 @@ const runValidations = (predicates: Predicates) => (form: Form) =>
   )
 
 export const validateSignInForm = runValidations(signInValidations)
+export const validateRegisterForm = runValidations(registerValidation)

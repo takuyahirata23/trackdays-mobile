@@ -8,7 +8,7 @@ export function useProtectRoute(user: null | object) {
   React.useEffect(() => {
     const inAuthGroup = segments[0] === '(auth)'
     if (!user && !inAuthGroup) {
-      router.replace('/sign-in')
+      router.replace('/register')
     } else if (user && inAuthGroup) {
       router.replace('/profile')
     }

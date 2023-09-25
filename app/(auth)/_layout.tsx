@@ -9,6 +9,12 @@ export default function AuthStackLayout() {
       }}
     >
       <Stack.Screen
+        name="register"
+        options={{
+          title: 'Register'
+        }}
+      />
+      <Stack.Screen
         name="sign-in"
         options={{
           title: 'Sign in'

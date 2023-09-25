@@ -12,7 +12,7 @@ import { Text } from '@components/Text'
 
 type Props = {
   label: string
-  error?: string
+  error?: string | string[]
   inputStyle?: ViewStyle
 } & TextInputProps
 
@@ -38,11 +38,18 @@ export function Field({
         ]}
         {...rest}
       />
-      {error && (
+      {error && typeof error === 'string' && (
         <Text color="error" style={styles.label}>
           {error}
         </Text>
       )}
+      {error &&
+        Array.isArray(error) &&
+        error.map((e: string, i: number) => (
+          <Text color="error" style={styles.label} key={i}>
+            {e}
+          </Text>
+        ))}
     </View>
   )
 }
