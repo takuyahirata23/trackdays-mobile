@@ -59,16 +59,19 @@ export function AuthProvider({ children, setUser }: Props) {
   const signIn = (body: SignInFields) =>
     fetchUser(loginPath, body)
       .then(x => {
-        if (x.status === 200) {
-          return x.json()
-        } else {
-          throw new Error('There was a problem sigining in')
-        }
+        return x.json()
       })
       .then(d => {
-        saveToken(d.token)
-        setError(null)
-        setUser(d.user)
+        if (d.error) {
+          setError({
+            message: d.message,
+            fields: d.errors
+          })
+        } else {
+          saveToken(d.token)
+          setError(null)
+          setUser(d.user)
+        }
       })
       .catch(e => {
         console.error(e)
