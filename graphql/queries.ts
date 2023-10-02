@@ -146,3 +146,27 @@ export const TRACKDAY_QUERY = gql`
     }
   }
 `
+
+export const BEST_LAP_FOR_EACH_TRACK = gql`
+  query getBestLapsForEachTrack {
+    bestLapForEachTrack {
+      id
+      lapTime
+      track {
+        id
+        name
+        facility {
+          id
+          name
+        }
+      }
+      motorcycle {
+        id
+        model {
+          id
+          name
+        }
+      }
+    }
+  }
+`
