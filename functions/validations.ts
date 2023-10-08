@@ -6,7 +6,7 @@ import type { Predicate as P } from 'fts-utils'
 type Predicates = { [key: string]: P }
 type Form = { [key: string]: string }
 
-const validateMinLength =
+export const validateMinLength =
   (minLength: number = 1) =>
   (x: string) =>
     x.trim().length >= minLength
@@ -34,7 +34,7 @@ export const motorcycleValidations = {
   year: Predicate(isValidYearFormat).concat(Predicate(moreThanAvaialbeYear))
 }
 
-const runValidations = (predicates: Predicates) => (form: Form) =>
+export const runValidations = (predicates: Predicates) => (form: Form) =>
   reduce(
     (acc, [key, value]) =>
       predicates[key].run(value)

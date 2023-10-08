@@ -6,7 +6,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest"
+    "test": "jest",
+    "report": "jest --collectCoverage"
   },
   "jest": {
     "preset": "jest-expo"
