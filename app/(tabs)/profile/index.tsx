@@ -96,10 +96,7 @@ export default function ProfileIndex() {
         </Pressable>
         <Text style={styles.heading}>{name}</Text>
       </Card>
-      <Card>
-        <Text style={[styles.cardHeading, styles.headingMarginBottom]}>
-          Personal Bests
-        </Text>
+      <Card heading="Personal Bests">
         <View style={styles.personalBestWrapper}>
           {bestLapsRes.data?.bestLapForEachTrack.map((trackday: Trackday) => (
             <TrackdayLinkCard key={trackday.id} {...trackday} />
@@ -119,10 +116,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     flex: 1
   },
-  cardHeading: {
-    fontSize: 16,
-    fontWeight: '600'
-  },
   profileWrapper: {
     flexDirection: 'row',
     alignItems: 'center'
@@ -139,8 +132,5 @@ const styles = StyleSheet.create({
   },
   personalBestWrapper: {
     rowGap: 8
-  },
-  headingMarginBottom: {
-    marginBottom: 8
   }
 })
