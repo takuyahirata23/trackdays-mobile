@@ -17,7 +17,7 @@ const pickImage = (callback: (_x: string) => void) => () => {
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
     allowsEditing: true,
     aspect: [1, 1],
-    quality: 0.2,
+    quality: 0.2
   }).then(res => {
     if (!res.canceled) {
       callback(res.assets[0].uri)
@@ -37,9 +37,9 @@ export default function ProfileIndex() {
   const fetchImageFromUri = async (uri: string) => {
     const formData = new FormData()
     const token = await getToken()
-     
+
     const { id } = data?.user || {}
-  
+
     formData.append('image', {
       // @ts-ignore: not sure why warning for append
       uri,
@@ -53,7 +53,7 @@ export default function ProfileIndex() {
       body: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
-      authorization: token ? `Bearer ${token}` : ''
+        authorization: token ? `Bearer ${token}` : ''
       }
     })
       .then(x => x.json())
@@ -86,7 +86,10 @@ export default function ProfileIndex() {
           style={[styles.profileImageWrapper, { borderColor: bgSecondary }]}
         >
           {imageUrl || profileImage ? (
-            <Image source={{ uri: imageUrl || profileImage }} style={styles.profileImage} />
+            <Image
+              source={{ uri: imageUrl || profileImage }}
+              style={styles.profileImage}
+            />
           ) : (
             <Feather size={80} name="user" color={bgSecondary} />
           )}
@@ -94,7 +97,7 @@ export default function ProfileIndex() {
         <Text style={styles.heading}>{name}</Text>
       </Card>
       <Card>
-        <Text style={[styles.heading, styles.headingMarginBottom]}>
+        <Text style={[styles.cardHeading, styles.headingMarginBottom]}>
           Personal Bests
         </Text>
         <View style={styles.personalBestWrapper}>
@@ -112,9 +115,13 @@ const styles = StyleSheet.create({
     rowGap: 24
   },
   heading: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     flex: 1
+  },
+  cardHeading: {
+    fontSize: 16,
+    fontWeight: '600'
   },
   profileWrapper: {
     flexDirection: 'row',
