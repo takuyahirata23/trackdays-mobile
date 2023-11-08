@@ -5,6 +5,7 @@ import Feather from '@expo/vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker'
 
 //import { AuthContext } from '@context/Auth'
+import { getToken } from '@utils/secureStore'
 import { useTheme } from '@hooks/useTheme'
 import { USER_QUERY, BEST_LAP_FOR_EACH_TRACK } from '@graphql/queries'
 import { Card, Text, Container, TrackdayLinkCard } from '@components'
@@ -14,9 +15,9 @@ import type { Trackday } from '@type/event'
 const pickImage = (callback: (_x: string) => void) => () => {
   ImagePicker.launchImageLibraryAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    allowsEditing: false,
+    allowsEditing: true,
     aspect: [1, 1],
-    quality: 1
+    quality: 0.2,
   }).then(res => {
     if (!res.canceled) {
       callback(res.assets[0].uri)
@@ -29,7 +30,42 @@ export default function ProfileIndex() {
   const [profileImage, setProfileImage] = React.useState('')
   const { loading, data, error } = useQuery(USER_QUERY)
   const bestLapsRes = useQuery(BEST_LAP_FOR_EACH_TRACK)
-  const { colors: { bgSecondary } } = useTheme()
+  const {
+    colors: { bgSecondary }
+  } = useTheme()
+
+  const fetchImageFromUri = async (uri: string) => {
+    const formData = new FormData()
+    const token = await getToken()
+     
+    const { id } = data?.user || {}
+  
+    formData.append('image', {
+      // @ts-ignore: not sure why warning for append
+      uri,
+      name: `${id}-profile.jpg`,
+      type: 'jpg'
+    })
+
+    const base = `${process.env.DOMAIN_URL}/images/profile`
+    fetch(base, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      authorization: token ? `Bearer ${token}` : ''
+      }
+    })
+      .then(x => x.json())
+      .then(x => console.log('s', x))
+      .catch(e => console.log('e', e))
+  }
+
+  React.useEffect(() => {
+    if (profileImage) {
+      fetchImageFromUri(profileImage)
+    }
+  }, [profileImage])
 
   if (error || bestLapsRes.error) {
     console.error(error)
@@ -40,17 +76,17 @@ export default function ProfileIndex() {
     return null
   }
 
-  const { name } = data.user
+  const { name, imageUrl } = data.user
 
   return (
     <Container style={styles.container}>
       <Card style={styles.profileWrapper}>
         <Pressable
           onPress={pickImage(setProfileImage)}
-          style={[styles.profileImageWrapper,{ borderColor: bgSecondary}]}
+          style={[styles.profileImageWrapper, { borderColor: bgSecondary }]}
         >
-          {profileImage ? (
-            <Image source={{ uri: profileImage }} style={styles.profileImage} />
+          {imageUrl || profileImage ? (
+            <Image source={{ uri: imageUrl || profileImage }} style={styles.profileImage} />
           ) : (
             <Feather size={80} name="user" color={bgSecondary} />
           )}
