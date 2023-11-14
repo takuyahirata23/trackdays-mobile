@@ -54,7 +54,6 @@ export const AuthContext = React.createContext<AuthContextType>({
   error: null
 })
 
-
 const base = `${process.env.DOMAIN_URL}/auth/`
 const loginPath = base.concat('login')
 const registerPath = base.concat('register')
@@ -84,7 +83,8 @@ export function AuthProvider({ children, setUser }: Props) {
     setUser(d.user)
   }
 
-  const handleResponse = (d: Reponse) => d.error ? handleErrorFromAPI(d) : handleUserResponse(d)
+  const handleResponse = (d: Reponse) =>
+    d.error ? handleErrorFromAPI(d) : handleUserResponse(d)
 
   const signIn = (body: SignInFields) =>
     fetchUser(loginPath, body)

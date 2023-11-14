@@ -11,7 +11,8 @@ export default function ProfileLayout() {
   const colorScheme = useColorScheme()
   return (
     <Stack initialRouteName="index">
-      <Stack.Screen name="index" 
+      <Stack.Screen
+        name="index"
         options={{
           title: 'Profile',
           headerRight: () => (
@@ -36,9 +37,10 @@ export default function ProfileLayout() {
           )
         }}
       />
-      <Stack.Screen name="profile-image" 
+      <Stack.Screen
+        name="profile-image"
         options={{
-          title: 'Profile Image',
+          title: 'Profile Image'
         }}
       />
     </Stack>
