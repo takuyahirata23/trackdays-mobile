@@ -57,8 +57,8 @@ export default function ProfileIndex() {
       }
     })
       .then(x => x.json())
-      .then(x => console.log('s', x))
-      .catch(e => console.log('e', e))
+      .then(x => console.log('success', x))
+      .catch(e => console.log('error', e))
   }
 
   React.useEffect(() => {
@@ -75,6 +75,7 @@ export default function ProfileIndex() {
   if (loading || bestLapsRes.loading) {
     return null
   }
+
 
   const { name, imageUrl } = data.user
 

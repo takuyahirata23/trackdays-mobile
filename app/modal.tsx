@@ -3,16 +3,22 @@ import { StyleSheet } from 'react-native'
 import { useSearchParams, useNavigation } from 'expo-router'
 
 import { Container, KeyboardAvoidingView } from '@components'
-import { RegisterMotorcycle, SaveTrackday } from '@components/modalContents'
+import {
+  RegisterMotorcycle,
+  SaveTrackday,
+  Settings
+} from '@components/modalContents'
 
 const titleMap: { [key: string]: string } = {
   registerMotorcycle: 'Register Motorcycle',
-  saveTrackday: 'Save Trackday'
+  saveTrackday: 'Save Trackday',
+  settings: 'Settings'
 }
 
 const contentMap: { [key: string]: React.FC } = {
   registerMotorcycle: RegisterMotorcycle,
-  saveTrackday: SaveTrackday
+  saveTrackday: SaveTrackday,
+  settings: Settings
 }
 
 export default function ModalScreen() {
