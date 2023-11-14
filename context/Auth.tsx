@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { saveToken, deleteToken } from '@utils/secureStore'
+import { saveToken, deleteToken, getToken } from '@utils/secureStore'
 
 type User = {
   email: string
@@ -43,6 +43,7 @@ type ErrorsFromAPI = {
 type AuthContextType = {
   signIn: (form: SignInFields) => void
   signOut: () => void
+  deleteAccount: () => void,
   register: (form: RegisterFields) => void
   error: null | Error
 }
@@ -50,6 +51,7 @@ type AuthContextType = {
 export const AuthContext = React.createContext<AuthContextType>({
   signIn: (_form: SignInFields) => {},
   signOut: () => {},
+  deleteAccount: () => {},
   register: (_from: RegisterFields) => {},
   error: null
 })
@@ -57,6 +59,7 @@ export const AuthContext = React.createContext<AuthContextType>({
 const base = `${process.env.DOMAIN_URL}/auth/`
 const loginPath = base.concat('login')
 const registerPath = base.concat('register')
+const deleteAccountPath = base.concat('delete-account')
 
 const fetchUser = (path: string, body: SignInFields) =>
   fetch(path, {
@@ -66,6 +69,7 @@ const fetchUser = (path: string, body: SignInFields) =>
     },
     body: JSON.stringify(body)
   }).then(x => x.json())
+
 
 export function AuthProvider({ children, setUser }: Props) {
   const [error, setError] = React.useState<null | Error>(null)
@@ -99,6 +103,23 @@ export function AuthProvider({ children, setUser }: Props) {
     setUser(null)
   }
 
+  
+
+  const deleteAccount = async () => {
+    const token = await getToken()
+
+    fetch(deleteAccountPath, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`
+      },
+    }).then(x => x.json()).then(() => {
+       deleteToken()
+       setUser(null)
+    })
+  }
+
   const register = (body: RegisterFields) =>
     fetchUser(registerPath, body)
       .then(handleResponse)
@@ -113,6 +134,7 @@ export function AuthProvider({ children, setUser }: Props) {
         error,
         signIn,
         signOut,
+        deleteAccount,
         register
       }}
     >
