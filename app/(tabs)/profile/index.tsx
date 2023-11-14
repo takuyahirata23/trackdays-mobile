@@ -76,7 +76,6 @@ export default function ProfileIndex() {
     return null
   }
 
-
   const { name, imageUrl } = data.user
 
   return (
