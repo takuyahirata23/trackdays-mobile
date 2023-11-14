@@ -1,14 +1,14 @@
 import React from 'react'
 import { StyleSheet, View, Pressable, Image } from 'react-native'
-import { useQuery } from '@apollo/client'
+import { useQuery, useApolloClient  } from '@apollo/client'
 import Feather from '@expo/vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker'
 
-//import { AuthContext } from '@context/Auth'
+import { AuthContext } from '@context/Auth'
 import { getToken } from '@utils/secureStore'
 import { useTheme } from '@hooks/useTheme'
 import { USER_QUERY, BEST_LAP_FOR_EACH_TRACK } from '@graphql/queries'
-import { Card, Text, Container, TrackdayLinkCard } from '@components'
+import { Card, Text, Container, TrackdayLinkCard, Button } from '@components'
 
 import type { Trackday } from '@type/event'
 
@@ -26,9 +26,10 @@ const pickImage = (callback: (_x: string) => void) => () => {
 }
 
 export default function ProfileIndex() {
-  //const { signOut } = React.useContext(AuthContext)
+  const { signOut, deleteAccount } = React.useContext(AuthContext)
   const [profileImage, setProfileImage] = React.useState('')
   const { loading, data, error } = useQuery(USER_QUERY)
+  const { resetStore, clearStore } = useApolloClient() 
   const bestLapsRes = useQuery(BEST_LAP_FOR_EACH_TRACK)
   const {
     colors: { bgSecondary }
@@ -103,6 +104,12 @@ export default function ProfileIndex() {
           ))}
         </View>
       </Card>
+      <Button onPress={signOut}>
+      Sign Out
+      </Button>
+      <Button onPress={deleteAccount}>
+      Delete Account
+      </Button>
     </Container>
   )
 }
