@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Pressable, Image } from 'react-native'
-import { useQuery, useApolloClient  } from '@apollo/client'
+import { useQuery  } from '@apollo/client'
 import Feather from '@expo/vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker'
 
@@ -28,8 +28,7 @@ const pickImage = (callback: (_x: string) => void) => () => {
 export default function ProfileIndex() {
   const { signOut, deleteAccount } = React.useContext(AuthContext)
   const [profileImage, setProfileImage] = React.useState('')
-  const { loading, data, error } = useQuery(USER_QUERY)
-  const { resetStore, clearStore } = useApolloClient() 
+  const { loading, data, error, client } = useQuery(USER_QUERY)
   const bestLapsRes = useQuery(BEST_LAP_FOR_EACH_TRACK)
   const {
     colors: { bgSecondary }
@@ -79,6 +78,11 @@ export default function ProfileIndex() {
 
   const { name, imageUrl } = data.user
 
+  const handleSignOut = () => {
+    client.clearStore()
+    signOut()
+  }
+
   return (
     <Container style={styles.container}>
       <Card style={styles.profileWrapper}>
@@ -104,7 +108,7 @@ export default function ProfileIndex() {
           ))}
         </View>
       </Card>
-      <Button onPress={signOut}>
+      <Button onPress={handleSignOut}>
       Sign Out
       </Button>
       <Button onPress={deleteAccount}>
