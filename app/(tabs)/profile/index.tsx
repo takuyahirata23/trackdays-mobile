@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Pressable, Image } from 'react-native'
-import { useQuery  } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import Feather from '@expo/vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker'
 
@@ -25,30 +25,21 @@ const pickImage = (callback: (_x: string) => void) => () => {
   })
 }
 
-export default function ProfileIndex() {
-  const { signOut, deleteAccount } = React.useContext(AuthContext)
-  const [profileImage, setProfileImage] = React.useState('')
-  const { loading, data, error, client } = useQuery(USER_QUERY)
-  const bestLapsRes = useQuery(BEST_LAP_FOR_EACH_TRACK)
-  const {
-    colors: { bgSecondary }
-  } = useTheme()
 
-  const fetchImageFromUri = async (uri: string) => {
+  const uploadImageFromUri = async (uri: string) => {
     const formData = new FormData()
     const token = await getToken()
-
-    const { id } = data?.user || {}
 
     formData.append('image', {
       // @ts-ignore: not sure why warning for append
       uri,
-      name: `${id}-profile.jpg`,
+      name: 'profile.jpg',
       type: 'jpg'
     })
 
     const base = `${process.env.DOMAIN_URL}/images/profile`
-    fetch(base, {
+
+    return fetch(base, {
       method: 'POST',
       body: formData,
       headers: {
@@ -57,13 +48,34 @@ export default function ProfileIndex() {
       }
     })
       .then(x => x.json())
-      .then(x => console.log('success', x))
-      .catch(e => console.log('error', e))
   }
+
+export default function ProfileIndex() {
+  const { signOut, deleteAccount } = React.useContext(AuthContext)
+  const [profileImage, setProfileImage] = React.useState('')
+  const [profileImageUploadError, setProfileImageUploadError] =
+    React.useState(false)
+  const { loading, data, error, client } = useQuery(USER_QUERY)
+  const bestLapsRes = useQuery(BEST_LAP_FOR_EACH_TRACK)
+  const {
+    colors: { bgSecondary }
+  } = useTheme()
+
+  const handleImageUploadError = () => {
+    setProfileImage('')
+    setProfileImageUploadError(true)
+  }
+
 
   React.useEffect(() => {
     if (profileImage) {
-      fetchImageFromUri(profileImage)
+      uploadImageFromUri(profileImage)
+      .then(x => {
+        if (x.error) {
+          handleImageUploadError()
+        }
+      })
+      .catch(handleImageUploadError)
     }
   }, [profileImage])
 
@@ -83,23 +95,34 @@ export default function ProfileIndex() {
     signOut()
   }
 
+  React.useEffect(() => {
+    setTimeout(() => {
+     setProfileImageUploadError(false)
+    }, 5000)
+  }, [profileImageUploadError])
+
   return (
     <Container style={styles.container}>
-      <Card style={styles.profileWrapper}>
-        <Pressable
-          onPress={pickImage(setProfileImage)}
-          style={[styles.profileImageWrapper, { borderColor: bgSecondary }]}
-        >
-          {imageUrl || profileImage ? (
-            <Image
-              source={{ uri: imageUrl || profileImage }}
-              style={styles.profileImage}
-            />
-          ) : (
-            <Feather size={80} name="user" color={bgSecondary} />
-          )}
-        </Pressable>
-        <Text style={styles.heading}>{name}</Text>
+      <Card>
+        <View style={styles.profileWrapper}>
+          <Pressable
+            onLongPress={pickImage(setProfileImage)}
+            style={[styles.profileImageWrapper, { borderColor: bgSecondary }]}
+          >
+            {imageUrl || profileImage ? (
+              <Image
+                source={{ uri: profileImage || imageUrl }}
+                style={styles.profileImage}
+              />
+            ) : (
+              <Feather size={80} name="user" color={bgSecondary} />
+            )}
+          </Pressable>
+          <Text style={styles.heading}>{name}</Text>
+        </View>
+        {profileImageUploadError && (
+          <Text color='tertiary' style={styles.errorText}>Something went wrong. Please try it later.</Text>
+        )}
       </Card>
       <Card heading="Personal Bests">
         <View style={styles.personalBestWrapper}>
@@ -108,12 +131,8 @@ export default function ProfileIndex() {
           ))}
         </View>
       </Card>
-      <Button onPress={handleSignOut}>
-      Sign Out
-      </Button>
-      <Button onPress={deleteAccount}>
-      Delete Account
-      </Button>
+      <Button onPress={handleSignOut}>Sign Out</Button>
+      <Button onPress={deleteAccount}>Delete Account</Button>
     </Container>
   )
 }
@@ -132,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   profileImageWrapper: {
-    borderRadius: 50,
+    borderRadius: 40,
     borderWidth: 2,
     marginRight: 20,
     overflow: 'hidden'
@@ -143,5 +162,8 @@ const styles = StyleSheet.create({
   },
   personalBestWrapper: {
     rowGap: 8
+  },
+  errorText: {
+    marginTop: 8
   }
 })
