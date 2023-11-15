@@ -15,7 +15,7 @@ export function Settings() {
     <View>
       <Link
         href={{
-          pathname: '/profile/profile-image'
+          pathname: '/profile'
         }}
         asChild
       >

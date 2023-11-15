@@ -37,12 +37,6 @@ export default function ProfileLayout() {
           )
         }}
       />
-      <Stack.Screen
-        name="profile-image"
-        options={{
-          title: 'Profile Image'
-        }}
-      />
     </Stack>
   )
 }
