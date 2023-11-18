@@ -60,6 +60,13 @@ export function SaveTrackday() {
               fragment: TRACKDAY
             })
             return [newTrackdayRef, ...existingTrackdays]
+          },
+          trackdaysByMonth(ref = []) {
+            const newTrackdayRef = cache.writeFragment({
+              data: data.saveTrackday,
+              fragment: TRACKDAY
+            })
+            return [newTrackdayRef, ...ref]
           }
         }
       })
