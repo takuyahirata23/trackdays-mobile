@@ -79,6 +79,12 @@ export default function ProfileIndex() {
     }
   }, [profileImage])
 
+  React.useEffect(() => {
+    setTimeout(() => {
+     setProfileImageUploadError(false)
+    }, 5000)
+  }, [profileImageUploadError])
+
   if (error || bestLapsRes.error) {
     console.error(error)
     return null
@@ -95,11 +101,6 @@ export default function ProfileIndex() {
     signOut()
   }
 
-  React.useEffect(() => {
-    setTimeout(() => {
-     setProfileImageUploadError(false)
-    }, 5000)
-  }, [profileImageUploadError])
 
   return (
     <Container style={styles.container}>

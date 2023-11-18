@@ -46,3 +46,11 @@ export const SAVE_TRACKDAY = gql`
     }
   }
 `
+
+export const DELETE_TRACKDAY = gql`
+  mutation deleteTrackday($trackdayId: ID!) {
+    deleteTrackday(trackdayId: $trackdayId) {
+      id
+    }
+  }
+`
