@@ -53,7 +53,6 @@ export default function RootLayout() {
           query: USER_QUERY
         })
         .then(x => {
-          console.log('token change', x)
           setUser(x.data.user)
           setIsReady(true)
         })
