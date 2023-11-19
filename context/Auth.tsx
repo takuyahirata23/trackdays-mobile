@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { saveToken, deleteToken, getToken } from '@utils/secureStore'
+import { LOGIN, REGISTER, DELETE_ACCOUNT } from '@constants/endpoints'
 
 type User = {
   email: string
@@ -56,11 +57,6 @@ export const AuthContext = React.createContext<AuthContextType>({
   error: null
 })
 
-const base = `${process.env.DOMAIN_URL}/auth/`
-const loginPath = base.concat('login')
-const registerPath = base.concat('register')
-const deleteAccountPath = base.concat('delete-account')
-
 const fetchUser = (path: string, body: SignInFields) =>
   fetch(path, {
     method: 'POST',
@@ -90,7 +86,7 @@ export function AuthProvider({ children, setUser }: Props) {
     d.error ? handleErrorFromAPI(d) : handleUserResponse(d)
 
   const signIn = (body: SignInFields) =>
-    fetchUser(loginPath, body)
+    fetchUser(LOGIN, body)
       .then(handleResponse)
       .catch(e => {
         console.error(e)
@@ -105,7 +101,7 @@ export function AuthProvider({ children, setUser }: Props) {
   const deleteAccount = async () => {
     const token = await getToken()
 
-    fetch(deleteAccountPath, {
+    fetch(DELETE_ACCOUNT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -120,7 +116,7 @@ export function AuthProvider({ children, setUser }: Props) {
   }
 
   const register = (body: RegisterFields) =>
-    fetchUser(registerPath, body)
+    fetchUser(REGISTER, body)
       .then(handleResponse)
       .catch(e => {
         console.log(e)
