@@ -1,10 +1,17 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Calendar, DateData } from 'react-native-calendars'
+import { Link } from 'expo-router'
 
 import { TRACKDAYS_BY_MONTH } from '@graphql/queries'
-import { Container, Text, Card, TrackdayLinkCard } from '@components'
+import {
+  Container,
+  Text,
+  Card,
+  TrackdayLinkCard,
+  TrackdayAddCard
+} from '@components'
 import { useTheme } from '@hooks/useTheme'
 
 import type { Trackday } from '@type/event'
@@ -36,13 +43,13 @@ export default function TrackdayIndex() {
 
   const [trackday, setTrackday] = React.useState<null | Trackday>(null)
 
-  const [date, setDate] = React.useState<null | string>(null)
+  const [date, setDate] = React.useState(today)
 
   React.useEffect(() => {
-    if (date) {
+    if (date && data?.trackdaysByMonth) {
       setTrackday(data?.trackdaysByMonth.find((x: any) => x.date == date))
     }
-  }, [date])
+  }, [date, data])
 
   if (error) {
     return null
@@ -64,6 +71,10 @@ export default function TrackdayIndex() {
           selectedColor: btnBgSecondary,
           marked: true,
           selected: x.date === date
+        },
+        [date]: {
+          selectedColor: btnBgSecondary,
+          selected: true
         }
       }
     },
@@ -90,8 +101,23 @@ export default function TrackdayIndex() {
         />
       </Card>
       <View style={styles.contentWrapper}>
-        {trackday && <TrackdayLinkCard {...trackday} />}
+        {trackday ? (
+          <TrackdayLinkCard {...trackday} />
+        ) : (
+          <Link
+            href={{
+              pathname: '/trackday/note',
+              params: { date }
+            }}
+            asChild
+          >
+            <TouchableOpacity>
+              <TrackdayAddCard />
+            </TouchableOpacity>
+          </Link>
+        )}
       </View>
+      <View style={styles.contentWrapper}></View>
     </Container>
   )
 }

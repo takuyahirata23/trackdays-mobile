@@ -25,30 +25,28 @@ const pickImage = (callback: (_x: string) => void) => () => {
   })
 }
 
+const uploadImageFromUri = async (uri: string) => {
+  const formData = new FormData()
+  const token = await getToken()
 
-  const uploadImageFromUri = async (uri: string) => {
-    const formData = new FormData()
-    const token = await getToken()
+  formData.append('image', {
+    // @ts-ignore: not sure why warning for append
+    uri,
+    name: 'profile.jpg',
+    type: 'jpg'
+  })
 
-    formData.append('image', {
-      // @ts-ignore: not sure why warning for append
-      uri,
-      name: 'profile.jpg',
-      type: 'jpg'
-    })
+  const base = `${process.env.DOMAIN_URL}/images/profile`
 
-    const base = `${process.env.DOMAIN_URL}/images/profile`
-
-    return fetch(base, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        authorization: token ? `Bearer ${token}` : ''
-      }
-    })
-      .then(x => x.json())
-  }
+  return fetch(base, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      authorization: token ? `Bearer ${token}` : ''
+    }
+  }).then(x => x.json())
+}
 
 export default function ProfileIndex() {
   const { signOut, deleteAccount } = React.useContext(AuthContext)
@@ -66,22 +64,21 @@ export default function ProfileIndex() {
     setProfileImageUploadError(true)
   }
 
-
   React.useEffect(() => {
     if (profileImage) {
       uploadImageFromUri(profileImage)
-      .then(x => {
-        if (x.error) {
-          handleImageUploadError()
-        }
-      })
-      .catch(handleImageUploadError)
+        .then(x => {
+          if (x.error) {
+            handleImageUploadError()
+          }
+        })
+        .catch(handleImageUploadError)
     }
   }, [profileImage])
 
   React.useEffect(() => {
     setTimeout(() => {
-     setProfileImageUploadError(false)
+      setProfileImageUploadError(false)
     }, 5000)
   }, [profileImageUploadError])
 
@@ -100,7 +97,6 @@ export default function ProfileIndex() {
     client.clearStore()
     signOut()
   }
-
 
   return (
     <Container style={styles.container}>
@@ -122,7 +118,9 @@ export default function ProfileIndex() {
           <Text style={styles.heading}>{name}</Text>
         </View>
         {profileImageUploadError && (
-          <Text color='tertiary' style={styles.errorText}>Something went wrong. Please try it later.</Text>
+          <Text color="tertiary" style={styles.errorText}>
+            Something went wrong. Please try it later.
+          </Text>
         )}
       </Card>
       <Card heading="Personal Bests">

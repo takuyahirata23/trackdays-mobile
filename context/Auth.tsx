@@ -43,7 +43,7 @@ type ErrorsFromAPI = {
 type AuthContextType = {
   signIn: (form: SignInFields) => void
   signOut: () => void
-  deleteAccount: () => void,
+  deleteAccount: () => void
   register: (form: RegisterFields) => void
   error: null | Error
 }
@@ -69,7 +69,6 @@ const fetchUser = (path: string, body: SignInFields) =>
     },
     body: JSON.stringify(body)
   }).then(x => x.json())
-
 
 export function AuthProvider({ children, setUser }: Props) {
   const [error, setError] = React.useState<null | Error>(null)
@@ -103,8 +102,6 @@ export function AuthProvider({ children, setUser }: Props) {
     setUser(null)
   }
 
-  
-
   const deleteAccount = async () => {
     const token = await getToken()
 
@@ -113,11 +110,13 @@ export function AuthProvider({ children, setUser }: Props) {
       headers: {
         'Content-Type': 'application/json',
         authorization: `Bearer ${token}`
-      },
-    }).then(x => x.json()).then(() => {
-       deleteToken()
-       setUser(null)
+      }
     })
+      .then(x => x.json())
+      .then(() => {
+        deleteToken()
+        setUser(null)
+      })
   }
 
   const register = (body: RegisterFields) =>

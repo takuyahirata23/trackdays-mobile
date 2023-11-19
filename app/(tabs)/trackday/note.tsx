@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { useNavigation } from 'expo-router'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
-import DateTimePicker from '@react-native-community/datetimepicker'
+import { useSearchParams } from 'expo-router'
 
 import {
   FACILITIES_QUERY,
@@ -12,7 +12,7 @@ import {
 } from '@graphql/queries'
 import { SAVE_TRACKDAY } from 'graphql/mutations'
 import { TRACKDAY } from 'graphql/fragments'
-import { Button, Card, Field, Text } from '@components'
+import { Button, Card, Field, Text, Container } from '@components'
 import {
   minutesToMilliseconds,
   secondsToMilliseconds
@@ -22,7 +22,6 @@ import type { Motorcycle } from '@type/vehicle'
 import type { Facility, Track } from '@type/park'
 
 enum SaveTrackdaySteps {
-  Date,
   Facility,
   Track,
   Motorcycle,
@@ -31,15 +30,17 @@ enum SaveTrackdaySteps {
   Submit
 }
 
-export function SaveTrackday() {
+export default function CreateTrackdayNote() {
+  const { date } = useSearchParams()
   const { goBack } = useNavigation()
   const motorcycleRes = useQuery(MOTORCYCLES_QUERY)
   const facilityRes = useQuery(FACILITIES_QUERY)
-  const [currentStep, setCurrentStep] = React.useState(SaveTrackdaySteps.Date)
+  const [currentStep, setCurrentStep] = React.useState(
+    SaveTrackdaySteps.Facility
+  )
   const [motorcycle, setMotorcycle] = React.useState('')
   const [facility, setFacility] = React.useState('')
   const [track, setTrack] = React.useState('')
-  const [date, setDate] = React.useState(new Date())
   const [minutes, setMinutes] = React.useState('0')
   const [seconds, setSeconds] = React.useState('0')
   const [note, setNote] = React.useState('')
@@ -82,8 +83,6 @@ export function SaveTrackday() {
     }
   }, [facility])
 
-  const formatDate = () => date.toISOString().split('T')[0]
-
   const laptimeToMilliseconds = () =>
     minutesToMilliseconds(Number(minutes)) +
     secondsToMilliseconds(Number(seconds)) +
@@ -91,8 +90,6 @@ export function SaveTrackday() {
 
   const onPressHandlers = () => {
     switch (currentStep) {
-      case SaveTrackdaySteps.Date:
-        return () => setCurrentStep(SaveTrackdaySteps.Facility)
       case SaveTrackdaySteps.Facility:
         return () => {
           if (!facility) {
@@ -123,7 +120,7 @@ export function SaveTrackday() {
           saveTrackday({
             variables: {
               saveTrackdayInput: {
-                date: formatDate(),
+                date,
                 lapTime: laptimeToMilliseconds(),
                 motorcycleId: motorcycle,
                 trackId: track,
@@ -143,10 +140,10 @@ export function SaveTrackday() {
     data.find((x: any) => x.id === id)?.model.name || ''
 
   return (
-    <View style={styles.container}>
+    <Container style={styles.container}>
       <Card>
         <View style={styles.fieldDisplay}>
-          <Text>Date: {date.toDateString()}</Text>
+          <Text>Date: {date}</Text>
           <Text>Track: {getName(tracksRes.data?.tracks || [])(track)}</Text>
           <Text>
             Motorcycle:{' '}
@@ -166,25 +163,6 @@ export function SaveTrackday() {
           {currentStep === SaveTrackdaySteps.Submit && <Text>{note}</Text>}
         </View>
       </Card>
-      {currentStep === SaveTrackdaySteps.Date && (
-        <Card>
-          <View
-            style={{
-              alignItems: 'center'
-            }}
-          >
-            <DateTimePicker
-              mode="date"
-              value={date}
-              onChange={(_, date?: Date) => {
-                if (date) {
-                  setDate(date)
-                }
-              }}
-            />
-          </View>
-        </Card>
-      )}
       {currentStep === SaveTrackdaySteps.Facility && (
         <Card>
           <View style={styles.pickerWrapper}>
@@ -282,7 +260,7 @@ export function SaveTrackday() {
       <Button onPress={onPressHandlers()}>
         {currentStep === SaveTrackdaySteps.Submit ? 'Save' : 'Next'}
       </Button>
-    </View>
+    </Container>
   )
 }
 

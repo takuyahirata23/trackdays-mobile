@@ -27,7 +27,7 @@ export default function TrackdayDetail() {
   const [deleteTrackday] = useMutation(DELETE_TRACKDAY, {
     update(cache, { data: { deleteTrackday } }) {
       // Remove delete trackday from cache
-      cache.evict({ id: cache.identify(deleteTrackday)})
+      cache.evict({ id: cache.identify(deleteTrackday) })
       // Remove all of the unreachable cache
       cache.gc()
     },
