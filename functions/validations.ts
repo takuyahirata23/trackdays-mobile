@@ -31,7 +31,7 @@ const registerValidation = {
 }
 
 const emailUpdateValidation = {
-  email: Predicate(isEmail),
+  email: Predicate(isEmail)
 }
 
 export const motorcycleValidations = {
@@ -51,4 +51,3 @@ export const runValidations = (predicates: Predicates) => (form: Form) =>
 export const validateSignInForm = runValidations(signInValidations)
 export const validateRegisterForm = runValidations(registerValidation)
 export const validateEmailUpdateForm = runValidations(emailUpdateValidation)
-
