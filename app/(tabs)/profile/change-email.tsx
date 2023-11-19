@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router'
 import { USER_QUERY } from '@graphql/queries'
 import { Text, Container, Field, Button } from '@components'
 import { validateSignInForm } from '@functions/validations'
-import { sendEmailUpdateRequest } from '@rest/emailUpdate'
+import { sendEmailUpdateRequest } from '@rest/auth'
 
 export type EmailUpdateFormErrors = {
   isValid: boolean
