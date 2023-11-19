@@ -6,11 +6,18 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest",
-    "report": "jest --collectCoverage"
+    "test": "jest"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "collectCoverageFrom": [
+      "./**/*{js,jsx,ts,tsx}"
+    ],
+    "collectCoverage": true,
+    "roots": [
+      "./"
+    ],
+    "verbose": true
   },
   "dependencies": {
     "@apollo/client": "^3.7.16",
