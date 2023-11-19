@@ -1,21 +1,16 @@
 import React from 'react'
+import { useRouter } from 'expo-router'
 
-import { saveToken, deleteToken, getToken } from '@utils/secureStore'
-import { LOGIN, REGISTER, DELETE_ACCOUNT } from '@constants/endpoints'
+import { saveToken, deleteToken } from '@utils/secureStore'
+import { sendLoginRequest, sendRegisterRequest, sendDeleteAccountRequest } from '@rest/auth'
+
+import type { SignInFields, RegisterFields } from '@type/fields'
 
 type User = {
   email: string
   name: string
 }
 
-type SignInFields = {
-  email: string
-  password: string
-}
-
-type RegisterFields = {
-  name: string
-} & SignInFields
 
 type Reponse = {
   message: string
@@ -57,17 +52,9 @@ export const AuthContext = React.createContext<AuthContextType>({
   error: null
 })
 
-const fetchUser = (path: string, body: SignInFields) =>
-  fetch(path, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  }).then(x => x.json())
-
 export function AuthProvider({ children, setUser }: Props) {
   const [error, setError] = React.useState<null | Error>(null)
+  const { replace } = useRouter()
 
   const handleErrorFromAPI = (data: ErrorsFromAPI) => {
     setError({
@@ -76,20 +63,21 @@ export function AuthProvider({ children, setUser }: Props) {
     })
   }
 
-  const handleUserResponse = (d: { token: string; user: User }) => {
+  const handleUserLoginResponse = (d: { token: string; user: User }) => {
     saveToken(d.token)
     setError(null)
     setUser(d.user)
   }
 
-  const handleResponse = (d: Reponse) =>
-    d.error ? handleErrorFromAPI(d) : handleUserResponse(d)
+  const handleUserRegistrationResponse = () => replace('/sign-in')
+
+  const handleResponse = (cb: (_d: Reponse) => void) =>  (d: Reponse) =>
+    d.error ? handleErrorFromAPI(d) : cb(d)
 
   const signIn = (body: SignInFields) =>
-    fetchUser(LOGIN, body)
-      .then(handleResponse)
-      .catch(e => {
-        console.error(e)
+    sendLoginRequest( body)
+      .then(handleResponse(handleUserLoginResponse))
+      .catch(() => {
         setError({ message: 'User not found. Please try again.' })
       })
 
@@ -99,16 +87,7 @@ export function AuthProvider({ children, setUser }: Props) {
   }
 
   const deleteAccount = async () => {
-    const token = await getToken()
-
-    fetch(DELETE_ACCOUNT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`
-      }
-    })
-      .then(x => x.json())
+    sendDeleteAccountRequest()
       .then(() => {
         deleteToken()
         setUser(null)
@@ -116,10 +95,9 @@ export function AuthProvider({ children, setUser }: Props) {
   }
 
   const register = (body: RegisterFields) =>
-    fetchUser(REGISTER, body)
-      .then(handleResponse)
-      .catch(e => {
-        console.log(e)
+    sendRegisterRequest(body)
+      .then(handleResponse(handleUserRegistrationResponse))
+      .catch(() => {
         setError({ message: 'Registration failed. Please try again.' })
       })
 
