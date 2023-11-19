@@ -37,6 +37,12 @@ export default function ProfileLayout() {
           )
         }}
       />
+      <Stack.Screen
+        name="change-email"
+        options={{
+          title: 'Change email'
+        }}
+      />
     </Stack>
   )
 }

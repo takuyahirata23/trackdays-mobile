@@ -13,8 +13,10 @@ module.exports = function (api) {
           alias: {
             '@components': './components',
             '@context': './context',
+            '@constants': './constants',
             '@graphql': './graphql',
             '@hooks': './hooks',
+            '@rest': './rest',
             '@utils': './utils',
             '@type': './type',
             '@functions': './functions'
