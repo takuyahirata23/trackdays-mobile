@@ -63,6 +63,7 @@ export default function TrackdayIndex() {
     )
   }
 
+
   const events = data.trackdaysByMonth.reduce(
     (acc: TrackdayDate, x: Trackday) => {
       return {
@@ -71,14 +72,14 @@ export default function TrackdayIndex() {
           selectedColor: btnBgSecondary,
           marked: true,
           selected: x.date === date
-        },
-        [date]: {
-          selectedColor: btnBgSecondary,
-          selected: true
         }
       }
     },
-    {}
+    {[date]: {
+      selectedColor: btnBgSecondary,
+      selected: true
+    }
+    }
   )
 
   const onDayPress = (d: DateData) => setDate(d.dateString)
