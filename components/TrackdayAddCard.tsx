@@ -11,7 +11,7 @@ export function TrackdayAddCard({}: Props) {
   return (
     <Card style={styles.card}>
       <AntDesign name="pluscircleo" size={20} />
-      <Text>Add your trackday record</Text>
+      <Text>Add your trackday note</Text>
     </Card>
   )
 }
