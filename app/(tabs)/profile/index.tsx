@@ -98,6 +98,11 @@ export default function ProfileIndex() {
     signOut()
   }
 
+  const handleDeleteAccount = () => {
+    client.clearStore()
+    deleteAccount()
+  }
+
   return (
     <Container style={styles.container}>
       <Card>
@@ -131,7 +136,7 @@ export default function ProfileIndex() {
         </View>
       </Card>
       <Button onPress={handleSignOut}>Sign Out</Button>
-      <Button onPress={deleteAccount}>Delete Account</Button>
+      <Button onPress={handleDeleteAccount}>Delete Account</Button>
     </Container>
   )
 }

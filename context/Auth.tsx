@@ -86,12 +86,9 @@ export function AuthProvider({ children, setUser }: Props) {
     setUser(null)
   }
 
-  const deleteAccount = async () => {
+  const deleteAccount =  () => {
     sendDeleteAccountRequest()
-      .then(() => {
-        deleteToken()
-        setUser(null)
-      })
+    .then(deleteToken).then(() => setUser(null))
   }
 
   const register = (body: RegisterFields) =>
