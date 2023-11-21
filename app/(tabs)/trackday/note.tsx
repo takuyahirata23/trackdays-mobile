@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Keyboard } from 'react-native'
 import { useNavigation } from 'expo-router'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
@@ -13,7 +13,14 @@ import {
 } from '@graphql/queries'
 import { SAVE_TRACKDAY } from 'graphql/mutations'
 import { TRACKDAY } from 'graphql/fragments'
-import { Button, Card, Field, Text, Container } from '@components'
+import {
+  Button,
+  Card,
+  Field,
+  Text,
+  Container,
+  KeyboardAvoidingView
+} from '@components'
 import {
   minutesToMilliseconds,
   secondsToMilliseconds
@@ -172,21 +179,19 @@ export default function CreateTrackdayNote() {
       ) : (
         <>
           <Card>
-            <View style={styles.fieldDisplay}>
-              <Text>Date: {date}</Text>
-              <Text>Track: {getName(tracksRes.data?.tracks || [])(track)}</Text>
-              <Text>
-                Motorcycle:{' '}
-                {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
-                  motorcycle
-                )}
-              </Text>
-              <Text>
-                Best lap time: {minutes || '00'}:{seconds || '00'}:
-                {milliseconds || '000'}
-              </Text>
-              {currentStep === SaveTrackdaySteps.Submit && <Text>{note}</Text>}
-            </View>
+            <Text>Date: {date}</Text>
+            <Text>Track: {getName(tracksRes.data?.tracks || [])(track)}</Text>
+            <Text>
+              Motorcycle:{' '}
+              {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
+                motorcycle
+              )}
+            </Text>
+            <Text>
+              Best lap time: {minutes || '00'}:{seconds || '00'}:
+              {milliseconds || '000'}
+            </Text>
+            {currentStep === SaveTrackdaySteps.Submit && <Text>{note}</Text>}
           </Card>
           {currentStep === SaveTrackdaySteps.Facility && (
             <Card>
@@ -271,6 +276,7 @@ export default function CreateTrackdayNote() {
                     style={styles.lapTimeField}
                     keyboardType="numeric"
                     placeholder="00"
+                    returnKeyType="done"
                   />
                 </View>
               </View>
@@ -285,20 +291,25 @@ export default function CreateTrackdayNote() {
                 numberOfLines={3}
                 inputStyle={styles.note}
                 multiline
+                blurOnSubmit
+                onSubmitEditing={() => Keyboard.dismiss()}
+                returnKeyType='done'
               />
             </Card>
           )}
-          {currentStep !== SaveTrackdaySteps.Facility && (
-            <Button
-              onPress={() => setCurrentStep(goBackToPreviousStep)}
-              variant="secondary"
-            >
-              Back
+          <View style={styles.btnWrapper}>
+            <Button onPress={onPressHandlers()}>
+              {currentStep === SaveTrackdaySteps.Submit ? 'Save' : 'Next'}
             </Button>
-          )}
-          <Button onPress={onPressHandlers()}>
-            {currentStep === SaveTrackdaySteps.Submit ? 'Save' : 'Next'}
-          </Button>
+            {currentStep !== SaveTrackdaySteps.Facility && (
+              <Button
+                onPress={() => setCurrentStep(goBackToPreviousStep)}
+                variant="secondary"
+              >
+                Back
+              </Button>
+            )}
+          </View>
         </>
       )}
     </Container>
@@ -332,5 +343,8 @@ const styles = StyleSheet.create({
   note: {
     height: 100
   },
-  fieldDisplay: {}
+  btnWrapper: {
+    marginTop: 'auto',
+    rowGap: 16
+  }
 })
