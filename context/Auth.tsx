@@ -2,7 +2,11 @@ import React from 'react'
 import { useRouter } from 'expo-router'
 
 import { saveToken, deleteToken } from '@utils/secureStore'
-import { sendLoginRequest, sendRegisterRequest, sendDeleteAccountRequest } from '@rest/auth'
+import {
+  sendLoginRequest,
+  sendRegisterRequest,
+  sendDeleteAccountRequest
+} from '@rest/auth'
 
 import type { SignInFields, RegisterFields } from '@type/fields'
 
@@ -10,7 +14,6 @@ type User = {
   email: string
   name: string
 }
-
 
 type Reponse = {
   message: string
@@ -71,11 +74,11 @@ export function AuthProvider({ children, setUser }: Props) {
 
   const handleUserRegistrationResponse = () => replace('/sign-in')
 
-  const handleResponse = (cb: (_d: Reponse) => void) =>  (d: Reponse) =>
+  const handleResponse = (cb: (_d: Reponse) => void) => (d: Reponse) =>
     d.error ? handleErrorFromAPI(d) : cb(d)
 
   const signIn = (body: SignInFields) =>
-    sendLoginRequest( body)
+    sendLoginRequest(body)
       .then(handleResponse(handleUserLoginResponse))
       .catch(() => {
         setError({ message: 'User not found. Please try again.' })
@@ -86,9 +89,10 @@ export function AuthProvider({ children, setUser }: Props) {
     setUser(null)
   }
 
-  const deleteAccount =  () => {
+  const deleteAccount = () => {
     sendDeleteAccountRequest()
-    .then(deleteToken).then(() => setUser(null))
+      .then(deleteToken)
+      .then(() => setUser(null))
   }
 
   const register = (body: RegisterFields) =>

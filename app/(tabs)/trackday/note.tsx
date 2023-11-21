@@ -31,8 +31,9 @@ enum SaveTrackdaySteps {
   Submit
 }
 
-const NoMotorcycleRegisteredError = () => 
+const NoMotorcycleRegisteredError = () => (
   <Text>Please regiter motorcycle first</Text>
+)
 
 export default function CreateTrackdayNote() {
   const { date } = useSearchParams()
@@ -45,10 +46,10 @@ export default function CreateTrackdayNote() {
   const [motorcycle, setMotorcycle] = React.useState('')
   const [facility, setFacility] = React.useState('')
   const [track, setTrack] = React.useState('')
-  const [minutes, setMinutes] = React.useState('0')
-  const [seconds, setSeconds] = React.useState('0')
+  const [minutes, setMinutes] = React.useState('')
+  const [seconds, setSeconds] = React.useState('')
+  const [milliseconds, setMilliseconds] = React.useState('')
   const [note, setNote] = React.useState('')
-  const [milliseconds, setMilliseconds] = React.useState('0')
   const [getTracks, tracksRes] = useLazyQuery(TRACKS_QUERY, {
     variables: {
       facilityId: facility
@@ -80,8 +81,6 @@ export default function CreateTrackdayNote() {
       goBack()
     }
   })
-
-
 
   React.useEffect(() => {
     if (facility) {
@@ -145,135 +144,136 @@ export default function CreateTrackdayNote() {
   const getMotorcycleName = (data: any) => (id: string) =>
     data.find((x: any) => x.id === id)?.model.name || ''
 
-  const { called, loading, data = {}} = motorcycleRes
+  const { called, loading, data = {} } = motorcycleRes
 
   return (
     <Container style={styles.container}>
-    {called && !loading && isEmpty(data.motorcycles) ? (
-      <NoMotorcycleRegisteredError />
-    ) : (
-      <> 
-      <Card>
-        <View style={styles.fieldDisplay}>
-          <Text>Date: {date}</Text>
-          <Text>Track: {getName(tracksRes.data?.tracks || [])(track)}</Text>
-          <Text>
-            Motorcycle:{' '}
-            {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
-              motorcycle
-            )}
-          </Text>
-          <Text>
-            {minutes}:{seconds}:{milliseconds}
-          </Text>
-          <Text>
-            In millisedonds:{' '}
-            {minutesToMilliseconds(Number(minutes)) +
-              secondsToMilliseconds(Number(seconds)) +
-              Number(milliseconds)}
-          </Text>
-          {currentStep === SaveTrackdaySteps.Submit && <Text>{note}</Text>}
-        </View>
-      </Card>
-      {currentStep === SaveTrackdaySteps.Facility && (
-        <Card>
-          <View style={styles.pickerWrapper}>
-            <Picker selectedValue={facility} onValueChange={setFacility}>
-              {facilityRes?.data?.facilities.map((m: Facility) => (
-                <Picker.Item value={m.id} label={m.name} key={m.id} />
-              ))}
-            </Picker>
-          </View>
-        </Card>
-      )}
-      {currentStep === SaveTrackdaySteps.Track && (
-        <Card>
-          {facility && tracksRes.data && (
-            <View style={styles.pickerWrapper}>
-              <Picker
-                selectedValue={track}
-                onValueChange={v => {
-                  console.log(v)
-                  setTrack(v)
-                }}
-              >
-                {tracksRes?.data?.tracks?.map((m: Track) => (
-                  <Picker.Item value={m.id} label={m.name} key={m.id} />
-                ))}
-              </Picker>
+      {called && !loading && isEmpty(data.motorcycles) ? (
+        <NoMotorcycleRegisteredError />
+      ) : (
+        <>
+          <Card>
+            <View style={styles.fieldDisplay}>
+              <Text>Date: {date}</Text>
+              <Text>Track: {getName(tracksRes.data?.tracks || [])(track)}</Text>
+              <Text>
+                Motorcycle:{' '}
+                {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
+                  motorcycle
+                )}
+              </Text>
+              <Text>
+                Best lap time: {minutes || '00'}:{seconds || '00'}:
+                {milliseconds || '000'}
+              </Text>
+              {currentStep === SaveTrackdaySteps.Submit && <Text>{note}</Text>}
             </View>
+          </Card>
+          {currentStep === SaveTrackdaySteps.Facility && (
+            <Card>
+              <View style={styles.pickerWrapper}>
+                <Picker selectedValue={facility} onValueChange={setFacility}>
+                  {facilityRes?.data?.facilities.map((m: Facility) => (
+                    <Picker.Item value={m.id} label={m.name} key={m.id} />
+                  ))}
+                </Picker>
+              </View>
+            </Card>
           )}
-        </Card>
-      )}
-      {currentStep === SaveTrackdaySteps.Motorcycle && (
-        <Card>
-          <View style={styles.pickerWrapper}>
-            <Picker selectedValue={motorcycle} onValueChange={setMotorcycle}>
-              {motorcycleRes?.data?.motorcycles.map(
-                ({ id, year, model }: Motorcycle) => (
-                  <Picker.Item
-                    value={id}
-                    label={`${model.name}(${year})`}
-                    key={id}
-                  />
-                )
+          {currentStep === SaveTrackdaySteps.Track && (
+            <Card>
+              {facility && tracksRes.data && (
+                <View style={styles.pickerWrapper}>
+                  <Picker
+                    selectedValue={track}
+                    onValueChange={v => {
+                      console.log(v)
+                      setTrack(v)
+                    }}
+                  >
+                    {tracksRes?.data?.tracks?.map((m: Track) => (
+                      <Picker.Item value={m.id} label={m.name} key={m.id} />
+                    ))}
+                  </Picker>
+                </View>
               )}
-            </Picker>
-          </View>
-        </Card>
-      )}
-      {currentStep === SaveTrackdaySteps.Laptime && (
-        <Card>
-          <View style={styles.laptimeWrapper}>
-            <View style={styles.lapTimeFieldWrapper}>
+            </Card>
+          )}
+          {currentStep === SaveTrackdaySteps.Motorcycle && (
+            <Card>
+              <View style={styles.pickerWrapper}>
+                <Picker
+                  selectedValue={motorcycle}
+                  onValueChange={setMotorcycle}
+                >
+                  {motorcycleRes?.data?.motorcycles.map(
+                    ({ id, year, model }: Motorcycle) => (
+                      <Picker.Item
+                        value={id}
+                        label={`${model.name}(${year})`}
+                        key={id}
+                      />
+                    )
+                  )}
+                </Picker>
+              </View>
+            </Card>
+          )}
+          {currentStep === SaveTrackdaySteps.Laptime && (
+            <Card>
+              <View style={styles.laptimeWrapper}>
+                <View style={styles.lapTimeFieldWrapper}>
+                  <Field
+                    label="Minute"
+                    value={minutes}
+                    style={styles.lapTimeField}
+                    onChangeText={setMinutes}
+                    keyboardType="numeric"
+                    placeholder="00"
+                  />
+                  <Text style={styles.laptimeSemicolon}>:</Text>
+                </View>
+                <View style={styles.lapTimeFieldWrapper}>
+                  <Field
+                    label="Seconds"
+                    value={seconds}
+                    onChangeText={setSeconds}
+                    style={styles.lapTimeField}
+                    keyboardType="numeric"
+                    placeholder="00"
+                  />
+                  <Text style={styles.laptimeSemicolon}>:</Text>
+                </View>
+                <View style={styles.lapTimeFieldWrapper}>
+                  <Field
+                    label="Miliseconds"
+                    value={milliseconds}
+                    onChangeText={setMilliseconds}
+                    style={styles.lapTimeField}
+                    keyboardType="numeric"
+                    placeholder="00"
+                  />
+                </View>
+              </View>
+            </Card>
+          )}
+          {currentStep === SaveTrackdaySteps.Note && (
+            <Card>
               <Field
-                label="Minute"
-                value={minutes}
-                style={styles.lapTimeField}
-                onChangeText={setMinutes}
-                keyboardType="numeric"
+                label="Note"
+                value={note}
+                onChangeText={setNote}
+                numberOfLines={3}
+                inputStyle={styles.note}
+                multiline
               />
-              <Text style={styles.laptimeSemicolon}>:</Text>
-            </View>
-            <View style={styles.lapTimeFieldWrapper}>
-              <Field
-                label="Seconds"
-                value={seconds}
-                onChangeText={setSeconds}
-                style={styles.lapTimeField}
-                keyboardType="numeric"
-              />
-              <Text style={styles.laptimeSemicolon}>:</Text>
-            </View>
-            <View style={styles.lapTimeFieldWrapper}>
-              <Field
-                label="Miliseconds"
-                value={milliseconds}
-                onChangeText={setMilliseconds}
-                style={styles.lapTimeField}
-                keyboardType="numeric"
-              />
-            </View>
-          </View>
-        </Card>
+            </Card>
+          )}
+          <Button onPress={onPressHandlers()}>
+            {currentStep === SaveTrackdaySteps.Submit ? 'Save' : 'Next'}
+          </Button>
+        </>
       )}
-      {currentStep === SaveTrackdaySteps.Note && (
-        <Card>
-          <Field
-            label="Note"
-            value={note}
-            onChangeText={setNote}
-            numberOfLines={3}
-            inputStyle={styles.note}
-            multiline
-          />
-        </Card>
-      )}
-      <Button onPress={onPressHandlers()}>
-        {currentStep === SaveTrackdaySteps.Submit ? 'Save' : 'Next'}
-      </Button>
-      </>
-    )}
     </Container>
   )
 }
