@@ -35,6 +35,25 @@ const NoMotorcycleRegisteredError = () => (
   <Text>Please regiter motorcycle first</Text>
 )
 
+const goBackToPreviousStep = (prev: SaveTrackdaySteps) => {
+  switch (prev) {
+    case SaveTrackdaySteps.Track:
+      return SaveTrackdaySteps.Facility
+
+    case SaveTrackdaySteps.Motorcycle:
+      return SaveTrackdaySteps.Track
+
+    case SaveTrackdaySteps.Laptime:
+      return SaveTrackdaySteps.Motorcycle
+
+    case SaveTrackdaySteps.Note:
+      return SaveTrackdaySteps.Laptime
+
+    case SaveTrackdaySteps.Submit:
+      return SaveTrackdaySteps.Note
+  }
+}
+
 export default function CreateTrackdayNote() {
   const { date } = useSearchParams()
   const { goBack } = useNavigation()
@@ -144,11 +163,11 @@ export default function CreateTrackdayNote() {
   const getMotorcycleName = (data: any) => (id: string) =>
     data.find((x: any) => x.id === id)?.model.name || ''
 
-  const { called, loading, data = {} } = motorcycleRes
-
   return (
     <Container style={styles.container}>
-      {called && !loading && isEmpty(data.motorcycles) ? (
+      {motorcycleRes.called &&
+      !motorcycleRes.loading &&
+      isEmpty(motorcycleRes.data.motorcycles) ? (
         <NoMotorcycleRegisteredError />
       ) : (
         <>
@@ -268,6 +287,14 @@ export default function CreateTrackdayNote() {
                 multiline
               />
             </Card>
+          )}
+          {currentStep !== SaveTrackdaySteps.Facility && (
+            <Button
+              onPress={() => setCurrentStep(goBackToPreviousStep)}
+              variant="secondary"
+            >
+              Back
+            </Button>
           )}
           <Button onPress={onPressHandlers()}>
             {currentStep === SaveTrackdaySteps.Submit ? 'Save' : 'Next'}
