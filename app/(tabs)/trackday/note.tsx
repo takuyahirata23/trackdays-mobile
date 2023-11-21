@@ -4,6 +4,7 @@ import { useNavigation } from 'expo-router'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
 import { useSearchParams } from 'expo-router'
+import { isEmpty } from 'ramda'
 
 import {
   FACILITIES_QUERY,
@@ -29,6 +30,9 @@ enum SaveTrackdaySteps {
   Note,
   Submit
 }
+
+const NoMotorcycleRegisteredError = () => 
+  <Text>Please regiter motorcycle first</Text>
 
 export default function CreateTrackdayNote() {
   const { date } = useSearchParams()
@@ -76,6 +80,8 @@ export default function CreateTrackdayNote() {
       goBack()
     }
   })
+
+
 
   React.useEffect(() => {
     if (facility) {
@@ -139,8 +145,14 @@ export default function CreateTrackdayNote() {
   const getMotorcycleName = (data: any) => (id: string) =>
     data.find((x: any) => x.id === id)?.model.name || ''
 
+  const { called, loading, data = {}} = motorcycleRes
+
   return (
     <Container style={styles.container}>
+    {called && !loading && isEmpty(data.motorcycles) ? (
+      <NoMotorcycleRegisteredError />
+    ) : (
+      <> 
       <Card>
         <View style={styles.fieldDisplay}>
           <Text>Date: {date}</Text>
@@ -260,6 +272,8 @@ export default function CreateTrackdayNote() {
       <Button onPress={onPressHandlers()}>
         {currentStep === SaveTrackdaySteps.Submit ? 'Save' : 'Next'}
       </Button>
+      </>
+    )}
     </Container>
   )
 }
