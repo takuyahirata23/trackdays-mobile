@@ -4,7 +4,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Calendar, DateData } from 'react-native-calendars'
 import { Link } from 'expo-router'
 
-import { TRACKDAYS_BY_MONTH } from '@graphql/queries'
+import { TRACKDAY_NOTES_BY_MONTH } from '@graphql/queries'
 import {
   Container,
   Text,
@@ -28,14 +28,16 @@ type TrackdayDate = {
 }
 
 export default function TrackdayIndex() {
-  const { loading, data, error, refetch } = useQuery(TRACKDAYS_BY_MONTH, {
+  const { loading, data, error, refetch } = useQuery(TRACKDAY_NOTES_BY_MONTH, {
     variables: {
-      getTrackdaysByMonthInput: {
+      getTrackdayNotesByMonthInput: {
         year,
         month
       }
     }
   })
+
+  console.log(data)
 
   const {
     colors: { btnBgSecondary }
@@ -46,8 +48,8 @@ export default function TrackdayIndex() {
   const [date, setDate] = React.useState(today)
 
   React.useEffect(() => {
-    if (date && data?.trackdaysByMonth) {
-      setTrackday(data?.trackdaysByMonth.find((x: any) => x.date == date))
+    if (date && data?.trackdayNotesByMonth) {
+      setTrackday(data.trackdayNotesByMonth.find((x: any) => x.date == date))
     }
   }, [date, data])
 
@@ -63,7 +65,7 @@ export default function TrackdayIndex() {
     )
   }
 
-  const events = data.trackdaysByMonth.reduce(
+  const events = data.trackdayNotesByMonth.reduce(
     (acc: TrackdayDate, x: Trackday) => {
       return {
         ...acc,
@@ -85,7 +87,7 @@ export default function TrackdayIndex() {
   const onDayPress = (d: DateData) => setDate(d.dateString)
   const onMonthChange = (d: DateData) =>
     refetch({
-      getTrackdaysByMonthInput: {
+      getTrackdayNotesByMonthInput: {
         year: Number(d.year),
         month: Number(d.month)
       }

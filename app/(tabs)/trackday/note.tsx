@@ -11,15 +11,14 @@ import {
   TRACKS_QUERY,
   MOTORCYCLES_QUERY
 } from '@graphql/queries'
-import { SAVE_TRACKDAY } from 'graphql/mutations'
-import { TRACKDAY } from 'graphql/fragments'
+import { SAVE_TRACKDAY_NOTE } from 'graphql/mutations'
+import { TRACKDAY_NOTE } from 'graphql/fragments'
 import {
   Button,
   Card,
   Field,
   Text,
   Container,
-  KeyboardAvoidingView
 } from '@components'
 import {
   minutesToMilliseconds,
@@ -82,21 +81,21 @@ export default function CreateTrackdayNote() {
     }
   })
 
-  const [saveTrackday] = useMutation(SAVE_TRACKDAY, {
+  const [saveTrackdayNote] = useMutation(SAVE_TRACKDAY_NOTE, {
     update(cache, { data }) {
       cache.modify({
         fields: {
-          trackdays(existingTrackdays = []) {
+          trackdayNotes(ref = []) {
             const newTrackdayRef = cache.writeFragment({
-              data: data.saveTrackday,
-              fragment: TRACKDAY
+              data: data.saveTrackdayNote,
+              fragment: TRACKDAY_NOTE
             })
-            return [newTrackdayRef, ...existingTrackdays]
+            return [newTrackdayRef, ...ref]
           },
-          trackdaysByMonth(ref = []) {
+          trackdayNotesByMonth(ref = []) {
             const newTrackdayRef = cache.writeFragment({
-              data: data.saveTrackday,
-              fragment: TRACKDAY
+              data: data.saveTrackdayNote,
+              fragment: TRACKDAY_NOTE
             })
             return [newTrackdayRef, ...ref]
           }
@@ -148,9 +147,9 @@ export default function CreateTrackdayNote() {
         return () => setCurrentStep(SaveTrackdaySteps.Submit)
       case SaveTrackdaySteps.Submit:
         return () => {
-          saveTrackday({
+          saveTrackdayNote({
             variables: {
-              saveTrackdayInput: {
+              saveTrackdayNoteInput: {
                 date,
                 lapTime: laptimeToMilliseconds(),
                 motorcycleId: motorcycle,

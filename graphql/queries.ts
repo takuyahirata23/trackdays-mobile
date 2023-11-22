@@ -92,11 +92,11 @@ export const TRACKDAYS = gql`
   }
 `
 
-export const TRACKDAYS_BY_MONTH = gql`
-  query getTrackdaysByMonth(
-    $getTrackdaysByMonthInput: GetTrackdaysByMonthInput!
+export const TRACKDAY_NOTES_BY_MONTH = gql`
+  query getTrackdayNotesByMonth(
+    $getTrackdayNotesByMonthInput: GetTrackdayNotesByMonthInput!
   ) {
-    trackdaysByMonth(getTrackdaysByMonthInput: $getTrackdaysByMonthInput) {
+    trackdayNotesByMonth(getTrackdayNotesByMonthInput: $getTrackdayNotesByMonthInput) {
       id
       date
       lapTime
@@ -118,9 +118,9 @@ export const TRACKDAYS_BY_MONTH = gql`
   }
 `
 
-export const TRACKDAY_QUERY = gql`
-  query getTrackday($id: ID!) {
-    trackday(id: $id) {
+export const TRACKDAY_NOTE = gql`
+  query getTrackdayNote($id: ID!) {
+    trackdayNote(id: $id) {
       id
       date
       lapTime

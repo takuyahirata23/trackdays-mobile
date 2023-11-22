@@ -15,8 +15,8 @@ export const MOTORCYCLE = gql`
   }
 `
 
-export const TRACKDAY = gql`
-  fragment NewTrackday on Trackdays {
+export const TRACKDAY_NOTE = gql`
+  fragment NewTrackdayNote on TrackdayNotes {
     id
     date
     track {

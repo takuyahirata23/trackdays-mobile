@@ -1,13 +1,13 @@
 import React from 'react'
 import { useNavigation } from 'expo-router'
-import { SafeAreaView, StyleSheet } from 'react-native'
+import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useQuery, useMutation } from '@apollo/client'
 import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 
 import { Button, Container, Card, Text, IconLabel } from '@components'
-import { TRACKDAY_QUERY } from '@graphql/queries'
-import { DELETE_TRACKDAY } from '@graphql/mutations'
+import { TRACKDAY_NOTE } from '@graphql/queries'
+import { DELETE_TRACKDAY_NOTE } from '@graphql/mutations'
 import { formatLapTime } from '@functions/lapTimeConverters'
 import { useTheme } from '@hooks/useTheme'
 
@@ -18,16 +18,16 @@ export default function TrackdayDetail() {
     colors: { primary }
   } = useTheme()
 
-  const { data, error, loading } = useQuery(TRACKDAY_QUERY, {
+  const { data, error, loading } = useQuery(TRACKDAY_NOTE, {
     variables: {
       id
     }
   })
 
-  const [deleteTrackday] = useMutation(DELETE_TRACKDAY, {
-    update(cache, { data: { deleteTrackday } }) {
+  const [deleteTrackdayNote] = useMutation(DELETE_TRACKDAY_NOTE, {
+    update(cache, { data: { deleteTrackdayNote } }) {
       // Remove delete trackday from cache
-      cache.evict({ id: cache.identify(deleteTrackday) })
+      cache.evict({ id: cache.identify(deleteTrackdayNote) })
       // Remove all of the unreachable cache
       cache.gc()
     },
@@ -48,12 +48,12 @@ export default function TrackdayDetail() {
     return null
   }
 
-  const { date, lapTime, note, track, motorcycle } = data.trackday
+  const { date, lapTime, note, track, motorcycle, id: trackdayId } = data.trackdayNote
 
   const handleDelete = () =>
-    deleteTrackday({
+    deleteTrackdayNote({
       variables: {
-        trackdayId: id
+        id: trackdayId
       }
     })
 
@@ -92,12 +92,14 @@ export default function TrackdayDetail() {
         </Card>
         {note && (
           <Card>
-            <Text>{note}</Text>
+          <Text>{note}</Text>
           </Card>
         )}
-        <Button variant="secondary" onPress={handleDelete}>
+        <View style={styles.btnWrapper}>
+        <Button variant="secondary" onPress={handleDelete} >
           Delete
         </Button>
+        </View>
       </Container>
     </SafeAreaView>
   )
@@ -113,5 +115,9 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontWeight: '500'
+  },
+  btnWrapper: {
+    marginTop: 'auto',
+    rowGap: 12
   }
 })

@@ -19,9 +19,9 @@ export const REGISTER_MOTORCYCLE = gql`
   }
 `
 
-export const SAVE_TRACKDAY = gql`
-  mutation saveTrackday($saveTrackdayInput: SaveTrackdayInput!) {
-    saveTrackday(saveTrackdayInput: $saveTrackdayInput) {
+export const SAVE_TRACKDAY_NOTE = gql`
+  mutation saveTrackdayNote($saveTrackdayNoteInput: SaveTrackdayNoteInput!) {
+    saveTrackdayNote(saveTrackdayNoteInput: $saveTrackdayNoteInput) {
       id
       date
       track {
@@ -47,9 +47,37 @@ export const SAVE_TRACKDAY = gql`
   }
 `
 
-export const DELETE_TRACKDAY = gql`
-  mutation deleteTrackday($trackdayId: ID!) {
-    deleteTrackday(trackdayId: $trackdayId) {
+export const UPDATE_TRACKDAY_NOTE = gql`
+  mutation updateTrackdayNote($updateTrackdayNoteInput: UpdateTrackdayNoteInput!) {
+    updateTrackdayNote(updateTrackdayNoteInput: $updateTrackdayNoteInput) {
+      id
+      date
+      track {
+        id
+        facility {
+          id
+          name
+        }
+      }
+      motorcycle {
+        id
+        year
+        model {
+          id
+          name
+          make {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`
+
+export const DELETE_TRACKDAY_NOTE = gql`
+  mutation deleteTrackdayNote($id: ID!) {
+    deleteTrackdayNote(id: $id) {
       id
     }
   }
