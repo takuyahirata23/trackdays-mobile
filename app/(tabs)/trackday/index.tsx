@@ -4,12 +4,13 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Calendar, DateData } from 'react-native-calendars'
 import { Link } from 'expo-router'
 
-import { TRACKDAY_NOTES_BY_MONTH, GET_MONTHLY_TRACKDY_DATA, TRACKDAYS_BY_MONTH } from '@graphql/queries'
+import { GET_MONTHLY_TRACKDY_DATA } from '@graphql/queries'
 import {
   Container,
   Text,
   Card,
   TrackdayLinkCard,
+  TrackdayNoteLinkCard,
   TrackdayAddCard
 } from '@components'
 import { useTheme } from '@hooks/useTheme'
@@ -24,21 +25,12 @@ const month = Number(dateArray[1])
 type Events = {
   selectedColor: string
   marked: boolean
-  selected: boolean,
+  selected: boolean
   dots: []
 }
 
 export default function TrackdayIndex() {
-  const d = useQuery(GET_MONTHLY_TRACKDY_DATA, {
-    variables: {
-      getEventsByMonthInput: {
-        year,
-        month
-      }
-    }
-  })
-
-  const { loading, data, error, refetch } = useQuery(TRACKDAY_NOTES_BY_MONTH, {
+  const { loading, data, error, refetch } = useQuery(GET_MONTHLY_TRACKDY_DATA, {
     variables: {
       getEventsByMonthInput: {
         year,
@@ -51,13 +43,21 @@ export default function TrackdayIndex() {
     colors: { btnBgSecondary }
   } = useTheme()
 
-  const [trackday, setTrackday] = React.useState(null)
+  const [targetNotes, setTargetNotes] = React.useState([])
+  const [targetTrackdays, setTargetTrackdays] = React.useState([])
 
   const [date, setDate] = React.useState(today)
 
   React.useEffect(() => {
-    if (date && data?.trackdayNotesByMonth) {
-      setTrackday(data.trackdayNotesByMonth.find((x: any) => x.date == date))
+    if (data?.trackdayNotesByMonth || data?.trackdaysByMonth) {
+      const notes = data.trackdayNotesByMonth.filter(
+        (x: TrackdayNote) => x.date == date
+      )
+      const trackdays = data.trackdaysByMonth.filter(
+        (x: Trackday) => x.date == date
+      )
+      setTargetNotes(notes)
+      setTargetTrackdays(trackdays)
     }
   }, [date, data])
 
@@ -65,7 +65,7 @@ export default function TrackdayIndex() {
     return null
   }
 
-  if (loading || d.loading) {
+  if (loading) {
     return (
       <Container>
         <Text>Loading</Text>
@@ -74,13 +74,13 @@ export default function TrackdayIndex() {
   }
 
   const keys: Record<string, object> = {
-    note: { key: 'note', color: 'blue'},
-    ["Trackday Ontario"]: { key: 'trackdaysOntario', color: 'red'},
-    ["Riders Ontario"]: { key: 'ridersOntario', color: 'yellow'}
+    note: { key: 'note', color: 'blue' },
+    ['Trackday Ontario']: { key: 'trackdaysOntario', color: 'red' },
+    ['Riders Ontario']: { key: 'ridersOntario', color: 'yellow' }
   }
 
   const events = data.trackdayNotesByMonth.reduce(
-     (acc: Events, x: TrackdayNote, i: number) => {
+    (acc: Events, x: TrackdayNote) => {
       return {
         ...acc,
         [x.date]: {
@@ -99,22 +99,18 @@ export default function TrackdayIndex() {
     }
   )
 
-
-  const trackdays = d.data.trackdaysByMonth.reduce((acc: Events, x: Trackday) => {
-     return {
-       ...acc,
-       [x.date]: {
-         // @ts-ignore
-         dots: [...acc[x.date]?.dots || [], keys[x.organization.name]],
-          selectedColor: btnBgSecondary,
-          marked: true,
-          selected: x.date === date
-       }
-     }
+  const trackdays = data.trackdaysByMonth.reduce((acc: Events, x: Trackday) => {
+    return {
+      ...acc,
+      [x.date]: {
+        // @ts-ignore
+        dots: [...(acc[x.date]?.dots || []), keys[x.organization.name]],
+        selectedColor: btnBgSecondary,
+        marked: true,
+        selected: x.date === date
+      }
+    }
   }, events)
-
-  console.log(trackdays['2023-11-26'])
-
 
   const onDayPress = (d: DateData) => setDate(d.dateString)
 
@@ -138,21 +134,23 @@ export default function TrackdayIndex() {
         />
       </Card>
       <View style={styles.contentWrapper}>
-        {trackday ? (
-          <TrackdayLinkCard {...trackday} />
-        ) : (
-          <Link
-            href={{
-              pathname: '/trackday/note',
-              params: { date }
-            }}
-            asChild
-          >
-            <TouchableOpacity>
-              <TrackdayAddCard />
-            </TouchableOpacity>
-          </Link>
-        )}
+        {targetNotes.map((note: TrackdayNote) => (
+          <TrackdayNoteLinkCard {...note} key={note.id} />
+        ))}
+        {targetTrackdays.map((trackday: Trackday) => (
+          <TrackdayLinkCard key={trackday.id} {...trackday} />
+        ))}
+        <Link
+          href={{
+            pathname: '/trackday/note',
+            params: { date }
+          }}
+          asChild
+        >
+          <TouchableOpacity>
+            <TrackdayAddCard />
+          </TouchableOpacity>
+        </Link>
       </View>
       <View style={styles.contentWrapper}></View>
     </Container>
@@ -161,6 +159,7 @@ export default function TrackdayIndex() {
 
 const styles = StyleSheet.create({
   contentWrapper: {
-    marginTop: 16
+    marginTop: 16,
+    rowGap: 8
   }
 })

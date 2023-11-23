@@ -8,4 +8,5 @@ export type Track = {
   id: string
   name: string
   length: number
+  facility: Facility
 }
