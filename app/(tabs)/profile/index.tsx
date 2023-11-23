@@ -8,9 +8,15 @@ import { AuthContext } from '@context/Auth'
 import { getToken } from '@utils/secureStore'
 import { useTheme } from '@hooks/useTheme'
 import { USER_QUERY, BEST_LAP_FOR_EACH_TRACK } from '@graphql/queries'
-import { Card, Text, Container, TrackdayLinkCard, Button } from '@components'
+import {
+  Card,
+  Text,
+  Container,
+  TrackdayNoteLinkCard,
+  Button
+} from '@components'
 
-import type { Trackday } from '@type/event'
+import type { TrackdayNote } from '@type/event'
 
 const pickImage = (callback: (_x: string) => void) => () => {
   ImagePicker.launchImageLibraryAsync({
@@ -130,9 +136,11 @@ export default function ProfileIndex() {
       </Card>
       <Card heading="Personal Bests">
         <View style={styles.personalBestWrapper}>
-          {bestLapsRes.data?.bestLapForEachTrack.map((trackday: Trackday) => (
-            <TrackdayLinkCard key={trackday.id} {...trackday} />
-          ))}
+          {bestLapsRes.data?.bestLapForEachTrack.map(
+            (trackday: TrackdayNote) => (
+              <TrackdayNoteLinkCard key={trackday.id} {...trackday} />
+            )
+          )}
         </View>
       </Card>
       <Button onPress={handleSignOut}>Sign Out</Button>

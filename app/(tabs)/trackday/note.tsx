@@ -13,13 +13,7 @@ import {
 } from '@graphql/queries'
 import { SAVE_TRACKDAY_NOTE } from 'graphql/mutations'
 import { TRACKDAY_NOTE } from 'graphql/fragments'
-import {
-  Button,
-  Card,
-  Field,
-  Text,
-  Container,
-} from '@components'
+import { Button, Card, Field, Text, Container } from '@components'
 import {
   minutesToMilliseconds,
   secondsToMilliseconds
@@ -292,7 +286,7 @@ export default function CreateTrackdayNote() {
                 multiline
                 blurOnSubmit
                 onSubmitEditing={() => Keyboard.dismiss()}
-                returnKeyType='done'
+                returnKeyType="done"
               />
             </Card>
           )}

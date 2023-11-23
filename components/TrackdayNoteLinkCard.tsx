@@ -11,7 +11,12 @@ import { useTheme } from '@hooks/useTheme'
 
 import type { TrackdayNote } from '@type/event'
 
-export function TrackdayNoteLinkCard({ id, track, lapTime, motorcycle }: TrackdayNote) {
+export function TrackdayNoteLinkCard({
+  id,
+  track,
+  lapTime,
+  motorcycle
+}: TrackdayNote) {
   const {
     colors: { primary }
   } = useTheme()

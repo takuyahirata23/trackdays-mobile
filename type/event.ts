@@ -22,6 +22,6 @@ export type Trackday = {
   id: string
   date: string
   price: number
-  organization: Organization,
+  organization: Organization
   track: Track
 }
