@@ -1,6 +1,7 @@
 export { Button } from './Button'
 export { Card } from './Card'
 export { Container } from './Container'
+export { ExternalLink } from './ExternalLink'
 export { Field } from './Field'
 export { IconLabel } from './IconLabel'
 export { KeyboardAvoidingView } from './KeyboardAvoidingView'
