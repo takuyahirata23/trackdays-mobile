@@ -1,6 +1,8 @@
 import type { Motorcycle } from './vehicle'
+import type { Organization } from './business'
+import type { Track } from './park'
 
-export type Trackday = {
+export type TrackdayNote = {
   id: string
   date: string
   lapTime?: number
@@ -14,4 +16,12 @@ export type Trackday = {
     }
   }
   motorcycle: Motorcycle
+}
+
+export type Trackday = {
+  id: string
+  date: string
+  price: number
+  organization: Organization,
+  track: Track
 }

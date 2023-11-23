@@ -94,9 +94,9 @@ export const TRACKDAYS = gql`
 
 export const TRACKDAY_NOTES_BY_MONTH = gql`
   query getTrackdayNotesByMonth(
-    $getTrackdayNotesByMonthInput: GetTrackdayNotesByMonthInput!
+    $getEventsByMonthInput: GetEventsByMonthInput!
   ) {
-    trackdayNotesByMonth(getTrackdayNotesByMonthInput: $getTrackdayNotesByMonthInput) {
+    trackdayNotesByMonth(getEventsByMonthInput: $getEventsByMonthInput) {
       id
       date
       lapTime
@@ -165,6 +165,71 @@ export const BEST_LAP_FOR_EACH_TRACK = gql`
       motorcycle {
         id
         model {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const TRACKDAYS_BY_MONTH = gql`
+  query getTrackdaysByMonth($getEventsByMonthInput: GetEventsByMonthInput!) {
+    trackdaysByMonth(getEventsByMonthInput: $getEventsByMonthInput) {
+      id
+      date
+      price
+      organization {
+        id
+        name
+        trackdaysRegistrationUrl
+      }
+      track {
+        id
+        name
+        facility {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const GET_MONTHLY_TRACKDY_DATA = gql`
+  query getMonthlyTrackdayData($getEventsByMonthInput: GetEventsByMonthInput!) {
+    trackdaysByMonth(getEventsByMonthInput: $getEventsByMonthInput) {
+      id
+      date
+      price
+      organization {
+        id
+        name
+        trackdaysRegistrationUrl
+      }
+      track {
+        id
+        facility {
+          id
+          name
+        }
+      }
+    }
+
+    trackdayNotesByMonth(getEventsByMonthInput: $getEventsByMonthInput) {
+      id
+      date
+      lapTime
+      motorcycle {
+        id
+        model {
+          id
+          name
+        }
+      }
+      track {
+        id
+        facility {
           id
           name
         }
