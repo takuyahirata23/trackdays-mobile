@@ -48,7 +48,9 @@ export const SAVE_TRACKDAY_NOTE = gql`
 `
 
 export const UPDATE_TRACKDAY_NOTE = gql`
-  mutation updateTrackdayNote($updateTrackdayNoteInput: UpdateTrackdayNoteInput!) {
+  mutation updateTrackdayNote(
+    $updateTrackdayNoteInput: UpdateTrackdayNoteInput!
+  ) {
     updateTrackdayNote(updateTrackdayNoteInput: $updateTrackdayNoteInput) {
       id
       date

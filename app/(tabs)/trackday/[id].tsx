@@ -48,7 +48,14 @@ export default function TrackdayDetail() {
     return null
   }
 
-  const { date, lapTime, note, track, motorcycle, id: trackdayId } = data.trackdayNote
+  const {
+    date,
+    lapTime,
+    note,
+    track,
+    motorcycle,
+    id: trackdayId
+  } = data.trackdayNote
 
   const handleDelete = () =>
     deleteTrackdayNote({
@@ -92,13 +99,13 @@ export default function TrackdayDetail() {
         </Card>
         {note && (
           <Card>
-          <Text>{note}</Text>
+            <Text>{note}</Text>
           </Card>
         )}
         <View style={styles.btnWrapper}>
-        <Button variant="secondary" onPress={handleDelete} >
-          Delete
-        </Button>
+          <Button variant="secondary" onPress={handleDelete}>
+            Delete
+          </Button>
         </View>
       </Container>
     </SafeAreaView>
