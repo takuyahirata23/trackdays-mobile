@@ -6,4 +6,5 @@ export const secondsToMilliseconds = (seconds: number) => seconds * 1000
 export const formatLapTime = (lapTimeInMilliseconds: number) =>
   `${millisecondsToMinute(lapTimeInMilliseconds).toFixed(
     0
-  )}:${millisecondsToSeconds(lapTimeInMilliseconds).toFixed(3)}`
+  )}:${millisecondsToSeconds(lapTimeInMilliseconds).toFixed(3).replace('.', ':')}`
+  
