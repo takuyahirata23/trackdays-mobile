@@ -296,7 +296,7 @@ export default function CreateTrackdayNote() {
             </Button>
             {currentStep !== SaveTrackdaySteps.Facility && (
               <Button
-              // @ts-ignore
+                // @ts-ignore
                 onPress={() => setCurrentStep(goBackToPreviousStep)}
                 variant="secondary"
               >
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8
   },
   pickerWrapper: {
-    width: '100%',
+    width: '100%'
   },
   note: {
     height: 100

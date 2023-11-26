@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
 import { ApolloProvider } from '@apollo/client'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { useProtectRoute } from '@hooks/useProtectRoute'
 import { client } from '@graphql/client'
@@ -74,7 +75,7 @@ function RootLayoutNav({ user, setUser }: { user: null | User; setUser: any }) {
   useProtectRoute(user)
 
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
         <AuthProvider setUser={setUser}>
           <ApolloProvider client={client}>
@@ -86,6 +87,6 @@ function RootLayoutNav({ user, setUser }: { user: null | User; setUser: any }) {
           </ApolloProvider>
         </AuthProvider>
       </ThemeProvider>
-    </>
+    </GestureHandlerRootView>
   )
 }

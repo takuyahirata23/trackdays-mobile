@@ -22,7 +22,8 @@ module.exports = function (api) {
             '@functions': './functions'
           }
         }
-      ]
+      ],
+      'react-native-reanimated/plugin'
     ]
   }
 }
