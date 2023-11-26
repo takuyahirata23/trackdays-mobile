@@ -36,16 +36,16 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      initialRouteName="/motorcycle"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="motorcycle"
         options={{
           title: 'Motorcycle',
-          headerShown: true,
           tabBarIcon: ({ color }) => (
             <TabIcons
               variant="materialCommunity"
