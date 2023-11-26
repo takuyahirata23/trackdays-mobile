@@ -211,7 +211,7 @@ export default function RegisterMotorcycle() {
 
 const styles = StyleSheet.create({
   container: {
-    rowGap: 16,
+    rowGap: 12,
     paddingBottom: 20
   },
   fieldWrapper: {

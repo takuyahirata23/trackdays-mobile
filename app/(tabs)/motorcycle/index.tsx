@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useQuery } from '@apollo/client'
 import { Link } from 'expo-router'
 
-import { Container, Card, LableView } from '@components'
+import { Container, Card, LableView, Text } from '@components'
 import { MOTORCYCLES_QUERY } from '@graphql/queries'
 
 import type { Motorcycle } from '@type/vehicle'
@@ -29,9 +29,11 @@ export default function Motorcycles() {
           />
         </Card>
       ))}
+      <View style={styles.linkWrapper}>
       <Link href={{ pathname: '/motorcycle/register-motorcycle' }}>
-        Register
+        <Text style={styles.linkText}>Register motorcycle</Text>
       </Link>
+      </View>
     </Container>
   )
 }
@@ -39,5 +41,13 @@ export default function Motorcycles() {
 const styles = StyleSheet.create({
   container: {
     rowGap: 8
+  },
+  linkWrapper: {
+   marginTop: 8
+  },
+  linkText: {
+    textAlign: 'center',
+    fontWeight: '500',
+    fontSize: 18
   }
 })
