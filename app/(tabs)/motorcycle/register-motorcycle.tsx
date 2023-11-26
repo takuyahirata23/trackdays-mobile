@@ -5,7 +5,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { Picker } from '@react-native-picker/picker'
 import { useNavigation } from 'expo-router'
 
-import { Card, Container, Text, Button } from '@components'
+import { Card, Container, Text, Button, BottomSheetHandle } from '@components'
 import { MOTORCYCLE } from 'graphql/fragments'
 import { REGISTER_MOTORCYCLE } from '@graphql/mutations'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
@@ -14,16 +14,6 @@ import { motorcycleValidations } from 'functions/validations'
 import type { Motorcycle, Make, Model } from '@type/vehicle'
 
 type Fields = 'make' | 'model' | 'year' | null
-
-const BottomSheetHandle = ({ onDone }: { onDone: () => void }) => {
-  return (
-    <View>
-      <TouchableOpacity onPress={onDone}>
-        <Text>Done</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
 
 const thisYear = new Date().getFullYear()
 
@@ -159,12 +149,12 @@ export default function RegisterMotorcycle() {
       <BottomSheet
         ref={ref}
         snapPoints={['40%']}
-        keyboardBehavior="fillParent"
         handleComponent={() => (
           <BottomSheetHandle
-            onDone={
+            onPressRight={
               bottomSheetField ? handlers[bottomSheetField] : () => undefined
             }
+            rightText="Next"
           />
         )}
       >
