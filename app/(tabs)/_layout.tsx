@@ -1,19 +1,10 @@
-/* eslint-disable */
 import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
-import Ion from '@expo/vector-icons/Ionicons'
-import { Link, Tabs } from 'expo-router'
-import { Pressable, useColorScheme } from 'react-native'
+import { Tabs } from 'expo-router'
+import { useColorScheme } from 'react-native'
 
 import Colors from '../../constants/Colors'
-
-// function FontAwesomeTabBarIcon(props: {
-//   name: React.ComponentProps<typeof FontAwesome>['name']
-//   color: string
-// }) {
-//   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />
-// }
 
 const icon: { [key: string]: any } = {
   fontAwesome: FontAwesome,
@@ -43,6 +34,12 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
+        name="index"
+        options={{
+          href: null
+        }}
+      />
+      <Tabs.Screen
         name="motorcycle"
         options={{
           title: 'Motorcycle',
@@ -52,26 +49,6 @@ export default function TabLayout() {
               name="motorbike"
               color={color}
             />
-          ),
-          headerRight: () => (
-            <Link
-              href={{
-                pathname: '/modal',
-                params: { name: 'registerMotorcycle' }
-              }}
-              asChild
-            >
-              <Pressable>
-                {({ pressed }) => (
-                  <Ion
-                    name="add-circle-outline"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
           )
         }}
       />
@@ -85,26 +62,6 @@ export default function TabLayout() {
               name="go-kart-track"
               color={color}
             />
-          ),
-          headerRight: () => (
-            <Link
-              href={{
-                pathname: '/modal',
-                params: { name: 'saveTrackday' }
-              }}
-              asChild
-            >
-              <Pressable>
-                {({ pressed }) => (
-                  <Ion
-                    name="add-circle-outline"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
           )
         }}
       />

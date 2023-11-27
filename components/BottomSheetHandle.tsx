@@ -23,7 +23,10 @@ export function BottomSheetHandle({
           <Text style={styles.text}>{leftText}</Text>
         </TouchableOpacity>
       )}
-      <TouchableOpacity onPress={onPressRight} style={[styles.btn, styles.rightBtn]}>
+      <TouchableOpacity
+        onPress={onPressRight}
+        style={[styles.btn, styles.rightBtn]}
+      >
         <Text style={styles.text}>{rightText}</Text>
       </TouchableOpacity>
     </View>

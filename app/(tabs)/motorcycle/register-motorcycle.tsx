@@ -144,7 +144,9 @@ export default function RegisterMotorcycle() {
         </Card>
       </TouchableOpacity>
       <View style={styles.btnWrapper}>
-        <Button onPress={onSubmit} disabled={!filled}>Register</Button>
+        <Button onPress={onSubmit} disabled={!filled}>
+          Register
+        </Button>
       </View>
       <BottomSheet
         ref={ref}

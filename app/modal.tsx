@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { useSearchParams, useNavigation } from 'expo-router'
 
 import { Container, KeyboardAvoidingView } from '@components'
-import {  Settings } from '@components/modalContents'
+import { Settings } from '@components/modalContents'
 
 const titleMap: { [key: string]: string } = {
   settings: 'Settings'

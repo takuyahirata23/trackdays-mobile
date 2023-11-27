@@ -30,9 +30,9 @@ export default function Motorcycles() {
         </Card>
       ))}
       <View style={styles.linkWrapper}>
-      <Link href={{ pathname: '/motorcycle/register-motorcycle' }}>
-        <Text style={styles.linkText}>Register motorcycle</Text>
-      </Link>
+        <Link href={{ pathname: '/motorcycle/register-motorcycle' }}>
+          <Text style={styles.linkText}>Register motorcycle</Text>
+        </Link>
       </View>
     </Container>
   )
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     rowGap: 8
   },
   linkWrapper: {
-   marginTop: 8
+    marginTop: 8
   },
   linkText: {
     textAlign: 'center',
