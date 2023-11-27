@@ -190,7 +190,8 @@ export default function CreateTrackdayNote() {
               </Card>
               <Card>
                 <Text>
-                  Facility: {getName(facilityRes.data?.facilities || [])(facility)}
+                  Facility:{' '}
+                  {getName(facilityRes.data?.facilities || [])(facility)}
                 </Text>
               </Card>
               <Card>
