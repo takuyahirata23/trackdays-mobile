@@ -143,7 +143,7 @@ export default function TrackdayIndex() {
           ))}
           <Link
             href={{
-              pathname: '/trackday/note',
+              pathname: '/trackday/create-trackday-note',
               params: { date }
             }}
             asChild
