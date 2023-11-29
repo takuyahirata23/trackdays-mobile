@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Keyboard } from 'react-native'
+import { View, StyleSheet, Keyboard, TouchableOpacity } from 'react-native'
 import { useNavigation } from 'expo-router'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
@@ -30,6 +30,7 @@ import {
 
 import type { Motorcycle } from '@type/vehicle'
 import type { Facility, Track } from '@type/park'
+import bottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet'
 
 enum SaveTrackdaySteps {
   Facility,
@@ -125,8 +126,18 @@ export default function CreateTrackdayNote() {
     secondsToMilliseconds(Number(seconds)) +
     Number(milliseconds)
 
-  const handleOnChange = (field: string) => (value: string) =>
-    setFields(prev => ({ ...prev, [field]: value }))
+  const handleOnChange = (field: string) => (value: string) => {
+    if(field === 'facility') {
+      setFields(prev => ({ ...prev, [field]: value, track: '' }))
+    } else {
+      setFields(prev => ({ ...prev, [field]: value }))
+    }
+  }
+
+  const handleCurrentStepChange = (step: SaveTrackdaySteps) => () => {
+    setCurrentStep(step)
+    bottomSheetRef.current?.expand()
+  }
 
   const onPressHandlers = () => {
     switch (currentStep) {
@@ -188,17 +199,22 @@ export default function CreateTrackdayNote() {
               <Card>
                 <Text>Date: {date}</Text>
               </Card>
+              <TouchableOpacity onPress={handleCurrentStepChange(SaveTrackdaySteps.Facility)}>
               <Card>
                 <Text>
                   Facility:{' '}
                   {getName(facilityRes.data?.facilities || [])(facility)}
                 </Text>
               </Card>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleCurrentStepChange(SaveTrackdaySteps.Track)}>
               <Card>
                 <Text>
                   Track: {getName(tracksRes.data?.tracks || [])(track)}
                 </Text>
               </Card>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleCurrentStepChange(SaveTrackdaySteps.Motorcycle)}>
               <Card>
                 <Text>
                   Motorcycle:{' '}
@@ -207,6 +223,7 @@ export default function CreateTrackdayNote() {
                   )}
                 </Text>
               </Card>
+              </TouchableOpacity>
               {currentStep === SaveTrackdaySteps.Laptime ? (
                 <Card>
                   <View style={styles.laptimeWrapper}>
@@ -249,12 +266,14 @@ export default function CreateTrackdayNote() {
                   </View>
                 </Card>
               ) : (
+              <TouchableOpacity onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}>
                 <Card>
                   <Text>
                     Best lap time: {minutes || '00'}:{seconds || '00'}:
                     {milliseconds || '000'}
                   </Text>
                 </Card>
+              </TouchableOpacity>
               )}
               {currentStep === SaveTrackdaySteps.Note ? (
                 <Card>
@@ -274,9 +293,11 @@ export default function CreateTrackdayNote() {
                   />
                 </Card>
               ) : (
+              <TouchableOpacity onPress={() => setCurrentStep(SaveTrackdaySteps.Note)}>
                 <Card>
                   <Text>Note: {note}</Text>
                 </Card>
+              </TouchableOpacity>
               )}
               <View style={styles.btnWrapper}>
                 <Button onPress={handleSubmit}>Save</Button>
@@ -285,6 +306,7 @@ export default function CreateTrackdayNote() {
           </KeyboardAvoidingView>
           <BottomSheet
             ref={bottomSheetRef}
+            enablePanDownToClose
             snapPoints={['40%']}
             handleComponent={() => (
               <BottomSheetHandle
