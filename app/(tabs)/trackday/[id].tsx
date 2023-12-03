@@ -1,114 +1,40 @@
 import React from 'react'
-import { useNavigation } from 'expo-router'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
-import { useQuery, useMutation } from '@apollo/client'
-import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
+import { useQuery } from '@apollo/client'
+import { StyleSheet } from 'react-native'
 
-import { Button, Container, Card, Text, IconLabel } from '@components'
-import { TRACKDAY_NOTE } from '@graphql/queries'
-import { DELETE_TRACKDAY_NOTE } from '@graphql/mutations'
-import { formatLapTime } from '@functions/lapTimeConverters'
-import { useTheme } from '@hooks/useTheme'
+import { TRACKDAY } from '@graphql/queries'
+
+import { Container, Text, Card, IconLabel } from '@components'
 
 export default function TrackdayDetail() {
   const { id } = useLocalSearchParams()
-  const { goBack } = useNavigation()
   const {
-    colors: { primary }
-  } = useTheme()
-
-  const { data, error, loading } = useQuery(TRACKDAY_NOTE, {
+    data = {},
+    loading,
+    error
+  } = useQuery(TRACKDAY, {
     variables: {
       id
     }
   })
 
-  const [deleteTrackdayNote] = useMutation(DELETE_TRACKDAY_NOTE, {
-    update(cache, { data: { deleteTrackdayNote } }) {
-      // Remove delete trackday from cache
-      cache.evict({ id: cache.identify(deleteTrackdayNote) })
-      // Remove all of the unreachable cache
-      cache.gc()
-    },
-    onError(e) {
-      console.log(e)
-    },
-    onCompleted() {
-      goBack()
-    }
-  })
+  console.log(error)
 
-  if (loading) {
+  if (loading || error) {
     return null
   }
 
-  if (error) {
-    console.error(error)
-    return null
-  }
+  const { date } = data.trackday
 
-  const {
-    date,
-    lapTime,
-    note,
-    track,
-    motorcycle,
-    id: trackdayId
-  } = data.trackdayNote
-
-  const handleDelete = () =>
-    deleteTrackdayNote({
-      variables: {
-        id: trackdayId
-      }
-    })
+  console.log(data)
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Container style={styles.container}>
-        <Card style={styles.card}>
-          <Text style={styles.heading}>{track.facility.name}</Text>
-          <Text>{track.name}</Text>
-        </Card>
-        <Card>
-          <IconLabel
-            icon={
-              <MaterialCommunity
-                name="calendar-today"
-                size={24}
-                color={primary}
-              />
-            }
-            label={date}
-          />
-        </Card>
-        <Card>
-          <IconLabel
-            icon={
-              <MaterialCommunity name="motorbike" size={24} color={primary} />
-            }
-            label={`${motorcycle.model.make.name} ${motorcycle.model.name}(${motorcycle.year})`}
-          />
-        </Card>
-        <Card>
-          <IconLabel
-            icon={<MaterialCommunity name="timer" size={24} color={primary} />}
-            label={formatLapTime(lapTime)}
-          />
-        </Card>
-        {note && (
-          <Card>
-            <Text>{note}</Text>
-          </Card>
-        )}
-        <View style={styles.btnWrapper}>
-          <Button variant="secondary" onPress={handleDelete}>
-            Delete
-          </Button>
-        </View>
-      </Container>
-    </SafeAreaView>
+    <Container style={styles.container}>
+      <Card>
+        <IconLabel name="timer" label={date} />
+      </Card>
+    </Container>
   )
 }
 
@@ -119,12 +45,5 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'column',
     rowGap: 8
-  },
-  heading: {
-    fontWeight: '500'
-  },
-  btnWrapper: {
-    marginTop: 'auto',
-    rowGap: 12
   }
 })

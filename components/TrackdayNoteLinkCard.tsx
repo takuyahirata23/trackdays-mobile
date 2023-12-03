@@ -1,13 +1,11 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Link } from 'expo-router'
-import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 
 import { Card } from './Card'
 import { IconLabel } from './IconLabel'
 import { Text } from './Text'
 import { formatLapTime } from '@functions/lapTimeConverters'
-import { useTheme } from '@hooks/useTheme'
 
 import type { TrackdayNote } from '@type/event'
 
@@ -17,14 +15,10 @@ export function TrackdayNoteLinkCard({
   lapTime,
   motorcycle
 }: TrackdayNote) {
-  const {
-    colors: { primary }
-  } = useTheme()
-
   return (
     <Link
       href={{
-        pathname: '/trackday/[id]',
+        pathname: '/trackday/notes/[id]',
         params: { id }
       }}
       asChild
@@ -33,26 +27,16 @@ export function TrackdayNoteLinkCard({
         <Card>
           <Text style={styles.cardTitle}>{track.facility.name}</Text>
           <View style={styles.cardDetail}>
-            <Card variant="secondary">
-              <IconLabel
-                icon={
-                  <MaterialCommunity
-                    name="motorbike"
-                    size={24}
-                    color={primary}
-                  />
-                }
-                label={motorcycle.model.name}
-              />
-            </Card>
-            <Card variant="secondary">
-              <IconLabel
-                icon={
-                  <MaterialCommunity name="timer" size={24} color={primary} />
-                }
-                label={formatLapTime(Number(lapTime))}
-              />
-            </Card>
+            <IconLabel
+              name="motorbike"
+              label={motorcycle.model.name}
+              variant="secondary"
+            />
+            <IconLabel
+              name="timer"
+              label={formatLapTime(Number(lapTime))}
+              variant="secondary"
+            />
           </View>
         </Card>
       </TouchableOpacity>

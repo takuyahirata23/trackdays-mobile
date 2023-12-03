@@ -127,7 +127,7 @@ export default function CreateTrackdayNote() {
     Number(milliseconds)
 
   const handleOnChange = (field: string) => (value: string) => {
-    if(field === 'facility') {
+    if (field === 'facility') {
       setFields(prev => ({ ...prev, [field]: value, track: '' }))
     } else {
       setFields(prev => ({ ...prev, [field]: value }))
@@ -199,30 +199,36 @@ export default function CreateTrackdayNote() {
               <Card>
                 <Text>Date: {date}</Text>
               </Card>
-              <TouchableOpacity onPress={handleCurrentStepChange(SaveTrackdaySteps.Facility)}>
-              <Card>
-                <Text>
-                  Facility:{' '}
-                  {getName(facilityRes.data?.facilities || [])(facility)}
-                </Text>
-              </Card>
+              <TouchableOpacity
+                onPress={handleCurrentStepChange(SaveTrackdaySteps.Facility)}
+              >
+                <Card>
+                  <Text>
+                    Facility:{' '}
+                    {getName(facilityRes.data?.facilities || [])(facility)}
+                  </Text>
+                </Card>
               </TouchableOpacity>
-              <TouchableOpacity onPress={handleCurrentStepChange(SaveTrackdaySteps.Track)}>
-              <Card>
-                <Text>
-                  Track: {getName(tracksRes.data?.tracks || [])(track)}
-                </Text>
-              </Card>
+              <TouchableOpacity
+                onPress={handleCurrentStepChange(SaveTrackdaySteps.Track)}
+              >
+                <Card>
+                  <Text>
+                    Track: {getName(tracksRes.data?.tracks || [])(track)}
+                  </Text>
+                </Card>
               </TouchableOpacity>
-              <TouchableOpacity onPress={handleCurrentStepChange(SaveTrackdaySteps.Motorcycle)}>
-              <Card>
-                <Text>
-                  Motorcycle:{' '}
-                  {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
-                    motorcycle
-                  )}
-                </Text>
-              </Card>
+              <TouchableOpacity
+                onPress={handleCurrentStepChange(SaveTrackdaySteps.Motorcycle)}
+              >
+                <Card>
+                  <Text>
+                    Motorcycle:{' '}
+                    {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
+                      motorcycle
+                    )}
+                  </Text>
+                </Card>
               </TouchableOpacity>
               {currentStep === SaveTrackdaySteps.Laptime ? (
                 <Card>
@@ -266,14 +272,16 @@ export default function CreateTrackdayNote() {
                   </View>
                 </Card>
               ) : (
-              <TouchableOpacity onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}>
-                <Card>
-                  <Text>
-                    Best lap time: {minutes || '00'}:{seconds || '00'}:
-                    {milliseconds || '000'}
-                  </Text>
-                </Card>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}
+                >
+                  <Card>
+                    <Text>
+                      Best lap time: {minutes || '00'}:{seconds || '00'}:
+                      {milliseconds || '000'}
+                    </Text>
+                  </Card>
+                </TouchableOpacity>
               )}
               {currentStep === SaveTrackdaySteps.Note ? (
                 <Card>
@@ -293,11 +301,13 @@ export default function CreateTrackdayNote() {
                   />
                 </Card>
               ) : (
-              <TouchableOpacity onPress={() => setCurrentStep(SaveTrackdaySteps.Note)}>
-                <Card>
-                  <Text>Note: {note}</Text>
-                </Card>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => setCurrentStep(SaveTrackdaySteps.Note)}
+                >
+                  <Card>
+                    <Text>Note: {note}</Text>
+                  </Card>
+                </TouchableOpacity>
               )}
               <View style={styles.btnWrapper}>
                 <Button onPress={handleSubmit}>Save</Button>

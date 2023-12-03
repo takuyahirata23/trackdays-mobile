@@ -4,7 +4,7 @@ import { View, ViewProps, StyleSheet } from 'react-native'
 import { Text } from './Text'
 import { useTheme } from '@hooks/useTheme'
 
-type Props = {
+export type Props = {
   variant?: 'primary' | 'secondary'
   heading?: string
 } & ViewProps

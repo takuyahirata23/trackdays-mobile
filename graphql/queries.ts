@@ -196,6 +196,30 @@ export const TRACKDAYS_BY_MONTH = gql`
   }
 `
 
+export const TRACKDAY = gql`
+  query getTrackday($id: ID!) {
+    trackday(id: $id) {
+      id
+      date
+      price
+      description
+      organization {
+        id
+        name
+        trackdaysRegistrationUrl
+      }
+      track {
+        id
+        name
+        facility {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
 export const GET_MONTHLY_TRACKDY_DATA = gql`
   query getMonthlyTrackdayData($getEventsByMonthInput: GetEventsByMonthInput!) {
     trackdaysByMonth(getEventsByMonthInput: $getEventsByMonthInput) {

@@ -76,7 +76,8 @@ export default function TrackdayIndex() {
   const keys: Record<string, object> = {
     note: { key: 'note', color: 'blue' },
     ['Trackday Ontario']: { key: 'trackdaysOntario', color: 'red' },
-    ['Riders Ontario']: { key: 'ridersOntario', color: 'yellow' }
+    ['Riders Ontario']: { key: 'ridersOntario', color: 'yellow' },
+    ['Lean Angle Motorsports']: { key: 'leanAngleMotorsports', color: 'black' }
   }
 
   const events = data.trackdayNotesByMonth.reduce(
