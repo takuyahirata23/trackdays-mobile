@@ -8,7 +8,6 @@ import { Card } from './Card'
 import { IconLabel } from './IconLabel'
 import { Text } from './Text'
 import { useTheme } from '@hooks/useTheme'
-import { ExternalLink } from './ExternalLink'
 
 import type { Trackday } from '@type/event'
 
@@ -29,20 +28,16 @@ export function TrackdayLinkCard({ id, track, price, organization }: Trackday) {
         <Card>
           <Text style={styles.cardTitle}>{track.facility.name}</Text>
           <View style={styles.cardDetail}>
-            <Card variant="secondary">
-              <IconLabel
-                icon={
-                  <Octicons name="organization" size={24} color={primary} />
-                }
-                label={organization.name}
-              />
-            </Card>
-            <Card variant="secondary">
-              <IconLabel
-                icon={<FontAwesome name="dollar" size={24} color={primary} />}
-                label={String(price)}
-              />
-            </Card>
+            <IconLabel
+              variant="secondary"
+              icon={<Octicons name="organization" size={24} color={primary} />}
+              label={organization.name}
+            />
+            <IconLabel
+              variant="secondary"
+              icon={<FontAwesome name="dollar" size={24} color={primary} />}
+              label={String(price)}
+            />
           </View>
         </Card>
       </TouchableOpacity>

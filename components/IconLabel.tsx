@@ -1,25 +1,20 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 
 import { Card, Props as CardProps } from './Card'
 import { Text } from './Text'
-import { useTheme } from '../hooks/useTheme'
 
 type Props = {
   label: string
-  name: keyof typeof MaterialCommunity.glyphMap
+  icon: React.ReactNode
   variant?: CardProps['variant']
 }
 
-export function IconLabel({ name, label, variant = 'primary' }: Props) {
-  const {
-    colors: { primary }
-  } = useTheme()
-
+export function IconLabel({ icon, label, variant = 'primary' }: Props) {
+  console.log(icon)
   return (
     <Card style={styles.wrapper} variant={variant}>
-      <MaterialCommunity name={name} size={24} color={primary} />
+      {icon}
       <Text>{label}</Text>
     </Card>
   )
