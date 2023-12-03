@@ -44,7 +44,6 @@ export function TrackdayLinkCard({ id, track, price, organization }: Trackday) {
     </Link>
   )
 }
-//<ExternalLink href={organization.trackdaysRegistrationUrl || ''} asChild>
 
 const styles = StyleSheet.create({
   cardTitle: {

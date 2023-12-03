@@ -233,6 +233,7 @@ export const GET_MONTHLY_TRACKDY_DATA = gql`
       }
       track {
         id
+        name
         facility {
           id
           name

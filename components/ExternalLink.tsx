@@ -1,8 +1,9 @@
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
 import { Link } from 'expo-router'
 import * as WebBrowser from 'expo-web-browser'
 import { Platform } from 'react-native'
+
+import { Button } from './Button'
 
 export function ExternalLink(props: React.ComponentProps<typeof Link>) {
   return (
@@ -21,7 +22,7 @@ export function ExternalLink(props: React.ComponentProps<typeof Link>) {
         }
       }}
     >
-      <TouchableOpacity>{props.children}</TouchableOpacity>
+      <Button>{props.children}</Button>
     </Link>
   )
 }

@@ -71,26 +71,26 @@ export default function TrackdayDetail() {
           <Text style={styles.heading}>{track.facility.name}</Text>
           <Text>{track.name}</Text>
         </Card>
-          <IconLabel
-            icon={
-              <MaterialCommunity
-                name="calendar-today"
-                size={24}
-                color={primary}
-              />
-            }
-            label={date}
-          />
-          <IconLabel
-            icon={
-              <MaterialCommunity name="motorbike" size={24} color={primary} />
-            }
-            label={`${motorcycle.model.make.name} ${motorcycle.model.name}(${motorcycle.year})`}
-          />
-          <IconLabel
-            icon={<MaterialCommunity name="timer" size={24} color={primary} />}
-            label={formatLapTime(lapTime)}
-          />
+        <IconLabel
+          icon={
+            <MaterialCommunity
+              name="calendar-today"
+              size={24}
+              color={primary}
+            />
+          }
+          label={date}
+        />
+        <IconLabel
+          icon={
+            <MaterialCommunity name="motorbike" size={24} color={primary} />
+          }
+          label={`${motorcycle.model.make.name} ${motorcycle.model.name}(${motorcycle.year})`}
+        />
+        <IconLabel
+          icon={<MaterialCommunity name="timer" size={24} color={primary} />}
+          label={formatLapTime(lapTime)}
+        />
         {note && (
           <Card>
             <Text>{note}</Text>

@@ -33,24 +33,20 @@ export function TrackdayNoteLinkCard({
         <Card>
           <Text style={styles.cardTitle}>{track.facility.name}</Text>
           <View style={styles.cardDetail}>
-              <IconLabel
-                icon={
-                  <MaterialCommunity
-                    name="motorbike"
-                    size={24}
-                    color={primary}
-                  />
-                }
-                label={motorcycle.model.name}
-                variant="secondary"
-              />
-              <IconLabel
-                icon={
-                  <MaterialCommunity name="timer" size={24} color={primary} />
-                }
-                label={formatLapTime(Number(lapTime))}
-                variant="secondary"
-              />
+            <IconLabel
+              icon={
+                <MaterialCommunity name="motorbike" size={24} color={primary} />
+              }
+              label={motorcycle.model.name}
+              variant="secondary"
+            />
+            <IconLabel
+              icon={
+                <MaterialCommunity name="timer" size={24} color={primary} />
+              }
+              label={formatLapTime(Number(lapTime))}
+              variant="secondary"
+            />
           </View>
         </Card>
       </TouchableOpacity>

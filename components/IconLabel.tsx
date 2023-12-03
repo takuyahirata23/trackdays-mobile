@@ -11,7 +11,6 @@ type Props = {
 }
 
 export function IconLabel({ icon, label, variant = 'primary' }: Props) {
-  console.log(icon)
   return (
     <Card style={styles.wrapper} variant={variant}>
       {icon}
