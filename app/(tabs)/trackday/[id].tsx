@@ -35,24 +35,18 @@ export default function TrackdayDetail() {
   return (
     <Container style={styles.container}>
       <IconLabel
-        icon={<MaterialCommunity name="timer" size={24} color={primary} />}
+        icon={
+          <MaterialCommunity name="go-kart-track" size={24} color={primary} />
+        }
+        label={`${track.facility.name} (${track.name}) `}
+      />
+      <IconLabel
+        icon={<MaterialCommunity name="calendar-today" size={24} color={primary} />}
         label={date}
       />
       <IconLabel
         icon={<Octicons name="organization" size={24} color={primary} />}
         label={organization.name}
-      />
-      <IconLabel
-        icon={
-          <MaterialCommunity name="track-light" size={24} color={primary} />
-        }
-        label={track.facility.name}
-      />
-      <IconLabel
-        icon={
-          <MaterialCommunity name="go-kart-track" size={24} color={primary} />
-        }
-        label={track.name}
       />
       <IconLabel
         icon={<FontAwesome name="dollar" size={24} color={primary} />}
