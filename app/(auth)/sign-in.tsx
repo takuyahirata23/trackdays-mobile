@@ -95,6 +95,12 @@ export default function SignIn() {
             title="Need an account? Register from here"
           />
         </View>
+        <View style={styles.routerButton}>
+          <RNButton
+            onPress={() => push('/password-update')}
+            title="Forgot password?"
+          />
+        </View>
       </Container>
     </SafeAreaView>
   )

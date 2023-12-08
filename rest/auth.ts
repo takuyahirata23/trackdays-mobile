@@ -2,7 +2,8 @@ import {
   UPDATE_EMAIL,
   LOGIN,
   REGISTER,
-  DELETE_ACCOUNT
+  DELETE_ACCOUNT,
+  UPDATE_PASSWORD
 } from '@constants/endpoints'
 import { call, generateAuthHeader } from './call'
 
@@ -22,4 +23,8 @@ export const sendEmailUpdateRequest = async (body: { email: string }) => {
   const headers = await generateAuthHeader()
 
   return call({ path: UPDATE_EMAIL, headers, body })
+}
+
+export const sendPasswordUpdateRequest = async (body: { email: string }) => {
+  return call({ path: UPDATE_PASSWORD, body })
 }

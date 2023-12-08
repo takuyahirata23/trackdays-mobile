@@ -20,6 +20,12 @@ export default function AuthStackLayout() {
           title: 'Sign in'
         }}
       />
+      <Stack.Screen
+        name="password-update"
+        options={{
+          title: 'Update password'
+        }}
+      />
     </Stack>
   )
 }
