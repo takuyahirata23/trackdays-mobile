@@ -41,7 +41,9 @@ export default function TrackdayDetail() {
         label={`${track.facility.name} (${track.name}) `}
       />
       <IconLabel
-        icon={<MaterialCommunity name="calendar-today" size={24} color={primary} />}
+        icon={
+          <MaterialCommunity name="calendar-today" size={24} color={primary} />
+        }
         label={date}
       />
       <IconLabel
