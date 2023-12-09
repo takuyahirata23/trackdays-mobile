@@ -104,7 +104,7 @@ export default function CreateTrackdayNote() {
     motorcycle: '',
     minutes: '',
     seconds: '',
-    milliseconds: '',
+    milliseconds: ''
   })
 
   const [saveTrackdayNote] = useMutation(SAVE_TRACKDAY_NOTE, {
@@ -136,14 +136,15 @@ export default function CreateTrackdayNote() {
     }
   })
 
-  const { colors: { error }} = useTheme()
+  const {
+    colors: { error }
+  } = useTheme()
 
   React.useEffect(() => {
     if (facility) {
       getTracks()
     }
   }, [facility])
-
 
   const laptimeToMilliseconds = () =>
     minutesToMilliseconds(Number(minutes)) +
@@ -197,28 +198,37 @@ export default function CreateTrackdayNote() {
   const getMotorcycleName = (data: any) => (id: string) =>
     data.find((x: any) => x.id === id)?.model.name || ''
 
-  const handleSubmit = () => 
-    setFormError(validateTrackdayNote({ date, track, motorcycle, minutes, seconds, milliseconds }))
+  const handleSubmit = () =>
+    setFormError(
+      validateTrackdayNote({
+        date,
+        track,
+        motorcycle,
+        minutes,
+        seconds,
+        milliseconds
+      })
+    )
 
- React.useEffect(() => {
-   if(formError.isValid) {
-    saveTrackdayNote({
-      variables: {
-        saveTrackdayNoteInput: {
-          date,
-          lapTime: laptimeToMilliseconds(),
-          motorcycleId: motorcycle,
-          trackId: track,
-          note: note
+  React.useEffect(() => {
+    if (formError.isValid) {
+      saveTrackdayNote({
+        variables: {
+          saveTrackdayNoteInput: {
+            date,
+            lapTime: laptimeToMilliseconds(),
+            motorcycleId: motorcycle,
+            trackId: track,
+            note: note
+          }
         }
-      }
-    })
-   }
- }, [date, track, motorcycle, minutes, seconds, milliseconds, formError])
+      })
+    }
+  }, [date, track, motorcycle, minutes, seconds, milliseconds, formError])
 
- const laptimeError = Boolean(formError.minutes || formError.seconds || formError.milliseconds)
-
- console.log(laptimeError, error)
+  const laptimeError = Boolean(
+    formError.minutes || formError.seconds || formError.milliseconds
+  )
 
   return (
     <Container>
@@ -265,7 +275,12 @@ export default function CreateTrackdayNote() {
                 </Card>
               </TouchableOpacity>
               {currentStep === SaveTrackdaySteps.Laptime ? (
-                <Card style={{ borderColor: error, borderWidth: laptimeError ? 1 : 0 }}>
+                <Card
+                  style={{
+                    borderColor: error,
+                    borderWidth: laptimeError ? 1 : 0
+                  }}
+                >
                   <View style={styles.laptimeWrapper}>
                     <View style={styles.lapTimeFieldWrapper}>
                       <Field
@@ -312,7 +327,12 @@ export default function CreateTrackdayNote() {
                 <TouchableOpacity
                   onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}
                 >
-                <Card style={{ borderColor: error, borderWidth: laptimeError ? 1 : 0 }}>
+                  <Card
+                    style={{
+                      borderColor: error,
+                      borderWidth: laptimeError ? 1 : 0
+                    }}
+                  >
                     <Text>
                       Best lap time: {minutes || '00'}:{seconds || '00'}:
                       {milliseconds || '000'}
@@ -360,7 +380,11 @@ export default function CreateTrackdayNote() {
                 onPressRight={onPressHandlers()}
                 rightText="Next"
                 onPressLeft={() => setCurrentStep(goBackToPreviousStep)}
-                leftText={currentStep !== SaveTrackdaySteps.Facility ? 'Back' : undefined}
+                leftText={
+                  currentStep !== SaveTrackdaySteps.Facility
+                    ? 'Back'
+                    : undefined
+                }
               />
             )}
           >
@@ -455,5 +479,3 @@ const styles = StyleSheet.create({
     rowGap: 16
   }
 })
-
-
