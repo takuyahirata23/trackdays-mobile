@@ -14,6 +14,7 @@ import {
 } from '@graphql/queries'
 import { SAVE_TRACKDAY_NOTE } from 'graphql/mutations'
 import { TRACKDAY_NOTE } from 'graphql/fragments'
+import { useTheme } from '@hooks/useTheme'
 import {
   Button,
   Card,
@@ -25,12 +26,13 @@ import {
 } from '@components'
 import {
   minutesToMilliseconds,
-  secondsToMilliseconds
+  secondsToMilliseconds,
+  formatMilliseconds
 } from '@functions/lapTimeConverters'
+import { validateTrackdayNote } from '@functions/validations'
 
 import type { Motorcycle } from '@type/vehicle'
 import type { Facility, Track } from '@type/park'
-import bottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet'
 
 enum SaveTrackdaySteps {
   Facility,
@@ -39,6 +41,16 @@ enum SaveTrackdaySteps {
   Laptime,
   Note,
   Submit
+}
+
+export type TrackdayNoteFormErrors = {
+  isValid: boolean
+  date?: string
+  track?: string
+  motorcycle?: string
+  minutes?: string
+  seconds?: string
+  milliseconds?: string
 }
 
 const NoMotorcycleRegisteredError = () => (
@@ -71,7 +83,7 @@ export default function CreateTrackdayNote() {
     { date, facility, track, motorcycle, minutes, seconds, milliseconds, note },
     setFields
   ] = React.useState({
-    date: dateParam,
+    date: dateParam as string,
     facility: '',
     track: '',
     motorcycle: '',
@@ -84,6 +96,15 @@ export default function CreateTrackdayNote() {
     variables: {
       facilityId: facility
     }
+  })
+  const [formError, setFormError] = React.useState<TrackdayNoteFormErrors>({
+    isValid: false,
+    date: '',
+    track: '',
+    motorcycle: '',
+    minutes: '',
+    seconds: '',
+    milliseconds: '',
   })
 
   const [saveTrackdayNote] = useMutation(SAVE_TRACKDAY_NOTE, {
@@ -115,16 +136,19 @@ export default function CreateTrackdayNote() {
     }
   })
 
+  const { colors: { error }} = useTheme()
+
   React.useEffect(() => {
     if (facility) {
       getTracks()
     }
   }, [facility])
 
+
   const laptimeToMilliseconds = () =>
     minutesToMilliseconds(Number(minutes)) +
     secondsToMilliseconds(Number(seconds)) +
-    Number(milliseconds)
+    formatMilliseconds(milliseconds)
 
   const handleOnChange = (field: string) => (value: string) => {
     if (field === 'facility') {
@@ -173,7 +197,11 @@ export default function CreateTrackdayNote() {
   const getMotorcycleName = (data: any) => (id: string) =>
     data.find((x: any) => x.id === id)?.model.name || ''
 
-  const handleSubmit = () =>
+  const handleSubmit = () => 
+    setFormError(validateTrackdayNote({ date, track, motorcycle, minutes, seconds, milliseconds }))
+
+ React.useEffect(() => {
+   if(formError.isValid) {
     saveTrackdayNote({
       variables: {
         saveTrackdayNoteInput: {
@@ -185,6 +213,12 @@ export default function CreateTrackdayNote() {
         }
       }
     })
+   }
+ }, [date, track, motorcycle, minutes, seconds, milliseconds, formError])
+
+ const laptimeError = Boolean(formError.minutes || formError.seconds || formError.milliseconds)
+
+ console.log(laptimeError, error)
 
   return (
     <Container>
@@ -231,7 +265,7 @@ export default function CreateTrackdayNote() {
                 </Card>
               </TouchableOpacity>
               {currentStep === SaveTrackdaySteps.Laptime ? (
-                <Card>
+                <Card style={{ borderColor: error, borderWidth: laptimeError ? 1 : 0 }}>
                   <View style={styles.laptimeWrapper}>
                     <View style={styles.lapTimeFieldWrapper}>
                       <Field
@@ -241,6 +275,7 @@ export default function CreateTrackdayNote() {
                         onChangeText={handleOnChange('minutes')}
                         keyboardType="numeric"
                         placeholder="00"
+                        error={formError.minutes}
                       />
                       <Text style={styles.laptimeSemicolon}>:</Text>
                     </View>
@@ -252,6 +287,7 @@ export default function CreateTrackdayNote() {
                         style={styles.lapTimeField}
                         keyboardType="numeric"
                         placeholder="00"
+                        error={formError.seconds}
                       />
                       <Text style={styles.laptimeSemicolon}>:</Text>
                     </View>
@@ -264,6 +300,7 @@ export default function CreateTrackdayNote() {
                         keyboardType="numeric"
                         placeholder="000"
                         returnKeyType="done"
+                        error={formError.milliseconds}
                         onEndEditing={() => {
                           setCurrentStep(SaveTrackdaySteps.Note)
                         }}
@@ -275,7 +312,7 @@ export default function CreateTrackdayNote() {
                 <TouchableOpacity
                   onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}
                 >
-                  <Card>
+                <Card style={{ borderColor: error, borderWidth: laptimeError ? 1 : 0 }}>
                     <Text>
                       Best lap time: {minutes || '00'}:{seconds || '00'}:
                       {milliseconds || '000'}
@@ -323,7 +360,7 @@ export default function CreateTrackdayNote() {
                 onPressRight={onPressHandlers()}
                 rightText="Next"
                 onPressLeft={() => setCurrentStep(goBackToPreviousStep)}
-                leftText={currentStep !== SaveTrackdaySteps.Facility && 'Back'}
+                leftText={currentStep !== SaveTrackdaySteps.Facility ? 'Back' : undefined}
               />
             )}
           >
@@ -418,3 +455,5 @@ const styles = StyleSheet.create({
     rowGap: 16
   }
 })
+
+
