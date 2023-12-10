@@ -3,12 +3,23 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Button as RNButton
+  Button as RNButton,
+  Pressable,
+  Keyboard
 } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import { useRouter } from 'expo-router'
+import BottomSheet from '@gorhom/bottom-sheet'
 
 import { AuthContext } from '@context/Auth'
-import { Container, Text, Field, Button } from '@components'
+import {
+  Container,
+  Text,
+  Field,
+  Button,
+  BottomSheetHandle,
+  Card
+} from '@components'
 import { useTheme } from '@hooks/useTheme'
 import { validateRegisterForm } from '../../functions/validations'
 
@@ -17,16 +28,32 @@ export type RegisterFormErrors = {
   name?: string
   email?: string
   password?: string
+  groupId?: string
 }
+
+const groups = [
+  { id: '31021e06-f088-4edd-b1f2-e7c7a631534e', name: 'Novice' },
+  { id: '289b5567-0fa7-489a-a43b-461f56c4f5f1', name: 'Intermediate' },
+  { id: '3f509e3f-6f9f-4b7c-8b39-5cdf90f704c6', name: 'Expert' }
+]
+
+const findCurrentGroup = (id: string) => groups.find(group => group.id === id)
 
 export default function Register() {
   const { register, error } = React.useContext(AuthContext)
-  const [form, setForm] = React.useState({ email: '', password: '', name: '' })
+  const ref = React.useRef<BottomSheet>(null)
+  const [form, setForm] = React.useState({
+    email: '',
+    password: '',
+    name: '',
+    groupId: ''
+  })
   const [isLoading, setIsLoading] = React.useState(false)
   const [formErrors, setFormErrors] = React.useState<RegisterFormErrors>({
     isValid: false,
     email: '',
-    password: ''
+    password: '',
+    groupId: ''
   })
 
   const { push } = useRouter()
@@ -49,11 +76,11 @@ export default function Register() {
   }, [isLoading, form, register])
 
   const {
-    colors: { bgPrimary }
+    colors: { bgPrimary, bgSecondary }
   } = useTheme()
 
   const onChagneText =
-    (field: 'email' | 'password' | 'name') => (value: string) =>
+    (field: 'email' | 'password' | 'name' | 'groupId') => (value: string) =>
       setForm(prev => ({ ...prev, [field]: value }))
 
   const onPress = () => setFormErrors(validateRegisterForm(form))
@@ -86,6 +113,20 @@ export default function Register() {
             placeholder="YoUR.PASSword!"
             error={formErrors.password || error?.fields?.password}
           />
+          <Pressable
+            onPress={() => {
+              Keyboard.dismiss()
+              ref.current?.expand()
+            }}
+          >
+            <Text>Riding Group</Text>
+            <Text style={[styles.field, { backgroundColor: bgSecondary }]}>
+              {form.groupId
+                ? findCurrentGroup(form.groupId)?.name
+                : 'Choose your riding group'}
+            </Text>
+            {formErrors.groupId && <Text>{formErrors.groupId}</Text>}
+          </Pressable>
         </View>
         <View style={styles.button}>
           {error?.message && (
@@ -102,6 +143,33 @@ export default function Register() {
           />
         </View>
       </Container>
+      <BottomSheet
+        ref={ref}
+        index={-1}
+        snapPoints={['40%']}
+        handleComponent={() => (
+          <BottomSheetHandle
+            onPressRight={() => {
+              if (!form.groupId) {
+                onChagneText('groupId')(groups[0].id)
+              }
+              ref.current?.close()
+            }}
+            rightText="Done"
+          />
+        )}
+      >
+        <View>
+          <Picker
+            selectedValue={form.groupId}
+            onValueChange={onChagneText('groupId')}
+          >
+            {groups.map(({ id, name }: { id: string; name: string }) => (
+              <Picker.Item value={id} label={name} key={id} />
+            ))}
+          </Picker>
+        </View>
+      </BottomSheet>
     </SafeAreaView>
   )
 }
@@ -132,5 +200,11 @@ const styles = StyleSheet.create({
   },
   routerButton: {
     marginTop: 16
+  },
+  field: {
+    height: 46,
+    fontSize: 18,
+    padding: 8,
+    borderRadius: 4
   }
 })

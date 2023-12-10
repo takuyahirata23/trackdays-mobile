@@ -95,12 +95,13 @@ export function AuthProvider({ children, setUser }: Props) {
       .then(() => setUser(null))
   }
 
-  const register = (body: RegisterFields) =>
-    sendRegisterRequest(body)
+  const register = (body: RegisterFields) => {
+    sendRegisterRequest({ ...body, group_id: body.groupId })
       .then(handleResponse(handleUserRegistrationResponse))
       .catch(() => {
         setError({ message: 'Registration failed. Please try again.' })
       })
+  }
 
   return (
     <AuthContext.Provider

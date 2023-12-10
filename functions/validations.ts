@@ -30,7 +30,8 @@ const signInValidations = {
 const registerValidation = {
   name: Predicate(validateMinLength(2)),
   email: Predicate(isEmail),
-  password: Predicate(validateMinLength(4))
+  password: Predicate(validateMinLength(4)),
+  groupId: Predicate(validateMinLength(8))
 }
 
 const emailValidation = {

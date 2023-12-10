@@ -11,7 +11,7 @@ import { REGISTER_MOTORCYCLE } from '@graphql/mutations'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
 import { motorcycleValidations } from 'functions/validations'
 
-import type { Motorcycle, Make, Model } from '@type/vehicle'
+import type { Make, Model } from '@type/vehicle'
 
 type Fields = 'make' | 'model' | 'year' | null
 
