@@ -3,6 +3,7 @@ import { StyleSheet, View, Pressable, Image } from 'react-native'
 import { useQuery } from '@apollo/client'
 import Feather from '@expo/vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker'
+import { isEmpty, not } from 'ramda'
 
 import { AuthContext } from '@context/Auth'
 import { getToken } from '@utils/secureStore'
@@ -13,7 +14,8 @@ import {
   Text,
   Container,
   TrackdayNoteLinkCard,
-  Button
+  Button,
+  IconLabel
 } from '@components'
 
 import type { TrackdayNote } from '@type/event'
@@ -62,7 +64,7 @@ export default function ProfileIndex() {
   const { loading, data, error, client } = useQuery(USER_QUERY)
   const bestLapsRes = useQuery(BEST_LAP_FOR_EACH_TRACK)
   const {
-    colors: { bgSecondary }
+    colors: { bgSecondary, primary }
   } = useTheme()
 
   const handleImageUploadError = () => {
@@ -97,7 +99,7 @@ export default function ProfileIndex() {
     return null
   }
 
-  const { name, imageUrl } = data.user
+  const { name, imageUrl, group } = data.user
 
   const handleSignOut = () => {
     client.clearStore()
@@ -126,7 +128,18 @@ export default function ProfileIndex() {
               <Feather size={80} name="user" color={bgSecondary} />
             )}
           </Pressable>
-          <Text style={styles.heading}>{name}</Text>
+          <View style={styles.profileTextWrapper}>
+            <Text style={styles.heading}>{name}</Text>
+            <View style={styles.group}>
+            <IconLabel 
+            variant='secondary'
+              icon={
+                <Feather name="flag" size={24} color={primary} />
+              }
+label={group.name}
+            />
+            </View>
+          </View>
         </View>
         {profileImageUploadError && (
           <Text color="tertiary" style={styles.errorText}>
@@ -134,15 +147,17 @@ export default function ProfileIndex() {
           </Text>
         )}
       </Card>
-      <Card heading="Personal Bests">
-        <View style={styles.personalBestWrapper}>
-          {bestLapsRes.data?.bestLapForEachTrack.map(
-            (trackday: TrackdayNote) => (
-              <TrackdayNoteLinkCard key={trackday.id} {...trackday} />
-            )
-          )}
-        </View>
-      </Card>
+      {not(isEmpty(bestLapsRes.data?.bestLapForEachTrack)) && (
+        <Card heading="Personal Bests">
+          <View style={styles.personalBestWrapper}>
+            {bestLapsRes.data.bestLapForEachTrack.map(
+              (trackday: TrackdayNote) => (
+                <TrackdayNoteLinkCard key={trackday.id} {...trackday} />
+              )
+            )}
+          </View>
+        </Card>
+      )}
       <Button onPress={handleSignOut}>Sign Out</Button>
       <Button onPress={handleDeleteAccount}>Delete Account</Button>
     </Container>
@@ -153,10 +168,16 @@ const styles = StyleSheet.create({
   container: {
     rowGap: 24
   },
+  profileTextWrapper: {
+    flex: 1,
+    rowGap: 4
+  },
   heading: {
     fontSize: 18,
     fontWeight: '600',
-    flex: 1
+  },
+  group: {
+    alignSelf: 'flex-start'
   },
   profileWrapper: {
     flexDirection: 'row',

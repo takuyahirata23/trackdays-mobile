@@ -7,6 +7,10 @@ export const USER_QUERY = gql`
       email
       name
       imageUrl
+      group {
+        id
+        name
+      }
     }
   }
 `
