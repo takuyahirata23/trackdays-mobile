@@ -7,11 +7,11 @@ import {
 } from '@constants/endpoints'
 import { call, generateAuthHeader } from './call'
 
-import type { SignInFields, RegisterFields } from '@type/fields'
+import type { SignInFields, RestRegisterFields } from '@type/fields'
 
 export const sendLoginRequest = (body: SignInFields) =>
   call({ path: LOGIN, body })
-export const sendRegisterRequest = (body: RegisterFields) =>
+export const sendRegisterRequest = (body: RestRegisterFields) =>
   call({ path: REGISTER, body })
 
 export const sendDeleteAccountRequest = async () => {

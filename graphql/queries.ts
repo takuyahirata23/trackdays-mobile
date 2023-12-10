@@ -11,6 +11,15 @@ export const USER_QUERY = gql`
   }
 `
 
+export const GROUPS = gql`
+  query getGroups {
+    groups {
+      id
+      name
+    }
+  }
+`
+
 export const MAKES_QUERY = gql`
   query getMakes {
     makes {
