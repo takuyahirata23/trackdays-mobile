@@ -73,7 +73,5 @@ const LightTheme: Theme = {
 //0 2px 6px 0 rgba(27,27,34,.2)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <TP value={LightTheme}>{children}</TP>
-  )
+  return <TP value={LightTheme}>{children}</TP>
 }

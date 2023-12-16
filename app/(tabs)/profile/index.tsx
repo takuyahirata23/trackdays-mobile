@@ -5,7 +5,6 @@ import Feather from '@expo/vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker'
 import { isEmpty, not } from 'ramda'
 
-import { AuthContext } from '@context/Auth'
 import { getToken } from '@utils/secureStore'
 import { useTheme } from '@hooks/useTheme'
 import { USER_QUERY, BEST_LAP_FOR_EACH_TRACK } from '@graphql/queries'
@@ -14,7 +13,6 @@ import {
   Text,
   Container,
   TrackdayNoteLinkCard,
-  Button,
   IconLabel
 } from '@components'
 
@@ -57,11 +55,10 @@ const uploadImageFromUri = async (uri: string) => {
 }
 
 export default function ProfileIndex() {
-  const { signOut, deleteAccount } = React.useContext(AuthContext)
   const [profileImage, setProfileImage] = React.useState('')
   const [profileImageUploadError, setProfileImageUploadError] =
     React.useState(false)
-  const { loading, data, error, client } = useQuery(USER_QUERY)
+  const { loading, data, error } = useQuery(USER_QUERY)
   const bestLapsRes = useQuery(BEST_LAP_FOR_EACH_TRACK)
   const {
     colors: { bgSecondary, primary }
@@ -100,16 +97,6 @@ export default function ProfileIndex() {
   }
 
   const { name, imageUrl, group } = data.user
-
-  const handleSignOut = () => {
-    client.clearStore()
-    signOut()
-  }
-
-  const handleDeleteAccount = () => {
-    client.clearStore()
-    deleteAccount()
-  }
 
   return (
     <Container style={styles.container}>
@@ -157,8 +144,6 @@ export default function ProfileIndex() {
           </View>
         </View>
       )}
-      <Button onPress={handleSignOut}>Sign Out</Button>
-      <Button onPress={handleDeleteAccount}>Delete Account</Button>
     </Container>
   )
 }

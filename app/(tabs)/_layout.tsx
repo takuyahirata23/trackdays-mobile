@@ -32,7 +32,7 @@ export default function TabLayout() {
       initialRouteName="/motorcycle"
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: accent 
+        tabBarActiveTintColor: accent
       }}
     >
       <Tabs.Screen

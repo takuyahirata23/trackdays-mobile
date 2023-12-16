@@ -62,9 +62,9 @@ export default function TrackdayDetail() {
           <FontAwesome name="dollar" size={22} color={primary} />
           <Text>{String(price)}</Text>
         </View>
-          <Text style={{ fontSize: 20, fontWeight: '500' }}>
-            {organization.name}
-          </Text>
+        <Text style={{ fontSize: 20, fontWeight: '500' }}>
+          {organization.name}
+        </Text>
         {description && <Text>{description}</Text>}
       </Card>
       <View style={styles.button}>
