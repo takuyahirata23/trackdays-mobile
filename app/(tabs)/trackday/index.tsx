@@ -40,7 +40,7 @@ export default function TrackdayIndex() {
   })
 
   const {
-    colors: { btnBgSecondary }
+    colors: { accent }
   } = useTheme()
 
   const [targetNotes, setTargetNotes] = React.useState([])
@@ -86,7 +86,7 @@ export default function TrackdayIndex() {
         ...acc,
         [x.date]: {
           dots: [keys.note],
-          selectedColor: btnBgSecondary,
+          selectedColor: accent,
           marked: true,
           selected: x.date === date
         }
@@ -94,7 +94,7 @@ export default function TrackdayIndex() {
     },
     {
       [date]: {
-        selectedColor: btnBgSecondary,
+        selectedColor: accent,
         selected: true
       }
     }
@@ -106,7 +106,7 @@ export default function TrackdayIndex() {
       [x.date]: {
         // @ts-ignore
         dots: [...(acc[x.date]?.dots || []), keys[x.organization.name]],
-        selectedColor: btnBgSecondary,
+        selectedColor: accent,
         marked: true,
         selected: x.date === date
       }

@@ -34,31 +34,39 @@ export default function TrackdayDetail() {
 
   return (
     <Container style={styles.container}>
-      <IconLabel
-        icon={
-          <MaterialCommunity name="go-kart-track" size={24} color={primary} />
-        }
-        label={`${track.facility.name} (${track.name}) `}
-      />
-      <IconLabel
-        icon={
-          <MaterialCommunity name="calendar-today" size={24} color={primary} />
-        }
-        label={date}
-      />
-      <IconLabel
-        icon={<Octicons name="organization" size={24} color={primary} />}
-        label={organization.name}
-      />
-      <IconLabel
-        icon={<FontAwesome name="dollar" size={24} color={primary} />}
-        label={String(price)}
-      />
-      {description && (
-        <Card>
-          <Text>{description}</Text>
-        </Card>
-      )}
+      <Card style={{ rowGap: 20 }}>
+        <View
+          style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
+        >
+          <MaterialCommunity name="calendar-today" size={22} color={primary} />
+          <Text>{date}</Text>
+        </View>
+        <Text style={{ fontSize: 20, fontWeight: '500' }}>
+          {track.facility.name}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            columnGap: 8
+          }}
+        >
+          <MaterialCommunity name="go-kart-track" size={22} color={primary} />
+          <Text>{track.name}</Text>
+        </View>
+      </Card>
+      <Card style={{ rowGap: 20 }}>
+        <View
+          style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
+        >
+          <FontAwesome name="dollar" size={22} color={primary} />
+          <Text>{String(price)}</Text>
+        </View>
+          <Text style={{ fontSize: 20, fontWeight: '500' }}>
+            {organization.name}
+          </Text>
+        {description && <Text>{description}</Text>}
+      </Card>
       <View style={styles.button}>
         <ExternalLink
           href={organization.trackdaysRegistrationUrl || ''}

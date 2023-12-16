@@ -131,13 +131,11 @@ export default function ProfileIndex() {
           <View style={styles.profileTextWrapper}>
             <Text style={styles.heading}>{name}</Text>
             <View style={styles.group}>
-            <IconLabel 
-            variant='secondary'
-              icon={
-                <Feather name="flag" size={24} color={primary} />
-              }
-label={group.name}
-            />
+              <IconLabel
+                variant="secondary"
+                icon={<Feather name="flag" size={20} color={primary} />}
+                label={group.name}
+              />
             </View>
           </View>
         </View>
@@ -148,7 +146,8 @@ label={group.name}
         )}
       </Card>
       {not(isEmpty(bestLapsRes.data?.bestLapForEachTrack)) && (
-        <Card heading="Personal Bests">
+        <View style={styles.personalBestWrapper}>
+          <Text style={styles.sectionHeading}>Personal Bests</Text>
           <View style={styles.personalBestWrapper}>
             {bestLapsRes.data.bestLapForEachTrack.map(
               (trackday: TrackdayNote) => (
@@ -156,7 +155,7 @@ label={group.name}
               )
             )}
           </View>
-        </Card>
+        </View>
       )}
       <Button onPress={handleSignOut}>Sign Out</Button>
       <Button onPress={handleDeleteAccount}>Delete Account</Button>
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '600'
   },
   group: {
     alignSelf: 'flex-start'
@@ -198,5 +197,9 @@ const styles = StyleSheet.create({
   },
   errorText: {
     marginTop: 8
+  },
+  sectionHeading: {
+    fontSize: 18,
+    fontWeight: '500'
   }
 })

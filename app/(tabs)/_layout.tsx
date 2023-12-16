@@ -2,7 +2,7 @@ import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 import { Tabs } from 'expo-router'
-import { useColorScheme } from 'react-native'
+import { useTheme } from '@hooks/useTheme'
 
 import Colors from '../../constants/Colors'
 
@@ -23,14 +23,16 @@ function TabIcons(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme()
+  const {
+    colors: { accent }
+  } = useTheme()
 
   return (
     <Tabs
       initialRouteName="/motorcycle"
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint
+        tabBarActiveTintColor: accent 
       }}
     >
       <Tabs.Screen
