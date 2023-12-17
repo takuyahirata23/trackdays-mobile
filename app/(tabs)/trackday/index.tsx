@@ -62,6 +62,7 @@ export default function TrackdayIndex() {
   }, [date, data])
 
   if (error) {
+    console.log('error', error)
     return null
   }
 

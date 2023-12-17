@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "trackdays-mobile",
-    "slug": "trackdays-mobile",
+    "name": "Trackdays",
+    "slug": "trackdays",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,20 +12,36 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "usesNonExemptEncryption": false
+      "usesNonExemptEncryption": false,
+      "bundleIdentifier": "com.takuya23.trackdaysmobile"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.takuya23.trackdaysmobile"
     },
     "web": {
       "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3d9d7fd6-3f66-420b-b118-95af9dc03a67"
+      },
+      "router": {
+        "origin": false
+      }
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "owner": "takuya23"
   }
 }

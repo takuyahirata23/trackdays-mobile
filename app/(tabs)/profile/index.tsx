@@ -42,7 +42,7 @@ const uploadImageFromUri = async (uri: string) => {
     type: 'jpg'
   })
 
-  const base = `${process.env.DOMAIN_URL}/images/profile`
+  const base = `${process.env.EXPO_PUBLIC_DOMAIN_URL}/images/profile`
 
   return fetch(base, {
     method: 'POST',
