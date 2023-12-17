@@ -11,15 +11,9 @@ import { Picker } from '@react-native-picker/picker'
 import { useRouter } from 'expo-router'
 import BottomSheet from '@gorhom/bottom-sheet'
 
+import { GROUPS_DEV, GROUPS_PROD } from '@constants/groups'
 import { AuthContext } from '@context/Auth'
-import {
-  Container,
-  Text,
-  Field,
-  Button,
-  BottomSheetHandle,
-  Card
-} from '@components'
+import { Container, Text, Field, Button, BottomSheetHandle } from '@components'
 import { useTheme } from '@hooks/useTheme'
 import { validateRegisterForm } from '../../functions/validations'
 
@@ -31,11 +25,7 @@ export type RegisterFormErrors = {
   groupId?: string
 }
 
-const groups = [
-  { id: '31021e06-f088-4edd-b1f2-e7c7a631534e', name: 'Novice' },
-  { id: '289b5567-0fa7-489a-a43b-461f56c4f5f1', name: 'Intermediate' },
-  { id: '3f509e3f-6f9f-4b7c-8b39-5cdf90f704c6', name: 'Expert' }
-]
+const groups = process.env.NODE_ENV === 'development' ? GROUPS_DEV : GROUPS_PROD
 
 const findCurrentGroup = (id: string) => groups.find(group => group.id === id)
 
@@ -79,7 +69,7 @@ export default function Register() {
     colors: { bgPrimary, bgSecondary }
   } = useTheme()
 
-  const onChagneText =
+  const onChangeText =
     (field: 'email' | 'password' | 'name' | 'groupId') => (value: string) =>
       setForm(prev => ({ ...prev, [field]: value }))
 
@@ -93,7 +83,7 @@ export default function Register() {
           <Field
             label="Name"
             value={form.name}
-            onChangeText={onChagneText('name')}
+            onChangeText={onChangeText('name')}
             placeholder="Your Name"
             error={formErrors.name || error?.fields?.name}
           />
@@ -101,7 +91,7 @@ export default function Register() {
             label="Email"
             keyboardType="email-address"
             value={form.email}
-            onChangeText={onChagneText('email')}
+            onChangeText={onChangeText('email')}
             placeholder="your-email@domain.com"
             error={formErrors.email || error?.fields?.email}
           />
@@ -109,7 +99,7 @@ export default function Register() {
             secureTextEntry
             label="Password"
             value={form.password}
-            onChangeText={onChagneText('password')}
+            onChangeText={onChangeText('password')}
             placeholder="YoUR.PASSword!"
             error={formErrors.password || error?.fields?.password}
           />
@@ -151,7 +141,7 @@ export default function Register() {
           <BottomSheetHandle
             onPressRight={() => {
               if (!form.groupId) {
-                onChagneText('groupId')(groups[0].id)
+                onChangeText('groupId')(groups[0].id)
               }
               ref.current?.close()
             }}
@@ -162,7 +152,7 @@ export default function Register() {
         <View>
           <Picker
             selectedValue={form.groupId}
-            onValueChange={onChagneText('groupId')}
+            onValueChange={onChangeText('groupId')}
           >
             {groups.map(({ id, name }: { id: string; name: string }) => (
               <Picker.Item value={id} label={name} key={id} />

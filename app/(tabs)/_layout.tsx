@@ -4,8 +4,6 @@ import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 import { Tabs } from 'expo-router'
 import { useTheme } from '@hooks/useTheme'
 
-import Colors from '../../constants/Colors'
-
 const icon: { [key: string]: any } = {
   fontAwesome: FontAwesome,
   materialCommunity: MaterialCommunity
