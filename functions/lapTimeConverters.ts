@@ -19,6 +19,4 @@ export const formatMilliseconds = (x: string) => {
 export const formatLapTime = (lapTimeInMilliseconds: number) =>
   `${millisecondsToMinute(lapTimeInMilliseconds).toFixed(
     0
-  )}:${millisecondsToSeconds(lapTimeInMilliseconds)
-    .toFixed(3)
-    .replace('.', ':')}`
+  )}:${millisecondsToSeconds(lapTimeInMilliseconds).toFixed(3)}`

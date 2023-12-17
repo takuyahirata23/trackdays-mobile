@@ -1,16 +1,16 @@
 import React from 'react'
-import { Stack } from 'expo-router'
-import { Link } from 'expo-router'
-
-import { Pressable, useColorScheme } from 'react-native'
+import { Stack, Link } from 'expo-router'
+import { Pressable } from 'react-native'
 import Ion from '@expo/vector-icons/Ionicons'
 
-import Colors from '../../../constants/Colors'
+import { useTheme } from '@hooks/useTheme'
 
 export default function ProfileLayout() {
-  const colorScheme = useColorScheme()
+  const {colors: { primary, secondary} } = useTheme()
   return (
-    <Stack initialRouteName="index">
+    <Stack initialRouteName="index" screenOptions={{
+      headerTintColor: primary 
+    }}>
       <Stack.Screen
         name="index"
         options={{
@@ -28,7 +28,7 @@ export default function ProfileLayout() {
                   <Ion
                     name="add-circle-outline"
                     size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
+                    color={secondary}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}

@@ -11,14 +11,19 @@ import { useTheme } from '@hooks/useTheme'
 
 import type { TrackdayNote } from '@type/event'
 
+type Props = {
+  showSubtitle?: boolean
+} & TrackdayNote
+
 export function TrackdayNoteLinkCard({
   id,
   track,
   lapTime,
-  motorcycle
-}: TrackdayNote) {
+  motorcycle,
+  showSubtitle
+}: Props) {
   const {
-    colors: { primary }
+    colors: { accent }
   } = useTheme()
 
   return (
@@ -30,20 +35,21 @@ export function TrackdayNoteLinkCard({
       asChild
     >
       <TouchableOpacity>
-        <Card>
+        <Card style={styles.card} sidebarVariant="primary">
           <Text style={styles.cardTitle}>{track.facility.name}</Text>
+          {showSubtitle && (
+            <Text style={styles.cardSubTitle}>{track.name}</Text>
+          )}
           <View style={styles.cardDetail}>
             <IconLabel
               icon={
-                <MaterialCommunity name="motorbike" size={24} color={primary} />
+                <MaterialCommunity name="motorbike" size={20} color={accent} />
               }
               label={motorcycle.model.name}
               variant="secondary"
             />
             <IconLabel
-              icon={
-                <MaterialCommunity name="timer" size={24} color={primary} />
-              }
+              icon={<MaterialCommunity name="timer" size={20} color={accent} />}
               label={formatLapTime(Number(lapTime))}
               variant="secondary"
             />
@@ -55,12 +61,18 @@ export function TrackdayNoteLinkCard({
 }
 
 const styles = StyleSheet.create({
+  card: {
+    rowGap: 8
+  },
   cardTitle: {
     fontWeight: '600'
   },
+  cardSubTitle: {
+    fontSize: 14
+  },
   cardDetail: {
     flexDirection: 'row',
-    columnGap: 8,
+    columnGap: 4,
     alignItems: 'center'
   }
 })

@@ -13,7 +13,7 @@ import type { Trackday } from '@type/event'
 
 export function TrackdayLinkCard({ id, track, price, organization }: Trackday) {
   const {
-    colors: { primary }
+    colors: { tertiary }
   } = useTheme()
 
   return (
@@ -25,17 +25,17 @@ export function TrackdayLinkCard({ id, track, price, organization }: Trackday) {
       asChild
     >
       <TouchableOpacity>
-        <Card>
+        <Card sidebarVariant="secondary">
           <Text style={styles.cardTitle}>{track.facility.name}</Text>
           <View style={styles.cardDetail}>
             <IconLabel
               variant="secondary"
-              icon={<Octicons name="organization" size={24} color={primary} />}
+              icon={<Octicons name="organization" size={20} color={tertiary} />}
               label={organization.name}
             />
             <IconLabel
               variant="secondary"
-              icon={<FontAwesome name="dollar" size={24} color={primary} />}
+              icon={<FontAwesome name="dollar" size={20} color={tertiary} />}
               label={String(price)}
             />
           </View>

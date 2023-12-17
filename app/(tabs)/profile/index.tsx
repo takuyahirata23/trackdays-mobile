@@ -120,7 +120,7 @@ export default function ProfileIndex() {
             <View style={styles.group}>
               <IconLabel
                 variant="secondary"
-                icon={<Feather name="flag" size={20} color={primary} />}
+                icon={<Feather name="flag" size={18} color={primary} />}
                 label={group.name}
               />
             </View>
@@ -138,7 +138,7 @@ export default function ProfileIndex() {
           <View style={styles.personalBestWrapper}>
             {bestLapsRes.data.bestLapForEachTrack.map(
               (trackday: TrackdayNote) => (
-                <TrackdayNoteLinkCard key={trackday.id} {...trackday} />
+                <TrackdayNoteLinkCard key={trackday.id} {...trackday} showSubtitle />
               )
             )}
           </View>

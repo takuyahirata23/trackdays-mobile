@@ -108,7 +108,8 @@ export default function TrackdayDetail() {
 
 const styles = StyleSheet.create({
   container: {
-    rowGap: 16
+    rowGap: 16,
+    paddingBottom: 16
   },
   card: {
     flexDirection: 'column',

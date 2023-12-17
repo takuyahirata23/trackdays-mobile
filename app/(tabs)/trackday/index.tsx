@@ -40,7 +40,7 @@ export default function TrackdayIndex() {
   })
 
   const {
-    colors: { accent }
+    colors: { accent, tertiary, primary }
   } = useTheme()
 
   const [targetNotes, setTargetNotes] = React.useState([])
@@ -74,10 +74,10 @@ export default function TrackdayIndex() {
   }
 
   const keys: Record<string, object> = {
-    note: { key: 'note', color: 'blue' },
-    ['Trackday Ontario']: { key: 'trackdaysOntario', color: 'red' },
-    ['Riders Ontario']: { key: 'ridersOntario', color: 'yellow' },
-    ['Lean Angle Motorsports']: { key: 'leanAngleMotorsports', color: 'black' }
+    note: { key: 'note', color: tertiary },
+    ['Trackday Ontario']: { key: 'trackdaysOntario', color: primary },
+    ['Riders Ontario']: { key: 'ridersOntario', color: primary},
+    ['Lean Angle Motorsports']: { key: 'leanAngleMotorsports', color: primary}
   }
 
   const events = data.trackdayNotesByMonth.reduce(

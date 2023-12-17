@@ -3,13 +3,12 @@ import { useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@apollo/client'
 import { StyleSheet, View } from 'react-native'
 import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
-import Octicons from '@expo/vector-icons/Octicons'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 import { TRACKDAY } from '@graphql/queries'
 import { useTheme } from '@hooks/useTheme'
 
-import { Container, Text, Card, IconLabel, ExternalLink } from '@components'
+import { Container, Text, Card,  ExternalLink } from '@components'
 
 export default function TrackdayDetail() {
   const { id } = useLocalSearchParams()
@@ -23,7 +22,7 @@ export default function TrackdayDetail() {
     }
   })
   const {
-    colors: { primary }
+    colors: { primary, secondary, tertiary }
   } = useTheme()
 
   if (loading || error) {
@@ -38,8 +37,8 @@ export default function TrackdayDetail() {
         <View
           style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
         >
-          <MaterialCommunity name="calendar-today" size={22} color={primary} />
-          <Text>{date}</Text>
+          <MaterialCommunity name="calendar-today" size={22} color={tertiary} />
+          <Text style={{ color: secondary}}>{date}</Text>
         </View>
         <Text style={{ fontSize: 20, fontWeight: '500' }}>
           {track.facility.name}
@@ -51,7 +50,7 @@ export default function TrackdayDetail() {
             columnGap: 8
           }}
         >
-          <MaterialCommunity name="go-kart-track" size={22} color={primary} />
+          <MaterialCommunity name="go-kart-track" size={22} color={tertiary} />
           <Text>{track.name}</Text>
         </View>
       </Card>
@@ -59,8 +58,8 @@ export default function TrackdayDetail() {
         <View
           style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
         >
-          <FontAwesome name="dollar" size={22} color={primary} />
-          <Text>{String(price)}</Text>
+          <FontAwesome name="dollar" size={22} color={tertiary} />
+          <Text style={{ color: secondary}}>{String(price)}</Text>
         </View>
         <Text style={{ fontSize: 20, fontWeight: '500' }}>
           {organization.name}

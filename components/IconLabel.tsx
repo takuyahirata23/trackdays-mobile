@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 
 import { Card, Props as CardProps } from './Card'
 import { Text } from './Text'
+import { useTheme } from '@hooks/useTheme'
 
 type Props = {
   label: string
@@ -11,10 +12,13 @@ type Props = {
 }
 
 export function IconLabel({ icon, label, variant = 'primary' }: Props) {
+  const {
+    colors: {  secondary }
+  } = useTheme()
   return (
     <Card style={styles.wrapper} variant={variant}>
       {icon}
-      <Text>{label}</Text>
+      <Text style={{ color: secondary}}>{label}</Text>
     </Card>
   )
 }
