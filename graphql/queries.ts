@@ -233,7 +233,7 @@ export const TRACKDAY = gql`
   }
 `
 
-export const GET_MONTHLY_TRACKDY_DATA = gql`
+export const GET_MONTHLY_TRACKDAY_DATA = gql`
   query getMonthlyTrackdayData($getEventsByMonthInput: GetEventsByMonthInput!) {
     trackdaysByMonth(getEventsByMonthInput: $getEventsByMonthInput) {
       id

@@ -4,7 +4,7 @@ import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
 import { Calendar, DateData } from 'react-native-calendars'
 import { Link } from 'expo-router'
 
-import { GET_MONTHLY_TRACKDY_DATA } from '@graphql/queries'
+import { GET_MONTHLY_TRACKDAY_DATA } from '@graphql/queries'
 import {
   Container,
   Text,
@@ -30,7 +30,7 @@ type Events = {
 }
 
 export default function TrackdayIndex() {
-  const { loading, data, error, refetch } = useQuery(GET_MONTHLY_TRACKDY_DATA, {
+  const { loading, data, error, refetch } = useQuery(GET_MONTHLY_TRACKDAY_DATA, {
     variables: {
       getEventsByMonthInput: {
         year,
@@ -73,19 +73,12 @@ export default function TrackdayIndex() {
     )
   }
 
-  const keys: Record<string, object> = {
-    note: { key: 'note', color: tertiary },
-    ['Trackday Ontario']: { key: 'trackdaysOntario', color: primary },
-    ['Riders Ontario']: { key: 'ridersOntario', color: primary},
-    ['Lean Angle Motorsports']: { key: 'leanAngleMotorsports', color: primary}
-  }
-
   const events = data.trackdayNotesByMonth.reduce(
     (acc: Events, x: TrackdayNote) => {
       return {
         ...acc,
         [x.date]: {
-          dots: [keys.note],
+          dots: [{ color: tertiary }],
           selectedColor: accent,
           marked: true,
           selected: x.date === date
@@ -105,7 +98,7 @@ export default function TrackdayIndex() {
       ...acc,
       [x.date]: {
         // @ts-ignore
-        dots: [...(acc[x.date]?.dots || []), keys[x.organization.name]],
+        dots: [...(acc[x.date]?.dots || []), { color: primary }],
         selectedColor: accent,
         marked: true,
         selected: x.date === date
