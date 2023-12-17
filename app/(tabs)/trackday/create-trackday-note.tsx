@@ -54,7 +54,7 @@ export type TrackdayNoteFormErrors = {
 }
 
 const NoMotorcycleRegisteredError = () => (
-  <Text>Please regiter motorcycle first</Text>
+  <Text>Please register motorcycle first</Text>
 )
 
 const goBackToPreviousStep = (prev: SaveTrackdaySteps) => {
