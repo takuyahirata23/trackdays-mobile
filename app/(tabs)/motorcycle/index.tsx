@@ -1,15 +1,16 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useQuery } from '@apollo/client'
-import { Link } from 'expo-router'
+import { useRouter } from 'expo-router'
 
-import { Container, Card, LableView, Text } from '@components'
+import { Container, Card, LabelView, Button } from '@components'
 import { MOTORCYCLES_QUERY } from '@graphql/queries'
 
 import type { Motorcycle } from '@type/vehicle'
 
 export default function Motorcycles() {
   const { loading, data, error } = useQuery(MOTORCYCLES_QUERY)
+  const { push } = useRouter()
 
   if (loading) {
     return null
@@ -19,20 +20,20 @@ export default function Motorcycles() {
     return null
   }
 
+  const toRegisterScreen = () => push('/motorcycle/register-motorcycle')
+
   return (
     <Container style={styles.container}>
       {data?.motorcycles?.map(({ id, model, year }: Motorcycle) => (
         <Card key={id}>
-          <LableView
+          <LabelView
             label={model.make.name}
             value={`${model.name} (${year})`}
           />
         </Card>
       ))}
       <View style={styles.linkWrapper}>
-        <Link href={{ pathname: '/motorcycle/register-motorcycle' }}>
-          <Text style={styles.linkText}>Register motorcycle</Text>
-        </Link>
+        <Button onPress={toRegisterScreen}>Register motorcycle</Button>
       </View>
     </Container>
   )
@@ -40,10 +41,12 @@ export default function Motorcycles() {
 
 const styles = StyleSheet.create({
   container: {
-    rowGap: 8
+    rowGap: 8,
+    paddingBottom: 16
   },
   linkWrapper: {
-    marginTop: 8
+    marginTop: 'auto',
+    justifyContent: 'center'
   },
   linkText: {
     textAlign: 'center',

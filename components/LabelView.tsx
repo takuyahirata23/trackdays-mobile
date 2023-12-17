@@ -8,7 +8,7 @@ type Props = {
   value: string | number
 } & ViewProps
 
-export function LableView({ label, value, style, ...rest }: Props) {
+export function LabelView({ label, value, style, ...rest }: Props) {
   return (
     <View style={style} {...rest}>
       <Text numberOfLines={1} ellipsizeMode="tail">
