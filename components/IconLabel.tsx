@@ -18,7 +18,7 @@ export function IconLabel({ icon, label, variant = 'primary' }: Props) {
   return (
     <Card style={styles.wrapper} variant={variant}>
       {icon}
-      <Text style={{ color: secondary}}>{label}</Text>
+      <Text style={[styles.label ,{ color: secondary}]}>{label}</Text>
     </Card>
   )
 }
@@ -28,5 +28,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     columnGap: 8,
     alignItems: 'center'
+  },
+  label: {
+    fontSize: 14
   }
 })

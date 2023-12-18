@@ -25,17 +25,17 @@ export function TrackdayLinkCard({ id, track, price, organization }: Trackday) {
       asChild
     >
       <TouchableOpacity>
-        <Card sidebarVariant="secondary">
+        <Card sidebarVariant="secondary" style={styles.card}>
           <Text style={styles.cardTitle}>{track.facility.name}</Text>
           <View style={styles.cardDetail}>
             <IconLabel
               variant="secondary"
-              icon={<Octicons name="organization" size={20} color={tertiary} />}
+              icon={<Octicons name="organization" size={18} color={tertiary} />}
               label={organization.name}
             />
             <IconLabel
               variant="secondary"
-              icon={<FontAwesome name="dollar" size={20} color={tertiary} />}
+              icon={<FontAwesome name="dollar" size={18} color={tertiary} />}
               label={String(price)}
             />
           </View>
@@ -46,6 +46,9 @@ export function TrackdayLinkCard({ id, track, price, organization }: Trackday) {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    rowGap: 4
+  },
   cardTitle: {
     fontWeight: '600'
   },
