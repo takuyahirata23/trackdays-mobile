@@ -1,7 +1,7 @@
 import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useFonts } from 'expo-font'
-import { SplashScreen, Stack } from 'expo-router'
+import { Stack } from 'expo-router'
 import { useEffect } from 'react'
 import { ApolloProvider } from '@apollo/client'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -63,11 +63,12 @@ export default function RootLayout() {
     }
   }, [token])
 
+  if (!font || !isReady) {
+    return null
+  }
+
   return (
-    <>
-      {!font || (!isReady && <SplashScreen />)}
-      {font && isReady && <RootLayoutNav user={user} setUser={setUser} />}
-    </>
+    <RootLayoutNav user={user} setUser={setUser} />
   )
 }
 
