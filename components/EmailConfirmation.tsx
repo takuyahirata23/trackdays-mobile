@@ -6,16 +6,17 @@ import { Text } from './Text'
 import { useTheme } from '../hooks/useTheme'
 
 type Props = {
-  children?: React.ReactNode
+  children?: React.ReactNode,
+  message: string
 }
 
-export function EmailConfirmation({ children }: Props) {
+export function EmailConfirmation({ children, message }: Props) {
   const { colors: { accent } } = useTheme()
 
   return (
     <View style={styles.wrapper}>
       <MaterialCommunityIcons name="email-check" size={60} color={accent} />
-      <Text style={styles.text}>Email has been sent!</Text>
+      <Text style={styles.text}>{ message }</Text>
       {children && children}
     </View>
   )
