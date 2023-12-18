@@ -13,7 +13,14 @@ import BottomSheet from '@gorhom/bottom-sheet'
 
 import { GROUPS_DEV, GROUPS_PROD } from '@constants/groups'
 import { AuthContext } from '@context/Auth'
-import { Container, Text, Field, Button, BottomSheetHandle } from '@components'
+import {
+  Container,
+  Text,
+  Field,
+  Button,
+  BottomSheetHandle,
+  EmailConfirmation
+} from '@components'
 import { useTheme } from '@hooks/useTheme'
 import { validateRegisterForm } from '../../functions/validations'
 
@@ -39,6 +46,7 @@ export default function Register() {
     groupId: ''
   })
   const [isLoading, setIsLoading] = React.useState(false)
+  const [hasEmailBeenSent, setHasEmailBeenSent] = React.useState(false)
   const [formErrors, setFormErrors] = React.useState<RegisterFormErrors>({
     isValid: false,
     email: '',
@@ -56,7 +64,10 @@ export default function Register() {
 
   React.useEffect(() => {
     if (isLoading) {
-      register(form)
+      register(form, _d => {
+        setIsLoading(false)
+        setHasEmailBeenSent(true)
+      })
     }
 
     return () => {
@@ -74,64 +85,79 @@ export default function Register() {
       setForm(prev => ({ ...prev, [field]: value }))
 
   const onPress = () => setFormErrors(validateRegisterForm(form))
+  const navigateToLoginScreen = () => push('/sign-in')
 
   return (
     <SafeAreaView style={[{ backgroundColor: bgPrimary }, styles.safeArea]}>
       <Container>
-        <Text style={styles.title}>Register</Text>
-        <View style={styles.form}>
-          <Field
-            label="Name"
-            value={form.name}
-            onChangeText={onChangeText('name')}
-            placeholder="Your Name"
-            error={formErrors.name || error?.fields?.name}
-          />
-          <Field
-            label="Email"
-            keyboardType="email-address"
-            value={form.email}
-            onChangeText={onChangeText('email')}
-            placeholder="your-email@domain.com"
-            error={formErrors.email || error?.fields?.email}
-          />
-          <Field
-            secureTextEntry
-            label="Password"
-            value={form.password}
-            onChangeText={onChangeText('password')}
-            placeholder="YoUR.PASSword!"
-            error={formErrors.password || error?.fields?.password}
-          />
-          <Pressable
-            onPress={() => {
-              Keyboard.dismiss()
-              ref.current?.expand()
-            }}
-          >
-            <Text>Riding Group</Text>
-            <Text style={[styles.field, { backgroundColor: bgSecondary }]}>
-              {form.groupId
-                ? findCurrentGroup(form.groupId)?.name
-                : 'Choose your riding group'}
-            </Text>
-            {formErrors.groupId && <Text>{formErrors.groupId}</Text>}
-          </Pressable>
-        </View>
-        <View style={styles.button}>
-          {error?.message && (
-            <View style={styles.error}>
-              <Text style={styles.errorText}>{error.message}</Text>
+        {hasEmailBeenSent ? (
+          <EmailConfirmation>
+            <View style={styles.loginBtnWrapper}>
+              <Button onPress={navigateToLoginScreen} variant="secondary">
+                Login
+              </Button>
             </View>
-          )}
-          <Button onPress={onPress}>Register</Button>
-        </View>
-        <View style={styles.routerButton}>
-          <RNButton
-            onPress={() => push('/sign-in')}
-            title="Have an account? Log in from here"
-          />
-        </View>
+          </EmailConfirmation>
+        ) : (
+          <>
+            <Text style={styles.title}>Register</Text>
+            <View style={styles.form}>
+              <Field
+                label="Name"
+                value={form.name}
+                onChangeText={onChangeText('name')}
+                placeholder="Your Name"
+                error={formErrors.name || error?.fields?.name}
+              />
+              <Field
+                label="Email"
+                keyboardType="email-address"
+                value={form.email}
+                onChangeText={onChangeText('email')}
+                placeholder="your-email@domain.com"
+                error={formErrors.email || error?.fields?.email}
+              />
+              <Field
+                secureTextEntry
+                label="Password"
+                value={form.password}
+                onChangeText={onChangeText('password')}
+                placeholder="YoUR.PASSword!"
+                error={formErrors.password || error?.fields?.password}
+              />
+              <Pressable
+                onPress={() => {
+                  Keyboard.dismiss()
+                  ref.current?.expand()
+                }}
+              >
+                <Text>Riding Group</Text>
+                <Text style={[styles.field, { backgroundColor: bgSecondary }]}>
+                  {form.groupId
+                    ? findCurrentGroup(form.groupId)?.name
+                    : 'Choose your riding group'}
+                </Text>
+                {formErrors.groupId && <Text>{formErrors.groupId}</Text>}
+              </Pressable>
+            </View>
+            <View style={styles.button}>
+              {error?.message && (
+                <View style={styles.error}>
+                  <Text style={styles.errorText}>{error.message}</Text>
+                </View>
+              )}
+              <Button onPress={onPress} disabled={isLoading}>
+                Register
+              </Button>
+            </View>
+            <View style={styles.routerButton}>
+              <RNButton
+                onPress={() => push('/sign-in')}
+                title="Have an account? Log in from here"
+              />
+            </View>
+          </>
+        )}
       </Container>
       <BottomSheet
         ref={ref}
@@ -196,5 +222,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 8,
     borderRadius: 4
+  },
+  loginBtnWrapper: {
+    marginTop: 32,
+    width: 120
   }
 })

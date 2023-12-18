@@ -15,7 +15,7 @@ type User = {
   name: string
 }
 
-type Reponse = {
+type Response = {
   message: string
   errors?: { [key: string]: string[] }
   error: boolean
@@ -39,11 +39,13 @@ type ErrorsFromAPI = {
   error: boolean
 }
 
+type ResponseCallback = (r: Response) => void
+
 type AuthContextType = {
   signIn: (form: SignInFields) => void
   signOut: () => void
   deleteAccount: () => void
-  register: (form: RegisterFields) => void
+  register: (form: RegisterFields, callback: ResponseCallback) => void
   error: null | Error
 }
 
@@ -74,7 +76,7 @@ export function AuthProvider({ children, setUser }: Props) {
 
   const handleUserRegistrationResponse = () => replace('/sign-in')
 
-  const handleResponse = (cb: (_d: Reponse) => void) => (d: Reponse) =>
+  const handleResponse = (cb: (_d: Response) => void) => (d: Response) =>
     d.error ? handleErrorFromAPI(d) : cb(d)
 
   const signIn = (body: SignInFields) =>
@@ -95,11 +97,11 @@ export function AuthProvider({ children, setUser }: Props) {
       .then(() => setUser(null))
   }
 
-  const register = (body: RegisterFields) => {
+  const register = (body: RegisterFields, callback: (r: Response) => void) => {
     sendRegisterRequest({ ...body, group_id: body.groupId })
-      .then(handleResponse(handleUserRegistrationResponse))
+      .then(callback)
       .catch(() => {
-        setError({ message: 'Registration failed. Please try again.' })
+        setError({ message: 'Registration failed. Please try again later.' })
       })
   }
 

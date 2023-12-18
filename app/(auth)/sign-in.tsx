@@ -8,13 +8,9 @@ import {
 import { useRouter } from 'expo-router'
 
 import { AuthContext } from '@context/Auth'
-import { Container } from '@components/Container'
-import { Text } from '@components/Text'
-import { Field } from '@components/Field'
-import { Button } from '@components/Button'
+import { Container, Text, Field, Button, EmailConfirmation } from '@components'
 import { useTheme } from '@hooks/useTheme'
 import { validateSignInForm } from '../../functions/validations'
-import { LOGIN } from '@constants/endpoints'
 
 export type SignInFormErrors = {
   isValid: boolean
@@ -32,7 +28,7 @@ export default function SignIn() {
     password: ''
   })
 
-  const onChagneText = (field: 'email' | 'password') => (value: string) =>
+  const onChangeText = (field: 'email' | 'password') => (value: string) =>
     setForm(prev => ({ ...prev, [field]: value }))
 
   const {
@@ -69,7 +65,7 @@ export default function SignIn() {
             label="Email"
             keyboardType="email-address"
             value={form.email}
-            onChangeText={onChagneText('email')}
+            onChangeText={onChangeText('email')}
             placeholder="your-email@domain.com"
             error={formErrors.email}
           />
@@ -77,7 +73,7 @@ export default function SignIn() {
             secureTextEntry
             label="Password"
             value={form.password}
-            onChangeText={onChagneText('password')}
+            onChangeText={onChangeText('password')}
             placeholder="YoUR.PASSword!"
             error={formErrors.password}
           />
