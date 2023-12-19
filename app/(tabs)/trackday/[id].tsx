@@ -8,7 +8,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { TRACKDAY } from '@graphql/queries'
 import { useTheme } from '@hooks/useTheme'
 
-import { Container, Text, Card,  ExternalLink } from '@components'
+import { Container, Text, Card, ExternalLink } from '@components'
 
 export default function TrackdayDetail() {
   const { id } = useLocalSearchParams()
@@ -38,7 +38,7 @@ export default function TrackdayDetail() {
           style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
         >
           <MaterialCommunity name="calendar-today" size={22} color={tertiary} />
-          <Text style={{ color: secondary}}>{date}</Text>
+          <Text style={{ color: secondary }}>{date}</Text>
         </View>
         <Text style={{ fontSize: 20, fontWeight: '500' }}>
           {track.facility.name}
@@ -59,7 +59,7 @@ export default function TrackdayDetail() {
           style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
         >
           <FontAwesome name="dollar" size={22} color={tertiary} />
-          <Text style={{ color: secondary}}>{String(price)}</Text>
+          <Text style={{ color: secondary }}>{String(price)}</Text>
         </View>
         <Text style={{ fontSize: 20, fontWeight: '500' }}>
           {organization.name}

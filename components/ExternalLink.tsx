@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'expo-router'
 import * as WebBrowser from 'expo-web-browser'
-import { Platform } from 'react-native'
+import { Platform, View } from 'react-native'
 
 import { Button } from './Button'
 
@@ -22,7 +22,9 @@ export function ExternalLink(props: React.ComponentProps<typeof Link>) {
         }
       }}
     >
-      <Button>{props.children}</Button>
+      <View>
+        <Button>{props.children}</Button>
+      </View>
     </Link>
   )
 }
