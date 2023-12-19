@@ -216,9 +216,12 @@ export const TRACKDAY = gql`
       date
       price
       description
+      trackdaysRegistrationUrl
       organization {
         id
         name
+        trackdaysRegistrationUrl
+        homepageUrl
         trackdaysRegistrationUrl
       }
       track {
