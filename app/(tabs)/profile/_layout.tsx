@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native'
 import Ion from '@expo/vector-icons/Ionicons'
 
 import { useTheme } from '@hooks/useTheme'
+import { Header } from '@components'
 
 export default function ProfileLayout() {
   const {
@@ -13,7 +14,9 @@ export default function ProfileLayout() {
     <Stack
       initialRouteName="index"
       screenOptions={{
-        headerTintColor: primary
+        headerBackTitleVisible: false,
+        headerTitle: () => <Header />,
+        headerShadowVisible: true
       }}
     >
       <Stack.Screen
@@ -54,7 +57,7 @@ export default function ProfileLayout() {
       <Stack.Screen
         name="delete-account"
         options={{
-          title: 'Delete account'
+          title: 'Settings'
         }}
       />
     </Stack>

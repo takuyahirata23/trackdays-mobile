@@ -1,12 +1,16 @@
 import React from 'react'
 import { Stack } from 'expo-router'
 
+import { Header } from '@components'
+
 export default function TrackdayLayout() {
   return (
     <Stack
       initialRouteName="index"
       screenOptions={{
-        headerShown: true
+        headerBackTitleVisible: false,
+        headerTitle: () => <Header />,
+        headerShadowVisible: true
       }}
     >
       <Stack.Screen
