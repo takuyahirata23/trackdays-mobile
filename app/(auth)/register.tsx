@@ -90,7 +90,7 @@ export default function Register() {
   return (
     <SafeAreaView style={[{ backgroundColor: bgPrimary }, styles.safeArea]}>
       <Container>
-        {!hasEmailBeenSent ? (
+        {hasEmailBeenSent ? (
           <EmailConfirmation message="Verification Email has been sent!">
             <View style={styles.loginBtnWrapper}>
               <Button onPress={navigateToLoginScreen} variant="secondary">
