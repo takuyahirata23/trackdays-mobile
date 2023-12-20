@@ -5,7 +5,7 @@ import IonIcons from '@expo/vector-icons/Ionicons'
 import { useRouter } from 'expo-router'
 
 import { USER_QUERY } from '@graphql/queries'
-import { Text, Container, Field, Button } from '@components'
+import { Text, Container, Field, Button, EmailConfirmation } from '@components'
 import { validateSignInForm } from '@functions/validations'
 import { sendEmailUpdateRequest } from '@rest/auth'
 
@@ -20,6 +20,7 @@ export default function ChangeEmail() {
   const [isLoading, setIsLoading] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
   const { push } = useRouter()
+  const [hasEmailBeenSent, setHasEmailBeenSent] = React.useState(false)
   const [formErrors, setFormErrors] = React.useState<EmailUpdateFormErrors>({
     isValid: false,
     email: ''
@@ -44,7 +45,7 @@ export default function ChangeEmail() {
       sendEmailUpdateRequest({ email })
         .then(x => {
           if (!x.error) {
-            push('/profile')
+            setHasEmailBeenSent(true)
           }
         })
         .catch(() => {
@@ -64,28 +65,40 @@ export default function ChangeEmail() {
 
   return (
     <Container style={styles.container}>
-      <Field
-        onChangeText={setEmail}
-        label="Email"
-        value={email}
-        placeholder={data.user.email}
-        keyboardType="email-address"
-        error={formErrors.email}
-      />
-      <View style={styles.warningWrapper}>
-        <IonIcons name="information-circle-outline" size={24} />
-        <Text color="secondary" style={styles.warningText}>
-          Please verify your email again after changing your email.
-        </Text>
-      </View>
-      {errorMessage && (
-        <Text color="error" style={styles.warningText}>
-          Please verify your email again after changing your email.
-        </Text>
+      {hasEmailBeenSent ? (
+        <EmailConfirmation message="Verification Email has been sent!">
+        <View style={styles.emailSentBtnWrapper}>
+          <Button onPress={() => push('/profile')} variant="secondary">
+            Back to profile
+          </Button>
+        </View>
+        </EmailConfirmation>
+      ) : (
+        <>
+          <Field
+            onChangeText={setEmail}
+            label="Email"
+            value={email}
+            placeholder={data.user.email}
+            keyboardType="email-address"
+            error={formErrors.email}
+          />
+          <View style={styles.warningWrapper}>
+            <IonIcons name="information-circle-outline" size={24} />
+            <Text color="secondary" style={styles.warningText}>
+              Please verify your email again after changing your email.
+            </Text>
+          </View>
+          {errorMessage && (
+            <Text color="error" style={styles.warningText}>
+              Please verify your email again after changing your email.
+            </Text>
+          )}
+          <Button onPress={onPress} disabled={isLoading}>
+            Change email
+          </Button>
+        </>
       )}
-      <Button onPress={onPress} disabled={isLoading}>
-        Change email
-      </Button>
     </Container>
   )
 }
@@ -101,5 +114,8 @@ const styles = StyleSheet.create({
   },
   warningText: {
     flex: 1
+  },
+  emailSentBtnWrapper: {
+    marginTop: 32,
   }
 })
