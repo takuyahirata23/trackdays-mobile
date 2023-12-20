@@ -1,16 +1,12 @@
 import { gql } from '@apollo/client'
 
+import { USER_FIELDS } from './fragments'
+
 export const USER_QUERY = gql`
+  ${USER_FIELDS}
   query getUser {
     user {
-      id
-      email
-      name
-      imageUrl
-      group {
-        id
-        name
-      }
+      ...UserFields
     }
   }
 `

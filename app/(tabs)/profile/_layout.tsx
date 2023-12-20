@@ -8,7 +8,7 @@ import { Header } from '@components'
 
 export default function ProfileLayout() {
   const {
-    colors: { primary, secondary }
+    colors: { secondary }
   } = useTheme()
   return (
     <Stack
@@ -56,6 +56,12 @@ export default function ProfileLayout() {
       />
       <Stack.Screen
         name="delete-account"
+        options={{
+          title: 'Settings'
+        }}
+      />
+      <Stack.Screen
+        name="update-group"
         options={{
           title: 'Settings'
         }}

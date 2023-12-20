@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Link } from 'expo-router'
-import { Octicons, AntDesign } from '@expo/vector-icons'
+import { Octicons, AntDesign, Feather } from '@expo/vector-icons'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { useQuery } from '@apollo/client'
 
@@ -26,6 +26,18 @@ export default function Setting() {
   return (
     <Container style={styles.container}>
       <View style={styles.menuWrapper}>
+        <Link
+          href={{
+            pathname: '/profile/update-group'
+          }}
+          asChild
+        >
+          <TouchableOpacity style={styles.buttonWrapper}>
+            <Feather name="flag" size={18} color={primary} />
+            <Text style={styles.buttonText}>Update riding group</Text>
+            <Octicons size={18} name="chevron-right" color={primary} />
+          </TouchableOpacity>
+        </Link>
         <Link
           href={{
             pathname: '/profile/change-email'
@@ -66,7 +78,7 @@ const styles = StyleSheet.create({
     paddingBottom: 24
   },
   menuWrapper: {
-    rowGap: 20
+    rowGap: 24
   },
   buttonWrapper: {
     flexDirection: 'row',
