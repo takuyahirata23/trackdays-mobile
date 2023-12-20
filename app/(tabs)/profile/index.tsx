@@ -138,7 +138,11 @@ export default function ProfileIndex() {
           <View style={styles.personalBestWrapper}>
             {bestLapsRes.data.bestLapForEachTrack.map(
               (trackday: TrackdayNote) => (
-                <TrackdayNoteLinkCard key={trackday.id} {...trackday} showSubtitle />
+                <TrackdayNoteLinkCard
+                  key={trackday.id}
+                  {...trackday}
+                  showSubtitle
+                />
               )
             )}
           </View>

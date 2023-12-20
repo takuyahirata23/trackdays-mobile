@@ -67,9 +67,7 @@ export default function RootLayout() {
     return null
   }
 
-  return (
-    <RootLayoutNav user={user} setUser={setUser} />
-  )
+  return <RootLayoutNav user={user} setUser={setUser} />
 }
 
 function RootLayoutNav({ user, setUser }: { user: null | User; setUser: any }) {

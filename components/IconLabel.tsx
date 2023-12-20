@@ -13,12 +13,12 @@ type Props = {
 
 export function IconLabel({ icon, label, variant = 'primary' }: Props) {
   const {
-    colors: {  secondary }
+    colors: { secondary }
   } = useTheme()
   return (
     <Card style={styles.wrapper} variant={variant}>
       {icon}
-      <Text style={[styles.label ,{ color: secondary}]}>{label}</Text>
+      <Text style={[styles.label, { color: secondary }]}>{label}</Text>
     </Card>
   )
 }

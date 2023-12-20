@@ -30,14 +30,17 @@ type Events = {
 }
 
 export default function TrackdayIndex() {
-  const { loading, data, error, refetch } = useQuery(GET_MONTHLY_TRACKDAY_DATA, {
-    variables: {
-      getEventsByMonthInput: {
-        year,
-        month
+  const { loading, data, error, refetch } = useQuery(
+    GET_MONTHLY_TRACKDAY_DATA,
+    {
+      variables: {
+        getEventsByMonthInput: {
+          year,
+          month
+        }
       }
     }
-  })
+  )
 
   const {
     colors: { accent, tertiary, primary }

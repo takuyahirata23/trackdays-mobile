@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router'
 import { sendPasswordUpdateRequest } from '@rest/auth'
 import { validateEmailForm } from '@functions/validations'
 import { useTheme } from '@hooks/useTheme'
-import { Container, Text, Field, Button } from '@components'
+import { Container, Text, Field, Button, EmailConfirmation } from '@components'
 
 export type EmailFormErrors = {
   isValid: boolean
@@ -58,8 +58,11 @@ export default function PasswordUpdate() {
       <Container style={styles.container}>
         {hasEmailBeenSent ? (
           <>
-            <Text style={styles.title}>Please check your email box.</Text>
-            <Button onPress={() => push('/sign-in')}>Login screen</Button>
+            <EmailConfirmation message="Password update email has been sent!">
+              <Button onPress={() => push('/sign-in')} variant="secondary">
+                Login
+              </Button>
+            </EmailConfirmation>
           </>
         ) : (
           <>

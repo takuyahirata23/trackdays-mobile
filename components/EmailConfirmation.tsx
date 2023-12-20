@@ -6,18 +6,20 @@ import { Text } from './Text'
 import { useTheme } from '../hooks/useTheme'
 
 type Props = {
-  children?: React.ReactNode,
+  children?: React.ReactNode
   message: string
 }
 
 export function EmailConfirmation({ children, message }: Props) {
-  const { colors: { accent } } = useTheme()
+  const {
+    colors: { accent }
+  } = useTheme()
 
   return (
     <View style={styles.wrapper}>
       <MaterialCommunityIcons name="email-check" size={60} color={accent} />
-      <Text style={styles.text}>{ message }</Text>
-      {children && children}
+      <Text style={styles.text}>{message}</Text>
+      {children && <View style={styles.childrenWrapper}>{children}</View>}
     </View>
   )
 }
@@ -31,6 +33,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+    textAlign: 'center',
     fontWeight: '600'
+  },
+  childrenWrapper: {
+    marginTop: 32
   }
 })

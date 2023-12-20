@@ -22,8 +22,7 @@ export default function TrackdayLayout() {
       <Stack.Screen
         name="create-trackday-note"
         options={{
-          headerShown: true,
-          title: ''
+          headerShown: true
         }}
       />
       <Stack.Screen

@@ -67,11 +67,9 @@ export default function ChangeEmail() {
     <Container style={styles.container}>
       {hasEmailBeenSent ? (
         <EmailConfirmation message="Verification Email has been sent!">
-        <View style={styles.emailSentBtnWrapper}>
           <Button onPress={() => push('/profile')} variant="secondary">
             Back to profile
           </Button>
-        </View>
         </EmailConfirmation>
       ) : (
         <>
@@ -114,8 +112,5 @@ const styles = StyleSheet.create({
   },
   warningText: {
     flex: 1
-  },
-  emailSentBtnWrapper: {
-    marginTop: 32,
   }
 })

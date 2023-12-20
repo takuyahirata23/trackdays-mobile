@@ -84,9 +84,9 @@ export default function RegisterMotorcycle() {
   const handlers = {
     year: () => {
       if (!motorcycleValidations.year.run(fields.year)) {
-       handleFieldOnChange('year')(String(thisYear))
-      } 
-        setBottomSheetField('make')
+        handleFieldOnChange('year')(String(thisYear))
+      }
+      setBottomSheetField('make')
     },
     make: () => {
       if (!fields.make) {

@@ -92,11 +92,9 @@ export default function Register() {
       <Container>
         {hasEmailBeenSent ? (
           <EmailConfirmation message="Verification Email has been sent!">
-            <View style={styles.loginBtnWrapper}>
-              <Button onPress={navigateToLoginScreen} variant="secondary">
-                Login
-              </Button>
-            </View>
+            <Button onPress={navigateToLoginScreen} variant="secondary">
+              Login
+            </Button>
           </EmailConfirmation>
         ) : (
           <>
@@ -222,9 +220,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 8,
     borderRadius: 4
-  },
-  loginBtnWrapper: {
-    marginTop: 32,
-    width: 120
   }
 })

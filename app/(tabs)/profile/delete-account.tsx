@@ -9,7 +9,7 @@ import { AuthContext } from '@context/Auth'
 import { Text, Button, Container } from '@components'
 
 export default function DeleteAccount() {
-  const {  deleteAccount } = React.useContext(AuthContext)
+  const { deleteAccount } = React.useContext(AuthContext)
   const { client } = useQuery(USER_QUERY, { skip: true })
 
   const handleDeleteAccount = () => {
@@ -28,11 +28,13 @@ export default function DeleteAccount() {
           This will delete everything
         </Text>
       </View>
-        <Text style={styles.message}>
-          If you are sure to delete your account, please press the button below.
-        </Text>
+      <Text style={styles.message}>
+        If you are sure to delete your account, please press the button below.
+      </Text>
       <View style={styles.btnWrapper}>
-      <Button variant="secondary" onPress={handleDeleteAccount}>Delete</Button>
+        <Button variant="secondary" onPress={handleDeleteAccount}>
+          Delete
+        </Button>
         <Text style={styles.message}>
           Thank you for using Trackday. Ride safe!
         </Text>
