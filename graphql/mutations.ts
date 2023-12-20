@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { USER_FIELDS } from './fragments'
 
 export const REGISTER_MOTORCYCLE = gql`
   mutation registerMotorcycle(
@@ -81,6 +82,15 @@ export const DELETE_TRACKDAY_NOTE = gql`
   mutation deleteTrackdayNote($id: ID!) {
     deleteTrackdayNote(id: $id) {
       id
+    }
+  }
+`
+
+export const UPDATE_GROUP = gql`
+  ${USER_FIELDS}
+  mutation updateGroup($groupId: ID!) {
+    updateGroup(groupId: $groupId) {
+      ...UserFields
     }
   }
 `

@@ -37,7 +37,9 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     paddingVertical: 8,
-    paddingHorizontal: 12
+    paddingHorizontal: 12,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16
   },
   text: {
     fontWeight: '500'
