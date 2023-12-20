@@ -64,9 +64,9 @@ const LightTheme: Theme = {
     bgPrimary: '#f9f9fb',
     bgSecondary: '#f2f2f2',
     btnPrimary: '#ffffff',
-    btnSecondary: '#f06543',
+    btnSecondary: '#ffffff',
     btnBgPrimary: '#279B47',
-    btnBgSecondary: '#fce762'
+    btnBgSecondary: '#ff8c42'
   }
 }
 //Box shadow

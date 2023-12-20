@@ -25,7 +25,7 @@ export default function TrackdayDetail() {
     }
   })
   const {
-    colors: { primary, secondary, tertiary, accent, btnPrimary, btnBgPrimary }
+    colors: { primary, secondary, tertiary,  btnSecondary, btnBgSecondary }
   } = useTheme()
 
   if (loading || error) {
@@ -43,30 +43,30 @@ export default function TrackdayDetail() {
 
   return (
     <Container style={styles.container}>
-      <Card style={{ rowGap: 20 }}>
+      <Card style={{ rowGap: 20 }} sidebarVariant="secondary">
         <View
           style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
         >
           <MaterialCommunityIcons
             name="calendar-today"
-            size={22}
+            size={18}
             color={tertiary}
           />
-          <Text style={{ color: secondary }}>{date}</Text>
+          <Text style={{ color: secondary, fontSize: 14 }}>{date}</Text>
         </View>
-        <Text style={{ fontSize: 20, fontWeight: '500' }}>
+        <Text style={{ fontSize: 18, fontWeight: '500' }}>
           {track.facility.name}
         </Text>
         <View style={styles.organization}>
           <MaterialCommunityIcons
             name="go-kart-track"
-            size={22}
+            size={18}
             color={tertiary}
           />
-          <Text>{track.name}</Text>
+          <Text style={{ fontSize: 14}}>{track.name}</Text>
         </View>
       </Card>
-      <Card style={{ rowGap: 20 }}>
+      <Card style={{ rowGap: 20 }} sidebarVariant="secondary">
         <View
           style={{
             flexDirection: 'row',
@@ -77,18 +77,18 @@ export default function TrackdayDetail() {
           <View
             style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
           >
-            <FontAwesome name="dollar" size={22} color={tertiary} />
-            <Text style={{ color: secondary }}>{String(price)}</Text>
+            <FontAwesome name="dollar" size={18} color={tertiary} />
+            <Text style={{ color: secondary, fontSize: 14 }}>{String(price)}</Text>
           </View>
           {organization.homepageUrl && (
             <ExternalLink href={organization.homepageUrl} asChild>
               <TouchableOpacity>
-                <Feather name="external-link" size={22} color={primary} />
+                <Feather name="external-link" size={20} color={primary} />
               </TouchableOpacity>
             </ExternalLink>
           )}
         </View>
-        <Text style={{ fontSize: 20, fontWeight: '500' }}>
+        <Text style={{ fontSize: 18, fontWeight: '500' }}>
           {organization.name}
         </Text>
         {description && <Text>{description}</Text>}
@@ -102,13 +102,13 @@ export default function TrackdayDetail() {
         >
           <TouchableOpacity
             style={{
-              backgroundColor: btnBgPrimary,
+              backgroundColor: btnBgSecondary,
               paddingHorizontal: 16,
               paddingVertical: 8,
               borderRadius: 8
             }}
           >
-            <Text style={[styles.buttonText, { color: btnPrimary }]}>
+            <Text style={[styles.buttonText, { color: btnSecondary }]}>
               Book Now!
             </Text>
           </TouchableOpacity>

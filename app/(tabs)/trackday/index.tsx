@@ -121,8 +121,9 @@ export default function TrackdayIndex() {
     })
 
   return (
-    <Container>
+    <Container style={{ paddingTop: 0}}>
       <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={{ marginTop: 20}}>
         <Card>
           <Calendar
             initialDate={today}
@@ -132,6 +133,7 @@ export default function TrackdayIndex() {
             markingType="multi-dot"
           />
         </Card>
+      </View>
         <View style={styles.contentWrapper}>
           {targetNotes.map((note: TrackdayNote) => (
             <TrackdayNoteLinkCard {...note} key={note.id} />

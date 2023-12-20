@@ -3,7 +3,7 @@ import { useNavigation } from 'expo-router'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useQuery, useMutation } from '@apollo/client'
-import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { Button, Container, Card, Text, IconLabel } from '@components'
 import { TRACKDAY_NOTE } from '@graphql/queries'
@@ -15,7 +15,7 @@ export default function TrackdayDetail() {
   const { id } = useLocalSearchParams()
   const { goBack } = useNavigation()
   const {
-    colors: { primary }
+    colors: { primary, accent, secondary }
   } = useTheme()
 
   const { data, error, loading } = useQuery(TRACKDAY_NOTE, {
@@ -67,37 +67,48 @@ export default function TrackdayDetail() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container style={styles.container}>
-        <Card style={styles.card}>
-          <Text style={styles.heading}>{track.facility.name}</Text>
-          <Text>{track.name}</Text>
-        </Card>
-        <IconLabel
-          icon={
-            <MaterialCommunity
+        <Card style={{ rowGap: 20 }} sidebarVariant="primary">
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
+          >
+            <MaterialCommunityIcons
               name="calendar-today"
-              size={24}
-              color={primary}
+              size={18}
+              color={accent}
             />
-          }
-          label={date}
-        />
-        <IconLabel
-          icon={
-            <MaterialCommunity name="motorbike" size={24} color={primary} />
-          }
-          label={`${motorcycle.model.make.name} ${motorcycle.model.name}(${motorcycle.year})`}
-        />
-        <IconLabel
-          icon={<MaterialCommunity name="timer" size={24} color={primary} />}
-          label={formatLapTime(lapTime)}
-        />
+            <Text style={{ color: secondary, fontSize: 14 }}>{date}</Text>
+          </View>
+          <Text style={{ fontSize: 18, fontWeight: '500' }}>
+            {track.facility.name}
+          </Text>
+          <View style={styles.organization}>
+            <MaterialCommunityIcons
+              name="go-kart-track"
+              size={18}
+              color={accent}
+            />
+            <Text style={{ fontSize: 14}}>{track.name}</Text>
+          </View>
+        </Card>
+        <Card style={{ rowGap: 20 }} sidebarVariant="primary">
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
+          >
+            <MaterialCommunityIcons name="timer" size={18} color={accent} />
+            <Text style={{ color: secondary, fontSize: 14 }}>{formatLapTime(lapTime)}</Text>
+          </View>
+          <Text style={{ fontSize: 18, fontWeight: '500' }}>
+            {`${motorcycle.model.make.name} ${motorcycle.model.name}`}
+          </Text>
+            <Text style={{ color: secondary, fontSize: 14 }}>{motorcycle.year}</Text>
+        </Card>
         {note && (
           <Card>
             <Text>{note}</Text>
           </Card>
         )}
         <View style={styles.btnWrapper}>
-          <Button variant="secondary" onPress={handleDelete}>
+          <Button variant="primary" onPress={handleDelete}>
             Delete
           </Button>
         </View>
@@ -121,5 +132,10 @@ const styles = StyleSheet.create({
   btnWrapper: {
     marginTop: 'auto',
     rowGap: 12
+  },
+  organization: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 8
   }
 })
