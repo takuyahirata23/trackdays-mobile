@@ -1,4 +1,4 @@
-export const millisecondsToMinute = (x: number) => x / 1000 / 60
+export const millisecondsToMinute = (x: number) => Math.floor(x / 60000)
 export const millisecondsToSeconds = (x: number) => (x / 1000) % 60
 export const minutesToMilliseconds = (minute: number) => minute * 60000
 export const secondsToMilliseconds = (seconds: number) => seconds * 1000
@@ -16,7 +16,16 @@ export const formatMilliseconds = (x: string) => {
   }
 }
 
+export const lapTimeToMilliseconds = ({
+  minutes,
+  seconds,
+  milliseconds
+}: Record<string, string>) =>
+  minutesToMilliseconds(Number(minutes)) +
+  secondsToMilliseconds(Number(seconds)) +
+  Number(milliseconds)
+
 export const formatLapTime = (lapTimeInMilliseconds: number) =>
-  `${millisecondsToMinute(lapTimeInMilliseconds).toFixed(
-    0
-  )}:${millisecondsToSeconds(lapTimeInMilliseconds).toFixed(3)}`
+  `${millisecondsToMinute(lapTimeInMilliseconds)}:${millisecondsToSeconds(
+    lapTimeInMilliseconds
+  ).toFixed(3)}`

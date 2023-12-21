@@ -16,6 +16,7 @@ export type TrackdayNote = {
     }
   }
   motorcycle: Motorcycle
+  note?: string
 }
 
 export type Trackday = {
