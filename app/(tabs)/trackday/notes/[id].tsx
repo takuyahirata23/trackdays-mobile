@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigation, Link } from 'expo-router'
+import { useNavigation, Link, useRouter } from 'expo-router'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useQuery, useMutation } from '@apollo/client'
@@ -14,6 +14,7 @@ import { useTheme } from '@hooks/useTheme'
 export default function TrackdayDetail() {
   const { id } = useLocalSearchParams()
   const { goBack } = useNavigation()
+  const { push } = useRouter()
   const {
     colors: { accent, secondary }
   } = useTheme()
@@ -64,6 +65,12 @@ export default function TrackdayDetail() {
       }
     })
 
+  const handleEdit = () =>
+    push({
+      pathname: '/trackday/notes/update/[id]',
+      params: { id }
+    })
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container style={styles.container}>
@@ -112,15 +119,12 @@ export default function TrackdayDetail() {
           </Card>
         )}
         <View style={styles.btnWrapper}>
-          <Button variant="primary" onPress={handleDelete}>
+          <Button variant="primary" onPress={handleEdit}>
+            Edit
+          </Button>
+          <Button variant="secondary" onPress={handleDelete}>
             Delete
           </Button>
-          <Link href={{
-            pathname: '/trackday/notes/update/[id]',
-            params: { id }
-          }}>
-          Edit
-          </Link>
         </View>
       </Container>
     </SafeAreaView>
