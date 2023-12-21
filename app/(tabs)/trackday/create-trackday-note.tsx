@@ -25,9 +25,7 @@ import {
   KeyboardAvoidingView
 } from '@components'
 import {
-  minutesToMilliseconds,
-  secondsToMilliseconds,
-  formatMilliseconds
+  lapTimeToMilliseconds
 } from '@functions/lapTimeConverters'
 import { validateTrackdayNote } from '@functions/validations'
 
@@ -146,11 +144,6 @@ export default function CreateTrackdayNote() {
     }
   }, [facility])
 
-  const laptimeToMilliseconds = () =>
-    minutesToMilliseconds(Number(minutes)) +
-    secondsToMilliseconds(Number(seconds)) +
-    formatMilliseconds(milliseconds)
-
   const handleOnChange = (field: string) => (value: string) => {
     if (field === 'facility') {
       setFields(prev => ({ ...prev, [field]: value, track: '' }))
@@ -216,7 +209,7 @@ export default function CreateTrackdayNote() {
         variables: {
           saveTrackdayNoteInput: {
             date,
-            lapTime: laptimeToMilliseconds(),
+            lapTime: lapTimeToMilliseconds({ minutes, seconds, milliseconds}),
             motorcycleId: motorcycle,
             trackId: track,
             note: note

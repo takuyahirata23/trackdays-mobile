@@ -1,11 +1,11 @@
 import React from 'react'
-import { useNavigation } from 'expo-router'
+import { useNavigation, Link } from 'expo-router'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useQuery, useMutation } from '@apollo/client'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-import { Button, Container, Card, Text, IconLabel } from '@components'
+import { Button, Container, Card, Text } from '@components'
 import { TRACKDAY_NOTE } from '@graphql/queries'
 import { DELETE_TRACKDAY_NOTE } from '@graphql/mutations'
 import { formatLapTime } from '@functions/lapTimeConverters'
@@ -15,7 +15,7 @@ export default function TrackdayDetail() {
   const { id } = useLocalSearchParams()
   const { goBack } = useNavigation()
   const {
-    colors: { primary, accent, secondary }
+    colors: { accent, secondary }
   } = useTheme()
 
   const { data, error, loading } = useQuery(TRACKDAY_NOTE, {
@@ -87,7 +87,7 @@ export default function TrackdayDetail() {
               size={18}
               color={accent}
             />
-            <Text style={{ fontSize: 14}}>{track.name}</Text>
+            <Text style={{ fontSize: 14 }}>{track.name}</Text>
           </View>
         </Card>
         <Card style={{ rowGap: 20 }} sidebarVariant="primary">
@@ -95,12 +95,16 @@ export default function TrackdayDetail() {
             style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
           >
             <MaterialCommunityIcons name="timer" size={18} color={accent} />
-            <Text style={{ color: secondary, fontSize: 14 }}>{formatLapTime(lapTime)}</Text>
+            <Text style={{ color: secondary, fontSize: 14 }}>
+              {formatLapTime(lapTime)}
+            </Text>
           </View>
           <Text style={{ fontSize: 18, fontWeight: '500' }}>
             {`${motorcycle.model.make.name} ${motorcycle.model.name}`}
           </Text>
-            <Text style={{ color: secondary, fontSize: 14 }}>{motorcycle.year}</Text>
+          <Text style={{ color: secondary, fontSize: 14 }}>
+            {motorcycle.year}
+          </Text>
         </Card>
         {note && (
           <Card>
@@ -111,6 +115,12 @@ export default function TrackdayDetail() {
           <Button variant="primary" onPress={handleDelete}>
             Delete
           </Button>
+          <Link href={{
+            pathname: '/trackday/notes/update/[id]',
+            params: { id }
+          }}>
+          Edit
+          </Link>
         </View>
       </Container>
     </SafeAreaView>

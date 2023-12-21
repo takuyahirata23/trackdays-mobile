@@ -39,6 +39,13 @@ export default function TrackdayLayout() {
           title: ''
         }}
       />
+      <Stack.Screen
+        name="notes/update/[id]"
+        options={{
+          headerShown: true,
+          title: ''
+        }}
+      />
     </Stack>
   )
 }
