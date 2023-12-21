@@ -32,6 +32,7 @@ export const TRACKDAY_NOTE = gql`
   fragment NewTrackdayNote on TrackdayNotes {
     id
     date
+    lapTime
     track {
       id
       facility {

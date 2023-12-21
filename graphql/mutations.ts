@@ -55,6 +55,7 @@ export const UPDATE_TRACKDAY_NOTE = gql`
     updateTrackdayNote(updateTrackdayNoteInput: $updateTrackdayNoteInput) {
       id
       date
+      lapTime
       track {
         id
         facility {
