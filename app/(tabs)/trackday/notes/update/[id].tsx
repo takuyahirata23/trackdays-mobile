@@ -1,7 +1,7 @@
 import React from 'react'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useNavigation } from 'expo-router'
 import { View, StyleSheet, Keyboard, TouchableOpacity } from 'react-native'
-import { useQuery, useLazyQuery } from '@apollo/client'
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import BottomSheet from '@gorhom/bottom-sheet'
 import { Picker } from '@react-native-picker/picker'
 
@@ -11,9 +11,12 @@ import {
   TRACKS_QUERY,
   MOTORCYCLES_QUERY
 } from '@graphql/queries'
+import { UPDATE_TRACKDAY_NOTE } from '@graphql/mutations'
+import { validateTrackdayNote } from '@functions/validations'
 import {
   millisecondsToMinute,
   millisecondsToSeconds,
+  lapTimeToMilliseconds
 } from '@functions/lapTimeConverters'
 import {
   Button,
@@ -35,24 +38,24 @@ const timeToFields = (lapTime: number) => {
     return { minutes: '', seconds: '0', milliseconds: '0' }
   } else {
     const minutes = millisecondsToMinute(lapTime)
-    const [seconds, milliseconds] = millisecondsToSeconds(lapTime).toFixed(3).split('.')
+    const [seconds, milliseconds] = millisecondsToSeconds(lapTime)
+      .toFixed(3)
+      .split('.')
     return {
       minutes: String(minutes),
-      seconds, 
-      milliseconds: milliseconds.replaceAll('0', ''),
+      seconds,
+      milliseconds: milliseconds.replaceAll('0', '')
     }
   }
 }
 
 const trackdayNoteToTrackdayFields = ({
-  date,
   track,
   motorcycle,
   lapTime,
   note
 }: TrackdayNote) => {
   return {
-    date,
     track: track.id,
     motorcycle: motorcycle.id,
     note,
@@ -82,6 +85,7 @@ enum SaveTrackdaySteps {
 
 export default function Update() {
   const bottomSheetRef = React.useRef<BottomSheet>(null)
+  const { goBack } = useNavigation()
   const { id } = useLocalSearchParams()
   const { data } = useQuery(TRACKDAY_NOTE, {
     variables: {
@@ -91,7 +95,7 @@ export default function Update() {
   })
 
   const [
-    { date, track, motorcycle, minutes, seconds, milliseconds, note, facility },
+    { track, motorcycle, minutes, seconds, milliseconds, note, facility },
     setFields
   ] = React.useState(trackdayNoteToTrackdayFields(data.trackdayNote))
   const [currentStep, setCurrentStep] = React.useState(
@@ -106,7 +110,6 @@ export default function Update() {
   })
   const [formError, setFormError] = React.useState<TrackdayNoteFormErrors>({
     isValid: false,
-    date: '',
     track: '',
     motorcycle: '',
     minutes: '',
@@ -114,6 +117,14 @@ export default function Update() {
     milliseconds: ''
   })
 
+  const [updateTrackdayNote] = useMutation(UPDATE_TRACKDAY_NOTE, {
+    onError(e) {
+      console.log('error', e)
+    },
+    onCompleted() {
+      goBack()
+    }
+  })
   const {
     colors: { error }
   } = useTheme()
@@ -140,9 +151,45 @@ export default function Update() {
     formError.minutes || formError.seconds || formError.milliseconds
   )
 
-  const handleSubmit = () => null
+  const handleSubmit = () =>
+    setFormError(
+      validateTrackdayNote({
+        track,
+        motorcycle,
+        minutes,
+        seconds,
+        milliseconds
+      })
+    )
 
-  const onDone = () => bottomSheetRef.current?.close()
+  const onDone = () => {
+    if (currentStep === SaveTrackdaySteps.Facility) {
+      setCurrentStep(SaveTrackdaySteps.Track)
+      return
+    }
+
+    if (currentStep === SaveTrackdaySteps.Track && !track) {
+      handleOnChange('track')(tracksRes.data.tracks[0].id)
+    }
+
+    bottomSheetRef.current?.close()
+  }
+
+  React.useEffect(() => {
+    if (formError.isValid) {
+      updateTrackdayNote({
+        variables: {
+          updateTrackdayNoteInput: {
+            id,
+            lapTime: lapTimeToMilliseconds({ minutes, seconds, milliseconds }),
+            motorcycleId: motorcycle,
+            trackId: track,
+            note: note
+          }
+        }
+      })
+    }
+  }, [track, motorcycle, minutes, seconds, milliseconds, formError])
 
   React.useEffect(() => {
     if (facility) {
@@ -156,7 +203,7 @@ export default function Update() {
         <KeyboardAvoidingView>
           <View style={styles.container}>
             <Card>
-              <Text>Date: {date}</Text>
+              <Text>Date: {data.trackdayNote.date}</Text>
             </Card>
             <TouchableOpacity
               onPress={handleCurrentStepChange(SaveTrackdaySteps.Facility)}
@@ -294,7 +341,9 @@ export default function Update() {
           handleComponent={() => (
             <BottomSheetHandle
               onPressRight={onDone}
-              rightText="Done"
+              rightText={
+                currentStep === SaveTrackdaySteps.Facility ? 'Next' : 'Done'
+              }
             />
           )}
         >
