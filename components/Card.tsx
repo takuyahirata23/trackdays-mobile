@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1
     },
-    shadowOpacity: 0.15
+    shadowOpacity: 0.15,
+    elevation: 2
   },
   paddingWidthSidebar: {
     paddingLeft: 24,
