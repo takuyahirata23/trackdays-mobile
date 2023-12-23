@@ -1,7 +1,7 @@
 import React from 'react'
 import { Stack } from 'expo-router'
 
-import { Header } from '@components'
+import { Header, AddTrackdayToCalendar } from '@components'
 import { DeleteTrackdayButton } from '@components/modalContents'
 
 export default function TrackdayLayout() {
@@ -30,7 +30,8 @@ export default function TrackdayLayout() {
         name="[id]"
         options={{
           headerShown: true,
-          title: ''
+          title: '',
+          headerRight: AddTrackdayToCalendar
         }}
       />
       <Stack.Screen

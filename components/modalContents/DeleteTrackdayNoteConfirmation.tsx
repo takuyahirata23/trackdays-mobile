@@ -7,10 +7,12 @@ import { Feather } from '@expo/vector-icons'
 
 import { DELETE_TRACKDAY_NOTE } from '@graphql/mutations'
 import { Text, Button } from '@components'
+import { useTheme } from '@hooks/useTheme'
 
 export function DeleteTrackdayButton() {
   const { id } = useLocalSearchParams()
   const { push } = useRouter()
+  const { colors: { primary } } = useTheme()
   const openModal = () =>
     push({
       pathname: '/modal',
@@ -22,7 +24,7 @@ export function DeleteTrackdayButton() {
 
   return (
     <TouchableOpacity onPress={openModal} style={styles.iconPadding} >
-      <Feather name="trash-2" size={20} />
+      <Feather name="trash-2" size={20} color={primary}/>
     </TouchableOpacity>
   )
 }
