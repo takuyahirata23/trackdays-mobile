@@ -1,4 +1,4 @@
-export { BottomSheet } from './BottomSheet'
+export { BottomSheet, BoomSheetItemList } from './BottomSheet'
 export { BottomSheetHandle } from './BottomSheetHandle'
 export { Button } from './Button'
 export { Card } from './Card'
