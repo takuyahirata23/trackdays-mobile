@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Platform, StyleSheet } from 'react-native'
+import { TouchableOpacity,  StyleSheet } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { useQuery } from '@apollo/client'
 import * as Calendar from 'expo-calendar'
@@ -7,29 +7,8 @@ import { useLocalSearchParams } from 'expo-router'
 
 import { TRACKDAY } from '@graphql/queries'
 import { useTheme } from '@hooks/useTheme'
-
-async function getDefaultCalendarSource() {
-  const defaultCalendar = await Calendar.getDefaultCalendarAsync()
-  return defaultCalendar.source
-}
-
-async function createCalendar() {
-  const defaultCalendarSource =
-    Platform.OS === 'ios'
-      ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: 'Trackdays' }
-
-  return await Calendar.createCalendarAsync({
-    title: 'Trackdays Calendar',
-    color: '#279B47',
-    entityType: Calendar.EntityTypes.EVENT,
-    sourceId: defaultCalendarSource.id,
-    source: defaultCalendarSource,
-    name: 'internalCalendarName',
-    ownerAccount: 'personal',
-    accessLevel: Calendar.CalendarAccessLevel.OWNER
-  })
-}
+import { createCalendar } from '@utils/calendar'
+import { getCalendarId } from '@utils/secureStore'
 
 export function AddTrackdayToCalendar() {
   const { id } = useLocalSearchParams()
@@ -42,41 +21,33 @@ export function AddTrackdayToCalendar() {
     }
   })
 
+  const [status, requestPermission] = Calendar.useCalendarPermissions()
 
-  React.useEffect(() => {
-   (async () => {
-     const { status } = await Calendar.requestCalendarPermissionsAsync();
-     if (status === 'granted') {
-       console.log('good')
-     } else {
-       console.log('no access')
-     }
-   })();
-  }, []);
-  //
   if (loading || error) {
     return null
   }
-  const { date, organization, track } = data.trackday
+
+  const { startDatetime, endDatetime, organization, track } = data.trackday
 
   const handlePress = async () => {
-    const { status } = await Calendar.requestCalendarPermissionsAsync()
-    if (status === 'granted' && typeof id === 'string') {
-      const calendarId = await createCalendar() 
-      const res = await Calendar.createEventAsync(calendarId, {
-        organizer: organization.name,
-        startDate: new Date(date),
-        endDate: new Date(date),
-        title: `${track.facility.name}(${track.name})`,
-        url: organization.homepageUrl,
-        recurrenceRule: null
-      })
-      console.log(res)
+    if (status?.granted && typeof id === 'string') {
+      let calendarId = await getCalendarId() 
 
-      const event = Calendar.getEventAsync(res)
-      console.log(event)
+      if(!calendarId) {
+        calendarId = await createCalendar()
+      }
+
+      await Calendar.createEventAsync(calendarId, {
+        organizer: organization.name,
+        startDate: new Date(startDatetime),
+        endDate: new Date(endDatetime),
+        title: `${track.facility.name}(${track.name})`,
+        id
+      })
+    } else if (status?.canAskAgain) {
+      await requestPermission()
     } else {
-      console.log('Please grant access to calendar')
+      console.log('no access')
     }
   }
 
@@ -91,4 +62,4 @@ const styles = StyleSheet.create({
   iconPadding: {
     padding: 4
   }
-  })
+})

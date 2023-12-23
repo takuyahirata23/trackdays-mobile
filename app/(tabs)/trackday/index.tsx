@@ -54,10 +54,10 @@ export default function TrackdayIndex() {
   React.useEffect(() => {
     if (data?.trackdayNotesByMonth || data?.trackdaysByMonth) {
       const notes = data.trackdayNotesByMonth.filter(
-        (x: TrackdayNote) => x.date == date
+        (x: TrackdayNote) => formatToDateString(x.date) == date
       )
       const trackdays = data.trackdaysByMonth.filter(
-        (x: Trackday) => x.date == date
+        (x: Trackday) => formatToDateString(x.startDatetime) == date
       )
       setTargetNotes(notes)
       setTargetTrackdays(trackdays)
@@ -77,15 +77,17 @@ export default function TrackdayIndex() {
     )
   }
 
+  const formatToDateString = (dateTime:string) => dateTime.split(" ")[0]
+
   const events = data.trackdayNotesByMonth.reduce(
     (acc: Events, x: TrackdayNote) => {
       return {
         ...acc,
-        [x.date]: {
+        [formatToDateString(x.date)]: {
           dots: [{ color: tertiary }],
           selectedColor: accent,
           marked: true,
-          selected: x.date === date
+          selected: formatToDateString(x.date) === date
         }
       }
     },
@@ -100,12 +102,12 @@ export default function TrackdayIndex() {
   const trackdays = data.trackdaysByMonth.reduce((acc: Events, x: Trackday) => {
     return {
       ...acc,
-      [x.date]: {
+      [formatToDateString(x.startDatetime)]: {
         // @ts-ignore
         dots: [...(acc[x.date]?.dots || []), { color: primary }],
         selectedColor: accent,
         marked: true,
-        selected: x.date === date
+          selected: formatToDateString(x.startDatetime) === date
       }
     }
   }, events)
