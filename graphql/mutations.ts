@@ -96,3 +96,15 @@ export const UPDATE_GROUP = gql`
     }
   }
 `
+
+export const SAVE_USER_TRACKDAY_CALENDAR = gql`
+  mutation saveUserTrackdayCalendar(
+    $saveUserTrackdayCalendarInput: SaveUserTrackdayCalendarInput!
+  ) {
+    saveUserTrackdayCalendar(
+      saveUserTrackdayCalendarInput: $saveUserTrackdayCalendarInput
+    ) {
+      id
+    }
+  }
+`
