@@ -73,60 +73,6 @@ export const TRACKS_QUERY = gql`
   }
 `
 
-export const TRACKDAYS = gql`
-  query getTrackdays {
-    trackdays {
-      id
-      date
-      track {
-        id
-        facility {
-          id
-          name
-        }
-      }
-      motorcycle {
-        id
-        year
-        model {
-          id
-          name
-          make {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`
-
-export const TRACKDAY_NOTES_BY_MONTH = gql`
-  query getTrackdayNotesByMonth(
-    $getEventsByMonthInput: GetEventsByMonthInput!
-  ) {
-    trackdayNotesByMonth(getEventsByMonthInput: $getEventsByMonthInput) {
-      id
-      date
-      lapTime
-      motorcycle {
-        id
-        model {
-          id
-          name
-        }
-      }
-      track {
-        id
-        facility {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-
 export const TRACKDAY_NOTE = gql`
   query getTrackdayNote($id: ID!) {
     trackdayNote(id: $id) {
@@ -182,34 +128,12 @@ export const BEST_LAP_FOR_EACH_TRACK = gql`
   }
 `
 
-export const TRACKDAYS_BY_MONTH = gql`
-  query getTrackdaysByMonth($getEventsByMonthInput: GetEventsByMonthInput!) {
-    trackdaysByMonth(getEventsByMonthInput: $getEventsByMonthInput) {
-      id
-      date
-      price
-      organization {
-        id
-        name
-        trackdaysRegistrationUrl
-      }
-      track {
-        id
-        name
-        facility {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-
 export const TRACKDAY = gql`
   query getTrackday($id: ID!) {
     trackday(id: $id) {
       id
-      date
+      startDatetime
+      endDatetime
       price
       description
       trackdaysRegistrationUrl
@@ -236,7 +160,8 @@ export const GET_MONTHLY_TRACKDAY_DATA = gql`
   query getMonthlyTrackdayData($getEventsByMonthInput: GetEventsByMonthInput!) {
     trackdaysByMonth(getEventsByMonthInput: $getEventsByMonthInput) {
       id
-      date
+      startDatetime
+      endDatetime
       price
       organization {
         id

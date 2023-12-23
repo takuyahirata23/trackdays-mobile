@@ -21,7 +21,8 @@ export type TrackdayNote = {
 
 export type Trackday = {
   id: string
-  date: string
+  startDatetime: string
+  endDatetime: string
   price: number
   organization: Organization
   track: Track

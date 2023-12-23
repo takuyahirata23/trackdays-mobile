@@ -33,7 +33,7 @@ export default function TrackdayDetail() {
   }
 
   const {
-    date,
+    startDatetime,
     organization,
     track,
     price,
@@ -52,7 +52,7 @@ export default function TrackdayDetail() {
             size={18}
             color={tertiary}
           />
-          <Text style={{ color: secondary, fontSize: 14 }}>{date}</Text>
+          <Text style={{ color: secondary, fontSize: 14 }}>{startDatetime}</Text>
         </View>
         <Text style={{ fontSize: 18, fontWeight: '500' }}>
           {track.facility.name}
@@ -141,3 +141,6 @@ const styles = StyleSheet.create({
     columnGap: 8
   }
 })
+
+    //const calendarId = '7BF21A38-4515-473D-A094-B2A1F3B3EB78'
+    //const calendarId = '6'
