@@ -1,1 +1,4 @@
-export { Settings } from './Settings'
+export {
+  DeleteTrackdayNoteConfirmation,
+  DeleteTrackdayButton
+} from './DeleteTrackdayNoteConfirmation'

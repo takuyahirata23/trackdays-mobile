@@ -1,19 +1,17 @@
 import React from 'react'
-import { useNavigation, Link, useRouter } from 'expo-router'
+import {  useRouter } from 'expo-router'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
-import { useQuery, useMutation } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { Button, Container, Card, Text } from '@components'
 import { TRACKDAY_NOTE } from '@graphql/queries'
-import { DELETE_TRACKDAY_NOTE } from '@graphql/mutations'
 import { formatLapTime } from '@functions/lapTimeConverters'
 import { useTheme } from '@hooks/useTheme'
 
 export default function TrackdayDetail() {
   const { id } = useLocalSearchParams()
-  const { goBack } = useNavigation()
   const { push } = useRouter()
   const {
     colors: { accent, secondary }
@@ -22,21 +20,6 @@ export default function TrackdayDetail() {
   const { data, error, loading } = useQuery(TRACKDAY_NOTE, {
     variables: {
       id
-    }
-  })
-
-  const [deleteTrackdayNote] = useMutation(DELETE_TRACKDAY_NOTE, {
-    update(cache, { data: { deleteTrackdayNote } }) {
-      // Remove delete trackday from cache
-      cache.evict({ id: cache.identify(deleteTrackdayNote) })
-      // Remove all of the unreachable cache
-      cache.gc()
-    },
-    onError(e) {
-      console.log(e)
-    },
-    onCompleted() {
-      goBack()
     }
   })
 
@@ -49,21 +32,7 @@ export default function TrackdayDetail() {
     return null
   }
 
-  const {
-    date,
-    lapTime,
-    note,
-    track,
-    motorcycle,
-    id: trackdayId
-  } = data.trackdayNote
-
-  const handleDelete = () =>
-    deleteTrackdayNote({
-      variables: {
-        id: trackdayId
-      }
-    })
+  const { date, lapTime, note, track, motorcycle } = data.trackdayNote
 
   const handleEdit = () =>
     push({
@@ -122,11 +91,6 @@ export default function TrackdayDetail() {
           <Button variant="primary" onPress={handleEdit}>
             Edit
           </Button>
-          {/*
-          <Button variant="secondary" onPress={handleDelete}>
-            Delete
-          </Button>
-          */}
         </View>
       </Container>
     </SafeAreaView>
@@ -146,8 +110,7 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   btnWrapper: {
-    marginTop: 'auto',
-    rowGap: 12
+    marginTop: 'auto'
   },
   organization: {
     flexDirection: 'row',

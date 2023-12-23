@@ -2,6 +2,7 @@ import React from 'react'
 import { Stack } from 'expo-router'
 
 import { Header } from '@components'
+import { DeleteTrackdayButton } from '@components/modalContents'
 
 export default function TrackdayLayout() {
   return (
@@ -36,7 +37,8 @@ export default function TrackdayLayout() {
         name="notes/[id]"
         options={{
           headerShown: true,
-          title: ''
+          title: '',
+          headerRight: DeleteTrackdayButton
         }}
       />
       <Stack.Screen

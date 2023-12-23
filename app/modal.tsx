@@ -1,41 +1,39 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { useSearchParams, useNavigation } from 'expo-router'
+import { useLocalSearchParams, useNavigation } from 'expo-router'
 
 import { Container, KeyboardAvoidingView } from '@components'
-import { Settings } from '@components/modalContents'
+import { DeleteTrackdayNoteConfirmation } from '@components/modalContents'
 
 const titleMap: { [key: string]: string } = {
-  settings: 'Settings'
+  deleteTrackdayConfirmation: 'Delete Trackday Note'
 }
 
 const contentMap: { [key: string]: React.FC } = {
-  settings: Settings
+  deleteTrackdayConfirmation: DeleteTrackdayNoteConfirmation
 }
 
 export default function ModalScreen() {
-  const { name } = useSearchParams()
+  const params = useLocalSearchParams()
   const { setOptions } = useNavigation()
 
   React.useEffect(() => {
     setOptions({
-      title: titleMap[String(name)]
+      title: titleMap[String(params.name)]
     })
-  }, [name, setOptions])
+  }, [params.name, setOptions])
 
-  const Content = contentMap[String(name)]
+  const Content = contentMap[String(params.name)]
 
   return (
     <KeyboardAvoidingView>
       <Container style={styles.container}>
-        <Content />
+        <Content {...params} />
       </Container>
     </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    rowGap: 16
-  }
+  container: {}
 })
