@@ -8,7 +8,14 @@ import { Picker } from '@react-native-picker/picker'
 
 import { USER_QUERY } from '@graphql/queries'
 import { UPDATE_GROUP } from '@graphql/mutations'
-import { Text, Container, Button, BottomSheetHandle, BottomSheet } from '@components'
+import {
+  Text,
+  Container,
+  Button,
+  BottomSheetHandle,
+  BottomSheet,
+  BoomSheetItemList
+} from '@components'
 import { GROUPS_DEV, GROUPS_PROD } from '@constants/groups'
 import { useTheme } from '@hooks/useTheme'
 
