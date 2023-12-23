@@ -153,6 +153,9 @@ export const TRACKDAY = gql`
         }
       }
     }
+    userTrackdayCalendar(trackdayId: $id) {
+      id
+    }
   }
 `
 
@@ -199,3 +202,11 @@ export const GET_MONTHLY_TRACKDAY_DATA = gql`
     }
   }
 `
+
+// export const USER_TRACKDAY_CALENDAR = gql`
+//   query getUserTrackdayCalendar($trackdayId: ID) {
+//     userTrackdayCalendar(trackdayId: $trackdayId) {
+//       id
+//     }
+//   }
+// `
