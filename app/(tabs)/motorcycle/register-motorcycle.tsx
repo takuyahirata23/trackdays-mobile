@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheetType from '@gorhom/bottom-sheet'
 import { Picker } from '@react-native-picker/picker'
 import { useNavigation } from 'expo-router'
 
-import { Card, Container, Text, Button, BottomSheetHandle } from '@components'
+import { Card, Container, Text, Button, BottomSheetHandle, BottomSheet } from '@components'
 import { MOTORCYCLE } from 'graphql/fragments'
 import { REGISTER_MOTORCYCLE } from '@graphql/mutations'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
@@ -28,7 +28,7 @@ const getYears = () => {
 const years = getYears()
 
 export default function RegisterMotorcycle() {
-  const ref = React.useRef<BottomSheet>(null)
+  const ref = React.useRef<BottomSheetType>(null)
   const { goBack } = useNavigation()
   const [fields, setFields] = React.useState({
     year: '',
@@ -149,7 +149,6 @@ export default function RegisterMotorcycle() {
       </View>
       <BottomSheet
         ref={ref}
-        snapPoints={['40%']}
         handleComponent={() => (
           <BottomSheetHandle
             onPressRight={

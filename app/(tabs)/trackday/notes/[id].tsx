@@ -122,9 +122,11 @@ export default function TrackdayDetail() {
           <Button variant="primary" onPress={handleEdit}>
             Edit
           </Button>
+          {/*
           <Button variant="secondary" onPress={handleDelete}>
             Delete
           </Button>
+          */}
         </View>
       </Container>
     </SafeAreaView>

@@ -5,7 +5,7 @@ import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
 import { useSearchParams } from 'expo-router'
 import { isEmpty } from 'ramda'
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheetType from '@gorhom/bottom-sheet'
 
 import {
   FACILITIES_QUERY,
@@ -17,6 +17,7 @@ import { TRACKDAY_NOTE } from 'graphql/fragments'
 import { useTheme } from '@hooks/useTheme'
 import {
   Button,
+  BottomSheet,
   Card,
   Field,
   Text,
@@ -69,7 +70,7 @@ const goBackToPreviousStep = (prev: SaveTrackdaySteps) => {
 }
 
 export default function CreateTrackdayNote() {
-  const bottomSheetRef = React.useRef<BottomSheet>(null)
+  const bottomSheetRef = React.useRef<BottomSheetType>(null)
   const { date: dateParam } = useSearchParams()
   const { goBack } = useNavigation()
   const motorcycleRes = useQuery(MOTORCYCLES_QUERY)
@@ -367,7 +368,6 @@ export default function CreateTrackdayNote() {
           <BottomSheet
             ref={bottomSheetRef}
             enablePanDownToClose
-            snapPoints={['40%']}
             handleComponent={() => (
               <BottomSheetHandle
                 onPressRight={onPressHandlers()}
