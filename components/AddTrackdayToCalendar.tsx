@@ -11,6 +11,8 @@ import { useTheme } from '@hooks/useTheme'
 import { createCalendar } from '@utils/calendar'
 import { getCalendarId } from '@utils/secureStore'
 
+const today = new Date()
+
 export function AddTrackdayToCalendar() {
   const { id } = useLocalSearchParams()
   const [hasTrackdayBeenAdded, setHasTrackdayBeenAdded] = React.useState(false)
@@ -33,6 +35,7 @@ export function AddTrackdayToCalendar() {
     }
   })
 
+
   if (loading || error) {
     return null
   }
@@ -40,6 +43,13 @@ export function AddTrackdayToCalendar() {
   const { startDatetime, endDatetime, organization, track } = data.trackday
 
   const { id: userTrackdayCalendarId } = data.userTrackdayCalendar || {}
+
+  const isFeatureEvent = today < new Date(startDatetime)
+
+  if(!isFeatureEvent) {
+    return null
+  }
+
 
   const handlePress = async () => {
     if (status?.granted && typeof id === 'string') {
