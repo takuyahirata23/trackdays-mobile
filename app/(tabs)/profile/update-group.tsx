@@ -3,12 +3,12 @@ import { useQuery, useMutation } from '@apollo/client'
 import { useRouter } from 'expo-router'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheetType from '@gorhom/bottom-sheet'
 import { Picker } from '@react-native-picker/picker'
 
 import { USER_QUERY } from '@graphql/queries'
 import { UPDATE_GROUP } from '@graphql/mutations'
-import { Text, Container, Button, BottomSheetHandle } from '@components'
+import { Text, Container, Button, BottomSheetHandle, BottomSheet } from '@components'
 import { GROUPS_DEV, GROUPS_PROD } from '@constants/groups'
 import { useTheme } from '@hooks/useTheme'
 
@@ -20,7 +20,7 @@ const getName = (selectedId: string) =>
   groups.find(({ id }) => id === selectedId)?.name
 
 export default function UpdateGroup() {
-  const ref = React.useRef<BottomSheet>(null)
+  const ref = React.useRef<BottomSheetType>(null)
   const { push } = useRouter()
   const [groupId, setGroupId] = React.useState('')
   const [mutationError, setMutationError] = React.useState(false)
@@ -68,9 +68,7 @@ export default function UpdateGroup() {
         )}
       </View>
       <BottomSheet
-        backgroundStyle={styles.bottomSheet}
         ref={ref}
-        snapPoints={['40%']}
         handleComponent={() => (
           <BottomSheetHandle
             onPressRight={() => {
@@ -111,16 +109,5 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 48
-  },
-  bottomSheet: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 6
-    },
-    shadowOpacity: 0.37,
-    shadowRadius: 7.49,
-
-    elevation: 12
   }
 })
