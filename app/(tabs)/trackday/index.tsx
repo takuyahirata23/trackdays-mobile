@@ -43,7 +43,7 @@ export default function TrackdayIndex() {
   )
 
   const {
-    colors: { accent, tertiary, primary }
+    colors: { accent, tertiary, secondary }
   } = useTheme()
 
   const [targetNotes, setTargetNotes] = React.useState([])
@@ -77,15 +77,15 @@ export default function TrackdayIndex() {
     )
   }
 
-  const formatToDateString = (dateTime:string) => dateTime.split(" ")[0]
+  const formatToDateString = (dateTime: string) => dateTime.split(' ')[0]
 
   const events = data.trackdayNotesByMonth.reduce(
     (acc: Events, x: TrackdayNote) => {
       return {
         ...acc,
         [formatToDateString(x.date)]: {
-          dots: [{ color: tertiary }],
-          selectedColor: accent,
+          dots: [{ color: accent }],
+          selectedColor: secondary,
           marked: true,
           selected: formatToDateString(x.date) === date
         }
@@ -93,7 +93,7 @@ export default function TrackdayIndex() {
     },
     {
       [date]: {
-        selectedColor: accent,
+        selectedColor: secondary,
         selected: true
       }
     }
@@ -103,11 +103,14 @@ export default function TrackdayIndex() {
     return {
       ...acc,
       [formatToDateString(x.startDatetime)]: {
+        dots: [
         // @ts-ignore
-        dots: [...(acc[x.date]?.dots || []), { color: primary }],
-        selectedColor: accent,
+          ...(acc[formatToDateString(x.startDatetime)]?.dots || []),
+          { color: tertiary }
+        ],
+        selectedColor: secondary,
         marked: true,
-          selected: formatToDateString(x.startDatetime) === date
+        selected: formatToDateString(x.startDatetime) === date
       }
     }
   }, events)
@@ -123,19 +126,19 @@ export default function TrackdayIndex() {
     })
 
   return (
-    <Container style={{ paddingTop: 0}}>
+    <Container style={{ paddingTop: 0 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{ marginTop: 20}}>
-        <Card>
-          <Calendar
-            initialDate={today}
-            markedDates={trackdays}
-            onDayPress={onDayPress}
-            onMonthChange={onMonthChange}
-            markingType="multi-dot"
-          />
-        </Card>
-      </View>
+        <View style={{ marginTop: 20 }}>
+          <Card>
+            <Calendar
+              initialDate={today}
+              markedDates={trackdays}
+              onDayPress={onDayPress}
+              onMonthChange={onMonthChange}
+              markingType="multi-dot"
+            />
+          </Card>
+        </View>
         <View style={styles.contentWrapper}>
           {targetNotes.map((note: TrackdayNote) => (
             <TrackdayNoteLinkCard {...note} key={note.id} />
