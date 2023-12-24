@@ -1,7 +1,8 @@
 import React from 'react'
 import { Stack, Link } from 'expo-router'
 import { TouchableOpacity } from 'react-native'
-import Ion from '@expo/vector-icons/Ionicons'
+import { AntDesign} from '@expo/vector-icons'
+
 
 import { useTheme } from '@hooks/useTheme'
 import { Header } from '@components'
@@ -31,11 +32,10 @@ export default function ProfileLayout() {
               asChild
             >
               <TouchableOpacity>
-                <Ion
-                  name="settings"
+                <AntDesign
+                  name="setting"
                   size={25}
                   color={secondary}
-                  style={{ marginRight: 15 }}
                 />
               </TouchableOpacity>
             </Link>
