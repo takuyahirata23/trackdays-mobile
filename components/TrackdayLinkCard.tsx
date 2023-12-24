@@ -8,10 +8,22 @@ import { Card } from './Card'
 import { IconLabel } from './IconLabel'
 import { Text } from './Text'
 import { useTheme } from '@hooks/useTheme'
+import { formatDate } from '@functions/date'
 
 import type { Trackday } from '@type/event'
 
-export function TrackdayLinkCard({ id, track, price, organization }: Trackday) {
+type Props = {
+  showDate?: boolean
+} & Trackday
+
+export function TrackdayLinkCard({
+  id,
+  track,
+  price,
+  organization,
+  startDatetime,
+  showDate = false
+}: Props) {
   const {
     colors: { tertiary }
   } = useTheme()
@@ -33,11 +45,22 @@ export function TrackdayLinkCard({ id, track, price, organization }: Trackday) {
               icon={<Octicons name="organization" size={18} color={tertiary} />}
               label={organization.name}
             />
-            <IconLabel
-              variant="secondary"
-              icon={<FontAwesome name="dollar" size={18} color={tertiary} />}
-              label={String(price)}
-            />
+            {price && (
+              <IconLabel
+                variant="secondary"
+                icon={<FontAwesome name="dollar" size={18} color={tertiary} />}
+                label={String(price)}
+              />
+            )}
+            {showDate && (
+              <IconLabel
+                variant="secondary"
+                icon={
+                  <FontAwesome name="calendar" size={18} color={tertiary} />
+                }
+                label={formatDate(new Date(startDatetime))}
+              />
+            )}
           </View>
         </Card>
       </TouchableOpacity>

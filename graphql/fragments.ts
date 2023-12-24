@@ -13,6 +13,22 @@ export const USER_FIELDS = gql`
   }
 `
 
+
+export const MOTORCYCLE_FIELDS = gql`
+  fragment MotorcycleFields on Motorcycle {
+    id
+    year
+    model {
+      id
+      name
+      make {
+        id
+        name
+      }
+    }
+  }
+`
+
 export const MOTORCYCLE = gql`
   fragment NewMotorcycle on Motorcycle {
     id
