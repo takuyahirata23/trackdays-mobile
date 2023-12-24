@@ -105,6 +105,20 @@ export const SAVE_USER_TRACKDAY_CALENDAR = gql`
       saveUserTrackdayCalendarInput: $saveUserTrackdayCalendarInput
     ) {
       id
+      eventId
+    }
+  }
+`
+
+export const DELETE_USER_TRACKDAY_CALENDAR = gql`
+  mutation deleteUserTrackdayCalendar(
+    $trackdayId: ID!
+  ) {
+    deleteUserTrackdayCalendar(
+      trackdayId: $trackdayId
+    ) {
+      id
+      eventId
     }
   }
 `
