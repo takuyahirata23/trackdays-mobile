@@ -10,7 +10,7 @@ export function useProtectRoute(user: null | object) {
     if (!user && !inAuthGroup) {
       router.replace('/sign-in')
     } else if (user && inAuthGroup) {
-      router.replace('/profile')
+      router.replace('/trackday')
     }
   }, [user, segments, router])
 }

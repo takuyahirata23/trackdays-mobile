@@ -203,4 +203,22 @@ export const GET_MONTHLY_TRACKDAY_DATA = gql`
     }
   }
 `
-
+export const UPCOMING_TRACKDAYS = gql`
+  query getUpcomingTrackdays {
+    upcomingTrackdays {
+      id
+      startDatetime
+      track {
+        id
+        facility {
+          id
+          name
+        }
+      }
+      organization {
+        id
+        name
+      }
+    }
+  }
+`

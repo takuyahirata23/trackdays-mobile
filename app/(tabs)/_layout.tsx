@@ -27,7 +27,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      initialRouteName="/motorcycle"
+      initialRouteName="/trackday"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: accent
@@ -40,19 +40,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="motorcycle"
-        options={{
-          title: 'Motorcycle',
-          tabBarIcon: ({ color }) => (
-            <TabIcons
-              variant="materialCommunity"
-              name="motorbike"
-              color={color}
-            />
-          )
-        }}
-      />
-      <Tabs.Screen
         name="trackday"
         options={{
           title: 'Trackday',
@@ -60,6 +47,19 @@ export default function TabLayout() {
             <TabIcons
               variant="materialCommunity"
               name="go-kart-track"
+              color={color}
+            />
+          )
+        }}
+      />
+      <Tabs.Screen
+        name="motorcycle"
+        options={{
+          title: 'Motorcycle',
+          tabBarIcon: ({ color }) => (
+            <TabIcons
+              variant="materialCommunity"
+              name="motorbike"
               color={color}
             />
           )
