@@ -6,7 +6,10 @@ import * as Calendar from 'expo-calendar'
 import { useLocalSearchParams } from 'expo-router'
 
 import { TRACKDAY } from '@graphql/queries'
-import { SAVE_USER_TRACKDAY_CALENDAR } from '@graphql/mutations'
+import {
+  SAVE_USER_TRACKDAY_CALENDAR,
+  DELETE_USER_TRACKDAY_CALENDAR
+} from '@graphql/mutations'
 import { useTheme } from '@hooks/useTheme'
 import { createCalendar } from '@utils/calendar'
 import { getCalendarId } from '@utils/secureStore'
@@ -26,15 +29,28 @@ export function AddTrackdayToCalendar() {
   })
 
   const [status, requestPermission] = Calendar.useCalendarPermissions()
-  const [saveUserTrackdayCalendar] = useMutation(SAVE_USER_TRACKDAY_CALENDAR, {
+  const [saveUserTrackdayCalendar, { loading: isSaving}] = useMutation(SAVE_USER_TRACKDAY_CALENDAR, {
     onError(e) {
       console.log(e)
     },
     onCompleted() {
       setHasTrackdayBeenAdded(true)
-    }
+    },
+    refetchQueries: [TRACKDAY]
   })
 
+  const [deleteUserTrackdayCalendar, { loading: isDeleting }] = useMutation(
+    DELETE_USER_TRACKDAY_CALENDAR,
+    {
+      onError(e) {
+        console.log(e)
+      },
+      onCompleted() {
+        setHasTrackdayBeenAdded(false)
+      },
+      refetchQueries: [TRACKDAY]
+    }
+  )
 
   if (loading || error) {
     return null
@@ -42,16 +58,16 @@ export function AddTrackdayToCalendar() {
 
   const { startDatetime, endDatetime, organization, track } = data.trackday
 
-  const { id: userTrackdayCalendarId } = data.userTrackdayCalendar || {}
+  const { id: userTrackdayCalendarId, eventId } =
+    data.userTrackdayCalendar || {}
 
   const isFeatureEvent = today < new Date(startDatetime)
 
-  if(!isFeatureEvent) {
+  if (!isFeatureEvent) {
     return null
   }
 
-
-  const handlePress = async () => {
+  const handleUserTrackdayAddition = async () => {
     if (status?.granted && typeof id === 'string') {
       let calendarId = await getCalendarId()
 
@@ -59,17 +75,18 @@ export function AddTrackdayToCalendar() {
         calendarId = await createCalendar()
       }
 
-      await Calendar.createEventAsync(calendarId, {
+      const eventId = await Calendar.createEventAsync(calendarId, {
         organizer: organization.name,
         startDate: new Date(startDatetime),
         endDate: new Date(endDatetime),
-        title: `${track.facility.name}(${track.name})`,
-        id
+        title: `${track.facility.name}(${track.name})`
       })
+
       saveUserTrackdayCalendar({
         variables: {
           saveUserTrackdayCalendarInput: {
             calendarId,
+            eventId,
             trackdayId: id
           }
         }
@@ -80,10 +97,35 @@ export function AddTrackdayToCalendar() {
       console.log('no access')
     }
   }
+
+  const handleUserTrackdayDeletion = async () => {
+    deleteUserTrackdayCalendar({
+      variables: {
+        trackdayId: id
+      }
+    })
+
+    try {
+      Calendar.deleteEventAsync(eventId)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return hasTrackdayBeenAdded || userTrackdayCalendarId ? (
-    <FontAwesome name="calendar-check-o" size={20} color={primary} />
+    <TouchableOpacity
+      disabled={loading || isSaving || isDeleting}
+      onPress={handleUserTrackdayDeletion}
+      style={styles.iconPadding}
+    >
+      <FontAwesome name="calendar-times-o" size={20} color={primary} />
+    </TouchableOpacity>
   ) : (
-    <TouchableOpacity onPress={handlePress} style={styles.iconPadding}>
+    <TouchableOpacity
+      disabled={loading || isSaving || isDeleting}
+      onPress={handleUserTrackdayAddition}
+      style={styles.iconPadding}
+    >
       <FontAwesome name="calendar-plus-o" size={20} color={primary} />
     </TouchableOpacity>
   )
