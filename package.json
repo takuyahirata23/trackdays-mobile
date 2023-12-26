@@ -30,6 +30,7 @@
     "@react-navigation/native": "^6.0.2",
     "@types/ramda": "^0.29.3",
     "expo": "^49.0.21",
+    "expo-calendar": "~11.3.2",
     "expo-font": "~11.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-linking": "~5.0.2",
@@ -52,7 +53,7 @@
     "react-native-screens": "~3.22.0",
     "react-native-svg": "^14.1.0",
     "react-native-web": "~0.19.6",
-    "expo-calendar": "~11.3.2"
+    "toastify-react-native": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
