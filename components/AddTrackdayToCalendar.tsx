@@ -30,26 +30,29 @@ export function AddTrackdayToCalendar() {
   })
 
   const [status, requestPermission] = Calendar.useCalendarPermissions()
-  const [saveUserTrackdayCalendar, { loading: isSaving}] = useMutation(SAVE_USER_TRACKDAY_CALENDAR, {
-    onError(e) {
-      console.log(e)
-    },
-    onCompleted() {
-      setHasTrackdayBeenAdded(true)
-      Toast.info('Added')
-    },
-    refetchQueries: [TRACKDAY]
-  })
+  const [saveUserTrackdayCalendar, { loading: isSaving }] = useMutation(
+    SAVE_USER_TRACKDAY_CALENDAR,
+    {
+      onError() {
+        Toast.success('There was a problem adding to calendar', 'bottom')
+      },
+      onCompleted() {
+        setHasTrackdayBeenAdded(true)
+        Toast.success('There was a ploblem. Please try it later', 'bottom')
+      },
+      refetchQueries: [TRACKDAY]
+    }
+  )
 
   const [deleteUserTrackdayCalendar, { loading: isDeleting }] = useMutation(
     DELETE_USER_TRACKDAY_CALENDAR,
     {
-      onError(e) {
-        console.log(e)
+      onError() {
+        Toast.error('There was a problem deleting from calendar', 'bottom')
       },
       onCompleted() {
         setHasTrackdayBeenAdded(false)
-      Toast.info('Deleted')
+        Toast.success('Deleted from your calendar', 'bottom')
       },
       refetchQueries: [TRACKDAY]
     }

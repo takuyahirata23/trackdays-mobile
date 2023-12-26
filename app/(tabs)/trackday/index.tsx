@@ -43,10 +43,6 @@ export default function TrackdayIndex() {
     }
   )
 
-  React.useEffect(() => {
-    Toast.info('Added to your calendar', 'bottom')
-  }, [])
-
   const {
     colors: { accent, tertiary, secondary }
   } = useTheme()
