@@ -4,6 +4,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import { useQuery, useMutation } from '@apollo/client'
 import * as Calendar from 'expo-calendar'
 import { useLocalSearchParams } from 'expo-router'
+import { Toast } from 'toastify-react-native'
 
 import { TRACKDAY } from '@graphql/queries'
 import {
@@ -35,6 +36,7 @@ export function AddTrackdayToCalendar() {
     },
     onCompleted() {
       setHasTrackdayBeenAdded(true)
+      Toast.info('Added')
     },
     refetchQueries: [TRACKDAY]
   })
@@ -47,6 +49,7 @@ export function AddTrackdayToCalendar() {
       },
       onCompleted() {
         setHasTrackdayBeenAdded(false)
+      Toast.info('Deleted')
       },
       refetchQueries: [TRACKDAY]
     }

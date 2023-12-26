@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client'
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
 import { Calendar, DateData } from 'react-native-calendars'
 import { Link } from 'expo-router'
+import { Toast } from 'toastify-react-native'
 
 import { GET_MONTHLY_TRACKDAY_DATA } from '@graphql/queries'
 import {
@@ -41,6 +42,10 @@ export default function TrackdayIndex() {
       }
     }
   )
+
+  React.useEffect(() => {
+    Toast.info('Added to your calendar', 'bottom')
+  }, [])
 
   const {
     colors: { accent, tertiary, secondary }
@@ -104,7 +109,7 @@ export default function TrackdayIndex() {
       ...acc,
       [formatToDateString(x.startDatetime)]: {
         dots: [
-        // @ts-ignore
+          // @ts-ignore
           ...(acc[formatToDateString(x.startDatetime)]?.dots || []),
           { color: tertiary }
         ],

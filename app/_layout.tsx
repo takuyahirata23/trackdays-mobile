@@ -5,6 +5,7 @@ import { Stack } from 'expo-router'
 import { useEffect } from 'react'
 import { ApolloProvider } from '@apollo/client'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import ToastManager from 'toastify-react-native'
 
 import { useProtectRoute } from '@hooks/useProtectRoute'
 import { client } from '@graphql/client'
@@ -83,6 +84,13 @@ function RootLayoutNav({ user, setUser }: { user: null | User; setUser: any }) {
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
             </Stack>
+
+            <ToastManager
+              style={{ width: '100%' }}
+              height={60}
+              positionValue={80}
+              textStyle={{ fontSize: 16 }}
+            />
           </ApolloProvider>
         </AuthProvider>
       </ThemeProvider>
