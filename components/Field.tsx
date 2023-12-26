@@ -4,8 +4,10 @@ import {
   StyleSheet,
   TextInput,
   TextInputProps,
-  ViewStyle
+  ViewStyle,
+  TouchableOpacity
 } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
 
 import { useTheme } from '@hooks/useTheme'
 import { Text } from '@components/Text'
@@ -16,28 +18,73 @@ type Props = {
   inputStyle?: ViewStyle
 } & TextInputProps
 
+const PasswordVisibilityHandler = ({
+  shouldHidePassword,
+  onToggle
+}: {
+  shouldHidePassword: boolean
+  onToggle: () => void
+}) => {
+  const {
+    colors: { primary }
+  } = useTheme()
+  return (
+    <TouchableOpacity onPress={onToggle}>
+      {shouldHidePassword ? (
+        <MaterialIcons name="visibility" size={28} color={primary} />
+      ) : (
+        <MaterialIcons name="visibility-off" size={28} color={primary} />
+      )}
+    </TouchableOpacity>
+  )
+}
+
 export function Field({
   label,
   error,
   style,
+  secureTextEntry = false,
   inputStyle = {},
   ...rest
 }: Props) {
   const { colors } = useTheme()
+  const isPassword = secureTextEntry
+  const [shouldHidePassword, setShouldHidePassword] =
+    React.useState(secureTextEntry)
+
   return (
     <View style={style}>
       <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={[
-          {
-            backgroundColor: colors.bgSecondary,
-            borderColor: error ? colors.error : colors.bgSecondary
-          },
-          styles.input,
-          inputStyle
-        ]}
-        {...rest}
-      />
+      <View style={{ position: 'relative' }}>
+        <TextInput
+          style={[
+            {
+              backgroundColor: colors.bgSecondary,
+              borderColor: error ? colors.error : colors.bgSecondary
+            },
+            styles.input,
+            inputStyle
+          ]}
+          secureTextEntry={shouldHidePassword}
+          {...rest}
+        />
+        {isPassword && (
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 16,
+              bottom: 0,
+              justifyContent: 'center'
+            }}
+          >
+            <PasswordVisibilityHandler
+              shouldHidePassword={shouldHidePassword}
+              onToggle={() => setShouldHidePassword(prev => !prev)}
+            />
+          </View>
+        )}
+      </View>
       {error && typeof error === 'string' && (
         <Text color="error" style={styles.label}>
           {error}

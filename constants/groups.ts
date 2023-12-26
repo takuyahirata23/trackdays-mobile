@@ -5,7 +5,7 @@ export const GROUPS_DEV = [
 ]
 
 export const GROUPS_PROD = [
-  { id: '443d9809-81a5-42bc-882b-69ff936a8a6e', name: 'Novice' },
-  { id: '0053abb2-aa79-48f1-a3ea-d3a881e598ce', name: 'Intermediate' },
-  { id: '7eb19abe-647c-464f-82c1-0aba07078722', name: 'Expert' }
+  { id: 'dccdcc9d-fdd2-44dd-965c-be0bee5750d4', name: 'Novice' },
+  { id: 'a82805f9-c7f8-4cf8-861a-1c92f7a300d0', name: 'Intermediate' },
+  { id: '6a9f1ac9-589a-40df-9f1c-3da392b56e6d', name: 'Expert' }
 ]
