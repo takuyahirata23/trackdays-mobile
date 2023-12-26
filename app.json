@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Trackdays",
-    "slug": "trackdays",
+    "name": "Motorcycle Trackdays",
+    "slug": "motorcycle-trackdays",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,13 +14,13 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "usesNonExemptEncryption": false,
       "bundleIdentifier": "com.takuya23.trackdaysmobile"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -34,7 +34,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "3d9d7fd6-3f66-420b-b118-95af9dc03a67"
+        "projectId": "1bf06458-8f75-43ba-a21a-dbf6f4b66c83"
       },
       "router": {
         "origin": false
