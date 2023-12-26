@@ -3,7 +3,6 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Button as RNButton
 } from 'react-native'
 import { useRouter } from 'expo-router'
 
@@ -86,17 +85,21 @@ export default function SignIn() {
           )}
           <Button onPress={onPress}>Sign in</Button>
         </View>
-        <View style={styles.routerButton}>
-          <RNButton
-            onPress={() => push('/register')}
-            title="Need an account? Register from here"
-          />
-        </View>
-        <View style={styles.routerButton}>
-          <RNButton
-            onPress={() => push('/password-update')}
-            title="Forgot password?"
-          />
+        <View style={{ marginTop: 'auto', marginBottom: 64 }}>
+          <View style={styles.routerButton}>
+            <Text>Need an account? </Text>
+            <Button onPress={() => push('/register')} variant="secondary">
+              Register from here
+            </Button>
+          </View>
+          <View style={styles.routerButton}>
+            <Button
+              onPress={() => push('/password-update')}
+              variant="secondary"
+            >
+              Forgot password?
+            </Button>
+          </View>
         </View>
       </Container>
     </SafeAreaView>
@@ -128,6 +131,10 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   routerButton: {
-    marginTop: 16
+    marginTop: 28,
+    width: '80%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    rowGap: 8
   }
 })

@@ -3,7 +3,6 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Button as RNButton,
   Pressable,
   Keyboard
 } from 'react-native'
@@ -148,11 +147,13 @@ export default function Register() {
                 Register
               </Button>
             </View>
-            <View style={styles.routerButton}>
-              <RNButton
-                onPress={() => push('/sign-in')}
-                title="Have an account? Log in from here"
-              />
+            <View style={{ marginTop: 'auto', marginBottom: 64 }}>
+              <View style={styles.routerButton}>
+                <Text>Have an account?</Text>
+                <Button onPress={() => push('/sign-in')} variant="secondary">
+                  Log in from here
+                </Button>
+              </View>
             </View>
           </>
         )}
@@ -213,7 +214,11 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   routerButton: {
-    marginTop: 16
+    marginTop: 28,
+    width: '60%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    rowGap: 8
   },
   field: {
     height: 46,
