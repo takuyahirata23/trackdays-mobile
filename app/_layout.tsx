@@ -1,6 +1,7 @@
 import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useFonts } from 'expo-font'
+import { StatusBar } from 'expo-status-bar'
 import { Stack } from 'expo-router'
 import { useEffect } from 'react'
 import { ApolloProvider } from '@apollo/client'
@@ -79,12 +80,12 @@ function RootLayoutNav({ user, setUser }: { user: null | User; setUser: any }) {
       <ThemeProvider>
         <AuthProvider setUser={setUser}>
           <ApolloProvider client={client}>
+          <StatusBar style="dark"/>
             <Stack>
               <Stack.Screen name="(auth)" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
             </Stack>
-
             <ToastManager
               style={{ width: '100%' }}
               height={60}
