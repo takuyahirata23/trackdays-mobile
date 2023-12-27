@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, View, Pressable, Image } from 'react-native'
+import { StyleSheet, View, Pressable } from 'react-native'
+import { Image } from 'expo-image'
 import { useQuery } from '@apollo/client'
 import Feather from '@expo/vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker'
@@ -109,8 +110,9 @@ export default function ProfileIndex() {
           >
             {imageUrl || profileImage ? (
               <Image
-                source={{ uri: profileImage || imageUrl }}
+                source={profileImage || imageUrl}
                 style={styles.profileImage}
+                transition={300}
               />
             ) : (
               <Feather size={80} name="user" color={bgSecondary} />
