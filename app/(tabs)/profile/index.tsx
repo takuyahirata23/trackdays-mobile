@@ -160,7 +160,7 @@ export default function ProfileIndex() {
 
 const styles = StyleSheet.create({
   container: {
-    rowGap: 24
+    rowGap: 32
   },
   profileTextWrapper: {
     flex: 1,

@@ -66,6 +66,9 @@ export default function ProfileLayout() {
           title: 'Settings'
         }}
       />
+      <Stack.Screen
+        name="motorcycles/register-motorcycle"
+      />
     </Stack>
   )
 }
