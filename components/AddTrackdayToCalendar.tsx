@@ -34,11 +34,11 @@ export function AddTrackdayToCalendar() {
     SAVE_USER_TRACKDAY_CALENDAR,
     {
       onError() {
-        Toast.success('There was a problem adding to calendar', 'bottom')
+        Toast.error('There was a problem adding to calendar', 'bottom')
       },
       onCompleted() {
         setHasTrackdayBeenAdded(true)
-        Toast.success('There was a ploblem. Please try it later', 'bottom')
+        Toast.success('Added to your calendar', 'bottom')
       },
       refetchQueries: [TRACKDAY]
     }

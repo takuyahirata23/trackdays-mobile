@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-import { USER_FIELDS } from './fragments'
+import { USER_FIELDS, MOTORCYCLE_FIELDS } from './fragments'
 
 export const USER_QUERY = gql`
   ${USER_FIELDS}
@@ -39,18 +39,19 @@ export const MODELS_QUERY = gql`
 `
 
 export const MOTORCYCLES_QUERY = gql`
+  ${MOTORCYCLE_FIELDS}
   query getMotorcycles {
     motorcycles {
-      id
-      year
-      model {
-        id
-        name
-        make {
-          id
-          name
-        }
-      }
+      ...MotorcycleFields
+    }
+  }
+`
+
+export const MOTORCYCLE_QUERY = gql`
+  ${MOTORCYCLE_FIELDS}
+  query getMotorcycle($id: ID!) {
+    motorcycle(id: $id) {
+      ...MotorcycleFields
     }
   }
 `

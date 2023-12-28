@@ -1,11 +1,11 @@
 import React from 'react'
 import { Stack, Link } from 'expo-router'
 import { TouchableOpacity } from 'react-native'
-import { AntDesign} from '@expo/vector-icons'
-
+import { AntDesign } from '@expo/vector-icons'
 
 import { useTheme } from '@hooks/useTheme'
 import { Header } from '@components'
+import { DeleteMotorcycleButton } from '@components/modalContents'
 
 export default function ProfileLayout() {
   const {
@@ -32,11 +32,7 @@ export default function ProfileLayout() {
               asChild
             >
               <TouchableOpacity>
-                <AntDesign
-                  name="setting"
-                  size={25}
-                  color={secondary}
-                />
+                <AntDesign name="setting" size={25} color={secondary} />
               </TouchableOpacity>
             </Link>
           )
@@ -64,6 +60,13 @@ export default function ProfileLayout() {
         name="update-group"
         options={{
           title: 'Settings'
+        }}
+      />
+      <Stack.Screen name="motorcycles/register-motorcycle" />
+      <Stack.Screen
+        name="motorcycles/[id]"
+        options={{
+          headerRight: DeleteMotorcycleButton
         }}
       />
     </Stack>
