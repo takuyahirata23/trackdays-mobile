@@ -15,7 +15,8 @@ import {
   Container,
   TrackdayNoteLinkCard,
   IconLabel,
-  UpcomingTrackdays
+  UpcomingTrackdays,
+  Motorcycles
 } from '@components'
 
 import type { TrackdayNote } from '@type/event'
@@ -152,6 +153,7 @@ export default function ProfileIndex() {
         </View>
       )}
       <UpcomingTrackdays />
+      <Motorcycles />
     </Container>
   )
 }

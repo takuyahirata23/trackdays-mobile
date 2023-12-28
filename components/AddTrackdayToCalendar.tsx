@@ -38,7 +38,7 @@ export function AddTrackdayToCalendar() {
       },
       onCompleted() {
         setHasTrackdayBeenAdded(true)
-        Toast.success('There was a ploblem. Please try it later', 'bottom')
+        Toast.success('Added to your calendar', 'bottom')
       },
       refetchQueries: [TRACKDAY]
     }
