@@ -3,14 +3,17 @@ import { StyleSheet } from 'react-native'
 import { useLocalSearchParams, useNavigation } from 'expo-router'
 
 import { Container, KeyboardAvoidingView } from '@components'
-import { DeleteTrackdayNoteConfirmation } from '@components/modalContents'
+import { DeleteTrackdayNoteConfirmation, DeleteMotorcycleConfirmation  } from '@components/modalContents'
 
 const titleMap: { [key: string]: string } = {
-  deleteTrackdayConfirmation: 'Delete Trackday Note'
+  deleteTrackdayConfirmation: 'Delete Trackday Note',
+  deleteMotorcycleConfirmation: 'Delete Motorcycle'
 }
 
 const contentMap: { [key: string]: React.FC } = {
-  deleteTrackdayConfirmation: DeleteTrackdayNoteConfirmation
+  //@ts-ignore
+  deleteTrackdayConfirmation: DeleteTrackdayNoteConfirmation,
+deleteMotorcycleConfirmation: DeleteMotorcycleConfirmation
 }
 
 export default function ModalScreen() {

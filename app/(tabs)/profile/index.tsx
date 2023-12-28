@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Pressable } from 'react-native'
+import { StyleSheet, View, Pressable, ScrollView } from 'react-native'
 import { Image } from 'expo-image'
 import { useQuery } from '@apollo/client'
 import Feather from '@expo/vector-icons/Feather'
@@ -102,64 +102,70 @@ export default function ProfileIndex() {
   const { name, imageUrl, group } = data.user
 
   return (
-    <Container style={styles.container}>
-      <Card>
-        <View style={styles.profileWrapper}>
-          <Pressable
-            onLongPress={pickImage(setProfileImage)}
-            style={[styles.profileImageWrapper, { borderColor: bgSecondary }]}
-          >
-            {imageUrl || profileImage ? (
-              <Image
-                source={profileImage || imageUrl}
-                style={styles.profileImage}
-                transition={300}
-              />
-            ) : (
-              <Feather size={80} name="user" color={bgSecondary} />
-            )}
-          </Pressable>
-          <View style={styles.profileTextWrapper}>
-            <Text style={styles.heading}>{name}</Text>
-            <View style={styles.group}>
-              <IconLabel
-                variant="secondary"
-                icon={<Feather name="flag" size={18} color={primary} />}
-                label={group.name}
-              />
+    <Container style={{ paddingTop: 0 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.container}
+      >
+        <Card>
+          <View style={styles.profileWrapper}>
+            <Pressable
+              onLongPress={pickImage(setProfileImage)}
+              style={[styles.profileImageWrapper, { borderColor: bgSecondary }]}
+            >
+              {imageUrl || profileImage ? (
+                <Image
+                  source={profileImage || imageUrl}
+                  style={styles.profileImage}
+                  transition={300}
+                />
+              ) : (
+                <Feather size={80} name="user" color={bgSecondary} />
+              )}
+            </Pressable>
+            <View style={styles.profileTextWrapper}>
+              <Text style={styles.heading}>{name}</Text>
+              <View style={styles.group}>
+                <IconLabel
+                  variant="secondary"
+                  icon={<Feather name="flag" size={18} color={primary} />}
+                  label={group.name}
+                />
+              </View>
             </View>
           </View>
-        </View>
-        {profileImageUploadError && (
-          <Text color="tertiary" style={styles.errorText}>
-            Something went wrong. Please try it later.
-          </Text>
-        )}
-      </Card>
-      {not(isEmpty(bestLapsRes.data?.bestLapForEachTrack)) && (
-        <View style={styles.personalBestWrapper}>
-          <Text style={styles.sectionHeading}>Personal Bests</Text>
+          {profileImageUploadError && (
+            <Text color="tertiary" style={styles.errorText}>
+              Something went wrong. Please try it later.
+            </Text>
+          )}
+        </Card>
+        {not(isEmpty(bestLapsRes.data?.bestLapForEachTrack)) && (
           <View style={styles.personalBestWrapper}>
-            {bestLapsRes.data.bestLapForEachTrack.map(
-              (trackday: TrackdayNote) => (
-                <TrackdayNoteLinkCard
-                  key={trackday.id}
-                  {...trackday}
-                  showSubtitle
-                />
-              )
-            )}
+            <Text style={styles.sectionHeading}>Personal Bests</Text>
+            <View style={styles.personalBestWrapper}>
+              {bestLapsRes.data.bestLapForEachTrack.map(
+                (trackday: TrackdayNote) => (
+                  <TrackdayNoteLinkCard
+                    key={trackday.id}
+                    {...trackday}
+                    showSubtitle
+                  />
+                )
+              )}
+            </View>
           </View>
-        </View>
-      )}
-      <UpcomingTrackdays />
-      <Motorcycles />
+        )}
+        <UpcomingTrackdays />
+        <Motorcycles />
+      </ScrollView>
     </Container>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 16,
     rowGap: 32
   },
   profileTextWrapper: {

@@ -20,6 +20,14 @@ export const REGISTER_MOTORCYCLE = gql`
   }
 `
 
+export const ARCHIVE_MOTORCYCLE = gql`
+  mutation archiveMotorcycle($id: ID!) {
+    archiveMotorcycle(id: $id) {
+      id
+    }
+  }
+`
+
 export const SAVE_TRACKDAY_NOTE = gql`
   mutation saveTrackdayNote($saveTrackdayNoteInput: SaveTrackdayNoteInput!) {
     saveTrackdayNote(saveTrackdayNoteInput: $saveTrackdayNoteInput) {

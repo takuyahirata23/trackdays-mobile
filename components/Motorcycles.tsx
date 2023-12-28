@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import { useRouter } from 'expo-router'
+import { useRouter, Link } from 'expo-router'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { isEmpty } from 'ramda'
 import { Ionicons } from '@expo/vector-icons'
@@ -36,12 +36,20 @@ export function Motorcycles() {
       </View>
       <View style={styles.wrapper}>
         {data.motorcycles.map(({ id, year, model }: Motorcycle) => (
-          <Card key={id}>
-            <LabelView
-              label={model.make.name}
-              value={`${model.name} (${year})`}
-            />
-          </Card>
+          <Link
+            href={{ pathname: '/profile/motorcycles/[id]', params: { id } }}
+            key={id}
+            asChild
+          >
+            <TouchableOpacity>
+              <Card key={id}>
+                <LabelView
+                  label={model.make.name}
+                  value={`${model.name} (${year})`}
+                />
+              </Card>
+            </TouchableOpacity>
+          </Link>
         ))}
       </View>
     </View>

@@ -47,6 +47,15 @@ export const MOTORCYCLES_QUERY = gql`
   }
 `
 
+export const MOTORCYCLE_QUERY = gql`
+  ${MOTORCYCLE_FIELDS}
+  query getMotorcycle($id: ID!) {
+    motorcycle(id: $id) {
+      ...MotorcycleFields
+    }
+  }
+`
+
 export const FACILITIES_QUERY = gql`
   query getFacilities {
     facilities {
