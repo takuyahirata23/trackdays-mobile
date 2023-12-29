@@ -3,7 +3,7 @@ import { Stack } from 'expo-router'
 
 import { Header } from '@components'
 
-export default function ProfileLayout() {
+export default function LeaderboardLayout() {
   return (
     <Stack
       initialRouteName="index"
@@ -14,6 +14,7 @@ export default function ProfileLayout() {
       }}
     >
       <Stack.Screen name="index" />
+      <Stack.Screen name="[id]" />
     </Stack>
   )
 }

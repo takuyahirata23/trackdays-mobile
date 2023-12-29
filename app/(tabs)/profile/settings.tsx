@@ -1,8 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Link } from 'expo-router'
-import { Octicons, AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons'
-import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import { Octicons, AntDesign, Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import { useQuery } from '@apollo/client'
 
 import { AuthContext } from '@context/Auth'
@@ -47,6 +46,18 @@ export default function Setting() {
           <TouchableOpacity style={styles.buttonWrapper}>
             <Feather name="flag" size={18} color={primary} />
             <Text style={styles.buttonText}>Update riding group</Text>
+            <Octicons size={18} name="chevron-right" color={primary} />
+          </TouchableOpacity>
+        </Link>
+        <Link
+          href={{
+            pathname: '/profile/update-account-type'
+          }}
+          asChild
+        >
+          <TouchableOpacity style={styles.buttonWrapper}>
+            <MaterialIcons name="supervisor-account" size={18} color={primary} />
+            <Text style={styles.buttonText}>Update account type</Text>
             <Octicons size={18} name="chevron-right" color={primary} />
           </TouchableOpacity>
         </Link>

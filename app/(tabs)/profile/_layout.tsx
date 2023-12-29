@@ -58,9 +58,9 @@ export default function ProfileLayout() {
       />
       <Stack.Screen
         name="update-group"
-        options={{
-          title: 'Settings'
-        }}
+      />
+      <Stack.Screen
+        name="update-account-type"
       />
       <Stack.Screen name="motorcycles/register-motorcycle" />
       <Stack.Screen

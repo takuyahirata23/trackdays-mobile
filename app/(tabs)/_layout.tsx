@@ -53,9 +53,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="motorcycle"
+        name="leaderboard"
         options={{
-          title: 'Motorcycle',
+          title: 'Leaderboard',
           tabBarIcon: ({ color }) => (
             <TabIcons
               variant="materialCommunity"

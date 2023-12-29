@@ -119,14 +119,19 @@ export const SAVE_USER_TRACKDAY_CALENDAR = gql`
 `
 
 export const DELETE_USER_TRACKDAY_CALENDAR = gql`
-  mutation deleteUserTrackdayCalendar(
-    $trackdayId: ID!
-  ) {
-    deleteUserTrackdayCalendar(
-      trackdayId: $trackdayId
-    ) {
+  mutation deleteUserTrackdayCalendar($trackdayId: ID!) {
+    deleteUserTrackdayCalendar(trackdayId: $trackdayId) {
       id
       eventId
+    }
+  }
+`
+
+export const UPDATE_ACCOUNT_TYPE = gql`
+  ${USER_FIELDS}
+  mutation updateAccountType($isPrivate: Boolean!) {
+    updateAccountType(isPrivate: $isPrivate) {
+      ...UserFields
     }
   }
 `
