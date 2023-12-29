@@ -49,7 +49,7 @@ export type Theme = {
 // }
 
 const LightTheme: Theme = {
-  ...DefaultTheme,
+  dark: false,
   colors: {
     ...DefaultTheme.colors,
     text: '#4d4b4a',
@@ -64,9 +64,9 @@ const LightTheme: Theme = {
     bgPrimary: '#f9f9fb',
     bgSecondary: '#f2f2f2',
     btnPrimary: '#ffffff',
-    btnSecondary: '#ffffff',
+    btnSecondary: '#279B47',
     btnBgPrimary: '#279B47',
-    btnBgSecondary: '#ff8c42'
+    btnBgSecondary: '#fce762'
   }
 }
 //Box shadow

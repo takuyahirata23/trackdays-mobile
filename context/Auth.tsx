@@ -46,7 +46,7 @@ type AuthContextType = {
   signOut: () => void
   deleteAccount: () => void
   register: (form: RegisterFields, callback: ResponseCallback) => void
-  error: null | Error
+  error: null | Error,
 }
 
 export const AuthContext = React.createContext<AuthContextType>({
@@ -66,6 +66,7 @@ export function AuthProvider({ children, setUser }: Props) {
       message: data.message,
       fields: data.errors
     })
+    setTimeout(() => setError(null), 5000)
   }
 
   const handleUserLoginResponse = (d: { token: string; user: User }) => {
@@ -73,8 +74,6 @@ export function AuthProvider({ children, setUser }: Props) {
     setError(null)
     setUser(d.user)
   }
-
-  const handleUserRegistrationResponse = () => replace('/sign-in')
 
   const handleResponse = (cb: (_d: Response) => void) => (d: Response) =>
     d.error ? handleErrorFromAPI(d) : cb(d)
@@ -112,7 +111,7 @@ export function AuthProvider({ children, setUser }: Props) {
         signIn,
         signOut,
         deleteAccount,
-        register
+        register,
       }}
     >
       {children}
