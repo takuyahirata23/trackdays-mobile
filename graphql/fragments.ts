@@ -6,6 +6,7 @@ export const USER_FIELDS = gql`
     email
     name
     imageUrl
+    isPrivate
     group {
       id
       name
