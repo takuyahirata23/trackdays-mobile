@@ -46,20 +46,20 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <TabIcons
               variant="materialCommunity"
-              name="go-kart-track"
+              name="calendar-blank"
               color={color}
             />
           )
         }}
       />
       <Tabs.Screen
-        name="leaderboard"
+        name="track"
         options={{
-          title: 'Leaderboard',
+          title: 'Track',
           tabBarIcon: ({ color }) => (
             <TabIcons
               variant="materialCommunity"
-              name="motorbike"
+              name="go-kart-track"
               color={color}
             />
           )

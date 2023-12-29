@@ -23,7 +23,7 @@ export default function Leaderboard() {
     <Container style={styles.container}>
       {data.facilities?.map(({ id, name, description }: Facility) => (
         <Link
-          href={{ pathname: '/leaderboard/[id]', params: { id } }}
+          href={{ pathname: '/track/[id]', params: { id } }}
           key={id}
           asChild
         >
