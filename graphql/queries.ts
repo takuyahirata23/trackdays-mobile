@@ -227,31 +227,32 @@ export const UPCOMING_TRACKDAYS = gql`
 
 export const FACILITY_LEADERBOARD_QUERY = gql`
   query getFacilityLeaderboard($facilityId: ID!) {
-    facilityLeaderboard(facilityId: $facilityId) {
+    facility(id: $facilityId) {
       id
       name
       description
-      tracks {
+    }
+    tracksWithLeaderboard(facilityId: $facilityId) {
+      id
+      name
+      length
+      trackdayNotes {
+        user {
+          id
+          name
+          imageUrl
+        }
         id
-        name
-        length
-        trackdayNotes {
-          time
-          user {
+        lapTime
+        motorcycle {
+          id
+          year
+          model {
             id
             name
-            imageUrl
-          }
-          motorcycle {
-            id
-            year
-            model {
+            make {
               id
               name
-              make {
-                id
-                name
-              }
             }
           }
         }

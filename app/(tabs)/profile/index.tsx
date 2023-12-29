@@ -79,6 +79,7 @@ export default function ProfileIndex() {
           if (x.error) {
             handleImageUploadError()
           }
+          Image.clearDiskCache()
         })
         .catch(handleImageUploadError)
     }

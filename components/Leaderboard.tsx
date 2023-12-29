@@ -17,7 +17,7 @@ import type { Motorcycle } from '@type/vehicle'
 type LeaderboardItem = {
   user: User
   motorcycle: Motorcycle
-  time: number
+  lapTime: number
 }
 
 export function Leaderboard({ trackdayNotes }: any) {
@@ -27,7 +27,7 @@ export function Leaderboard({ trackdayNotes }: any) {
 
   return isEmpty(trackdayNotes) ? null : (
     <Card style={styles.card}>
-      {trackdayNotes.map(({ user, motorcycle, time }: LeaderboardItem, i: number) => (
+      {trackdayNotes.map(({ user, motorcycle, lapTime }: LeaderboardItem, i: number) => (
         <View
           key={user.id}
           style={[
@@ -59,7 +59,7 @@ export function Leaderboard({ trackdayNotes }: any) {
             <IconLabel
               icon={<MaterialCommunity name="timer" size={16} color={accent} />}
               cardStyle={{ columnGap: 4 }}
-              label={formatLapTime(time)}
+              label={formatLapTime(lapTime)}
               variant="secondary"
               textStyle={styles.small}
             />

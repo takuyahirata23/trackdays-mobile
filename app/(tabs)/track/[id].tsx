@@ -33,7 +33,8 @@ export default function Facility() {
     return null
   }
 
-  const { name, description, tracks } = data.facilityLeaderboard
+  const { name, description } = data.facility
+
   return (
     <Container style={styles.container}>
       <View style={styles.facilityWrapper}>
@@ -41,15 +42,17 @@ export default function Facility() {
         <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.trackWrapper}>
-        {tracks.map(({ name, length, trackdayNotes }: Track, i: number) => (
-          <View key={i}>
-            <View style={styles.trackDetails}>
-              <Text style={styles.facilityName}>{name}</Text>
-              <Text>{length}km</Text>
+        {data.tracksWithLeaderboard.map(
+          ({ name, length, trackdayNotes }: Track, i: number) => (
+            <View key={i}>
+              <View style={styles.trackDetails}>
+                <Text style={styles.facilityName}>{name}</Text>
+                <Text>{length}km</Text>
+              </View>
+              <Leaderboard trackdayNotes={trackdayNotes} />
             </View>
-            <Leaderboard trackdayNotes={trackdayNotes} />
-          </View>
-        ))}
+          )
+        )}
       </View>
     </Container>
   )
