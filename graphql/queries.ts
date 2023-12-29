@@ -61,6 +61,7 @@ export const FACILITIES_QUERY = gql`
     facilities {
       id
       name
+      description
     }
   }
 `
@@ -219,6 +220,41 @@ export const UPCOMING_TRACKDAYS = gql`
       organization {
         id
         name
+      }
+    }
+  }
+`
+
+export const FACILITY_LEADERBOARD_QUERY = gql`
+  query getFacilityLeaderboard($facilityId: ID!) {
+    facilityLeaderboard(facilityId: $facilityId) {
+      id
+      name
+      description
+      tracks {
+        id
+        name
+        length
+        trackdayNotes {
+          time
+          user {
+            id
+            name
+            imageUrl
+          }
+          motorcycle {
+            id
+            year
+            model {
+              id
+              name
+              make {
+                id
+                name
+              }
+            }
+          }
+        }
       }
     }
   }
