@@ -22,11 +22,10 @@ export default function Motorcycle() {
     <Container>
       <View style={styles.vehicleWrapper}>
         <Text style={styles.name}>
-          {model.make.name} {model.name}
+          {model.make.name} ({year})
         </Text>
-        <Text >({year})</Text>
+        <Text >{model.name}</Text>
       </View>
-      <Text style={{ marginTop: 16}}>Motorcycle features are coming soon...</Text>
     </Container>
   )
 }
@@ -34,8 +33,7 @@ export default function Motorcycle() {
 const styles = StyleSheet.create({
   container: {},
   vehicleWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center'
+    rowGap: 4
   },
   name: {
     fontSize: 20,
