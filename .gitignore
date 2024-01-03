@@ -19,3 +19,4 @@ coverage/
 .metro-health-check*
 .envrc
 .env*
+storybooks-*.json
