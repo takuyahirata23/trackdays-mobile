@@ -80,7 +80,7 @@ function RootLayoutNav({ user, setUser }: { user: null | User; setUser: any }) {
       <ThemeProvider>
         <AuthProvider setUser={setUser}>
           <ApolloProvider client={client}>
-          <StatusBar  hidden/>
+            <StatusBar style="dark" />
             <Stack>
               <Stack.Screen name="(auth)" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
