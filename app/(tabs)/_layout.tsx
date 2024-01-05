@@ -17,7 +17,7 @@ function TabIcons(props: {
   variant: 'fontAwesome' | 'materialCommunity'
 }) {
   const Icon = icon[props.variant]
-  return <Icon size={28} style={{ marginBottom: -3 }} {...props} />
+  return <Icon size={28}  {...props} />
 }
 
 export default function TabLayout() {

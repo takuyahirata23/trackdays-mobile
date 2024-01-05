@@ -52,6 +52,7 @@ const LightTheme: Theme = {
   dark: false,
   colors: {
     ...DefaultTheme.colors,
+    border: '#f9f9fb',
     text: '#4d4b4a',
     background: '#ffffff',
     primary: '#4d4b4a',
