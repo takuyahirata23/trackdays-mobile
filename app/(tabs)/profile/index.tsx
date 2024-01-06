@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client'
 import Feather from '@expo/vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker'
 import { isEmpty, not } from 'ramda'
+import { Toast } from 'toastify-react-native'
 
 import { getToken } from '@utils/secureStore'
 import { useTheme } from '@hooks/useTheme'
@@ -59,7 +60,6 @@ const uploadImageFromUri = async (uri: string) => {
 
 export default function ProfileIndex() {
   const [profileImage, setProfileImage] = React.useState('')
-  const [profileImageUploadError, setProfileImageUploadError] =
     React.useState(false)
   const { loading, data, error } = useQuery(USER_QUERY)
   const bestLapsRes = useQuery(BEST_LAP_FOR_EACH_TRACK)
@@ -69,7 +69,7 @@ export default function ProfileIndex() {
 
   const handleImageUploadError = () => {
     setProfileImage('')
-    setProfileImageUploadError(true)
+    Toast.error('Sorry! Something went wrong.', 'bottom')
   }
 
   React.useEffect(() => {
@@ -80,16 +80,11 @@ export default function ProfileIndex() {
             handleImageUploadError()
           }
           Image.clearDiskCache()
+          Toast.success('Profile picture updated', 'bottom')
         })
         .catch(handleImageUploadError)
     }
   }, [profileImage])
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setProfileImageUploadError(false)
-    }, 5000)
-  }, [profileImageUploadError])
 
   if (error || bestLapsRes.error) {
     console.error(error)
@@ -111,7 +106,7 @@ export default function ProfileIndex() {
         <Card>
           <View style={styles.profileWrapper}>
             <Pressable
-              onLongPress={pickImage(setProfileImage)}
+              onPress={pickImage(setProfileImage)}
               style={[styles.profileImageWrapper, { borderColor: bgSecondary }]}
             >
               {imageUrl || profileImage ? (
@@ -135,11 +130,6 @@ export default function ProfileIndex() {
               </View>
             </View>
           </View>
-          {profileImageUploadError && (
-            <Text color="tertiary" style={styles.errorText}>
-              Something went wrong. Please try it later.
-            </Text>
-          )}
         </Card>
         {not(isEmpty(bestLapsRes.data?.bestLapForEachTrack)) && (
           <View style={styles.personalBestWrapper}>
