@@ -100,7 +100,7 @@ export function AddTrackdayToCalendar() {
     } else if (status?.canAskAgain) {
       await requestPermission()
     } else {
-      console.log('no access')
+      Toast.error('Please grant calendar access', 'bottom')
     }
   }
 

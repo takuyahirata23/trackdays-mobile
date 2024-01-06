@@ -7,7 +7,6 @@ import * as ImagePicker from 'expo-image-picker'
 import { isEmpty, not } from 'ramda'
 import { Toast } from 'toastify-react-native'
 
-import { getToken } from '@utils/secureStore'
 import { useTheme } from '@hooks/useTheme'
 import { USER_QUERY, BEST_LAP_FOR_EACH_TRACK } from '@graphql/queries'
 import {
