@@ -19,6 +19,7 @@ import {
   UpcomingTrackdays,
   Motorcycles
 } from '@components'
+import {updateProfileImage } from '@rest/images'
 
 import type { TrackdayNote } from '@type/event'
 
@@ -35,27 +36,16 @@ const pickImage = (callback: (_x: string) => void) => () => {
   })
 }
 
-const uploadImageFromUri = async (uri: string) => {
+const uploadImageFromUri = (uri: string) => {
   const formData = new FormData()
-  const token = await getToken()
-
-  formData.append('image', {
     // @ts-ignore: not sure why warning for append
+  formData.append('image', {
     uri,
     name: 'profile.jpg',
     type: 'jpg'
   })
 
-  const base = `${process.env.EXPO_PUBLIC_DOMAIN_URL}/images/profile`
-
-  return fetch(base, {
-    method: 'POST',
-    body: formData,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      authorization: token ? `Bearer ${token}` : ''
-    }
-  }).then(x => x.json())
+  return updateProfileImage(formData)
 }
 
 export default function ProfileIndex() {

@@ -16,7 +16,7 @@ export const sendRegisterRequest = (body: RestRegisterFields) =>
 
 export const sendDeleteAccountRequest = async () => {
   const headers = await generateAuthHeader()
-  call({ path: DELETE_ACCOUNT, headers })
+  return call({ path: DELETE_ACCOUNT, headers })
 }
 
 export const sendEmailUpdateRequest = async (body: { email: string }) => {
