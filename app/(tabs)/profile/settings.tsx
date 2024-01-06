@@ -85,6 +85,18 @@ export default function Setting() {
             <Octicons size={18} name="chevron-right" color={primary} />
           </TouchableOpacity>
         </Link>
+        <Link
+          href={{
+            pathname: '/profile/faq'
+          }}
+          asChild
+        >
+          <TouchableOpacity style={styles.buttonWrapper}>
+            <AntDesign size={18} name="questioncircleo" color={primary} />
+            <Text style={styles.buttonText}>FAQ</Text>
+            <Octicons size={18} name="chevron-right" color={primary} />
+          </TouchableOpacity>
+        </Link>
       </View>
       <View style={styles.ctaWrapper}>
         <Button variant="secondary" onPress={handleSignOut}>

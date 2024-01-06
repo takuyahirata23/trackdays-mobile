@@ -69,6 +69,9 @@ export default function ProfileLayout() {
           headerRight: DeleteMotorcycleButton
         }}
       />
+      <Stack.Screen
+        name="faq"
+      />
     </Stack>
   )
 }
