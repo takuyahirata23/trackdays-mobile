@@ -8,19 +8,23 @@ import { IconLabel } from './IconLabel'
 import { Text } from './Text'
 import { formatLapTime } from '@functions/lapTimeConverters'
 import { useTheme } from '@hooks/useTheme'
+import { formatDate } from '@functions/date'
 
 import type { TrackdayNote } from '@type/event'
 
 type Props = {
   showSubtitle?: boolean
+  showDate?: boolean
 } & TrackdayNote
 
 export function TrackdayNoteLinkCard({
   id,
   track,
   lapTime,
+  date,
   motorcycle,
-  showSubtitle
+  showSubtitle,
+  showDate
 }: Props) {
   const {
     colors: { accent }
@@ -41,18 +45,31 @@ export function TrackdayNoteLinkCard({
             <Text style={styles.cardSubTitle}>{track.name}</Text>
           )}
           <View style={styles.cardDetail}>
-            <IconLabel
-              icon={
-                <MaterialCommunity name="motorbike" size={20} color={accent} />
-              }
-              label={motorcycle.model.name}
-              variant="secondary"
-            />
+            {motorcycle && (
+              <IconLabel
+                icon={
+                  <MaterialCommunity
+                    name="motorbike"
+                    size={20}
+                    color={accent}
+                  />
+                }
+                label={motorcycle.model.name}
+                variant="secondary"
+              />
+            )}
             <IconLabel
               icon={<MaterialCommunity name="timer" size={20} color={accent} />}
               label={formatLapTime(Number(lapTime))}
               variant="secondary"
             />
+            {showDate && (
+            <IconLabel
+              icon={<MaterialCommunity name="calendar-today" size={20} color={accent} />}
+              label={formatDate(new Date(date))}
+              variant="secondary"
+            />
+            )}
           </View>
         </Card>
       </TouchableOpacity>

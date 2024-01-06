@@ -42,7 +42,6 @@ export function DeleteMotorcycleConfirmation({ id }: { id: string }) {
         fields: {
           motorcycles(existingMotorcycleRefs, { readField }) {
             return existingMotorcycleRefs.filter((ref: any) => {
-              console.log(readField('id', ref), id)
               return id !== readField('id', ref)
             })
           }

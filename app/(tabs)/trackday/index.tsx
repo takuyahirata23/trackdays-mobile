@@ -127,8 +127,10 @@ export default function TrackdayIndex() {
     })
 
   return (
-    <Container style={{ paddingTop: 0 }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
+      <ScrollView showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.container}
+      >
         <View style={{ marginTop: 20 }}>
           <Card>
             <Calendar
@@ -166,6 +168,9 @@ export default function TrackdayIndex() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 20
+  },
   contentWrapper: {
     marginTop: 16,
     rowGap: 8

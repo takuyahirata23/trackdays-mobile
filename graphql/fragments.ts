@@ -14,7 +14,6 @@ export const USER_FIELDS = gql`
   }
 `
 
-
 export const MOTORCYCLE_FIELDS = gql`
   fragment MotorcycleFields on Motorcycle {
     id

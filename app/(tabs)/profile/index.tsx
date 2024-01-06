@@ -87,7 +87,7 @@ export default function ProfileIndex() {
   const { name, imageUrl, group } = data.user
 
   return (
-    <Container style={{ paddingTop: 0 }}>
+    <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}
@@ -146,7 +146,8 @@ export default function ProfileIndex() {
 const styles = StyleSheet.create({
   container: {
     marginTop: 16,
-    rowGap: 32
+    rowGap: 32,
+    paddingHorizontal: 20
   },
   profileTextWrapper: {
     flex: 1,

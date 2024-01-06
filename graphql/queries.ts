@@ -52,6 +52,19 @@ export const MOTORCYCLE_QUERY = gql`
   query getMotorcycle($id: ID!) {
     motorcycle(id: $id) {
       ...MotorcycleFields
+      trackdayNotes {
+        id
+        date
+        lapTime
+        track {
+          id
+          name
+          facility {
+            id
+            name
+          }
+        }
+      }
     }
   }
 `
