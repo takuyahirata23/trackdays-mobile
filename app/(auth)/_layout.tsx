@@ -1,11 +1,14 @@
 import React from 'react'
 import { Stack } from 'expo-router'
+import { Header } from '@components'
 
 export default function AuthStackLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false
+        headerTitle: () => <Header />,
+        headerBackTitleVisible: false,
+        headerShadowVisible: true
       }}
     >
       <Stack.Screen

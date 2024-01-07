@@ -1,9 +1,13 @@
 import React from 'react'
-import { View, StyleSheet, Keyboard, TouchableOpacity } from 'react-native'
-import { useNavigation } from 'expo-router'
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView
+} from 'react-native'
+import { useNavigation, useLocalSearchParams } from 'expo-router'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
-import { useSearchParams } from 'expo-router'
 import { isEmpty } from 'ramda'
 import BottomSheetType from '@gorhom/bottom-sheet'
 
@@ -25,9 +29,7 @@ import {
   BottomSheetHandle,
   KeyboardAvoidingView
 } from '@components'
-import {
-  lapTimeToMilliseconds
-} from '@functions/lapTimeConverters'
+import { lapTimeToMilliseconds } from '@functions/lapTimeConverters'
 import { validateTrackdayNote } from '@functions/validations'
 
 import type { Motorcycle } from '@type/vehicle'
@@ -66,12 +68,15 @@ const goBackToPreviousStep = (prev: SaveTrackdaySteps) => {
 
     case SaveTrackdaySteps.Laptime:
       return SaveTrackdaySteps.Motorcycle
+
+    default: 
+      return SaveTrackdaySteps.Facility
   }
 }
 
 export default function CreateTrackdayNote() {
   const bottomSheetRef = React.useRef<BottomSheetType>(null)
-  const { date: dateParam } = useSearchParams()
+  const { date: dateParam } = useLocalSearchParams()
   const { goBack } = useNavigation()
   const motorcycleRes = useQuery(MOTORCYCLES_QUERY)
   const facilityRes = useQuery(FACILITIES_QUERY)
@@ -154,11 +159,16 @@ export default function CreateTrackdayNote() {
   }
 
   const handleCurrentStepChange = (step: SaveTrackdaySteps) => () => {
-    setCurrentStep(step)
+
+    if(SaveTrackdaySteps.Track === step && !facility) {
+      setCurrentStep(SaveTrackdaySteps.Facility)
+    } else {
+      setCurrentStep(step)
+    }
     bottomSheetRef.current?.expand()
   }
 
-  const onPressHandlers = () => {
+  const onPressHandlers  = () => {
     switch (currentStep) {
       case SaveTrackdaySteps.Facility:
         return () => {
@@ -210,7 +220,7 @@ export default function CreateTrackdayNote() {
         variables: {
           saveTrackdayNoteInput: {
             date,
-            lapTime: lapTimeToMilliseconds({ minutes, seconds, milliseconds}),
+            lapTime: lapTimeToMilliseconds({ minutes, seconds, milliseconds }),
             motorcycleId: motorcycle,
             trackId: track,
             note: note
@@ -225,224 +235,231 @@ export default function CreateTrackdayNote() {
   )
 
   return (
-    <Container>
-      {motorcycleRes.called &&
-      !motorcycleRes.loading &&
-      isEmpty(motorcycleRes.data.motorcycles) ? (
-        <NoMotorcycleRegisteredError />
-      ) : (
-        <>
-          <KeyboardAvoidingView>
-            <View style={styles.container}>
-              <Card>
-                <Text>Date: {date}</Text>
-              </Card>
-              <TouchableOpacity
-                onPress={handleCurrentStepChange(SaveTrackdaySteps.Facility)}
-              >
+    <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollView}
+      >
+        {motorcycleRes.called &&
+        !motorcycleRes.loading &&
+        isEmpty(motorcycleRes.data.motorcycles) ? (
+          <NoMotorcycleRegisteredError />
+        ) : (
+          <>
+            <KeyboardAvoidingView>
+              <View style={styles.container}>
                 <Card>
-                  <Text>
-                    Facility:{' '}
-                    {getName(facilityRes.data?.facilities || [])(facility)}
-                  </Text>
+                  <Text>Date: {date}</Text>
                 </Card>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleCurrentStepChange(SaveTrackdaySteps.Track)}
-              >
-                <Card>
-                  <Text>
-                    Track: {getName(tracksRes.data?.tracks || [])(track)}
-                  </Text>
-                </Card>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleCurrentStepChange(SaveTrackdaySteps.Motorcycle)}
-              >
-                <Card>
-                  <Text>
-                    Motorcycle:{' '}
-                    {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
-                      motorcycle
-                    )}
-                  </Text>
-                </Card>
-              </TouchableOpacity>
-              {currentStep === SaveTrackdaySteps.Laptime ? (
-                <Card
-                  style={{
-                    borderColor: error,
-                    borderWidth: laptimeError ? 1 : 0
-                  }}
-                >
-                  <View style={styles.laptimeWrapper}>
-                    <View style={styles.lapTimeFieldWrapper}>
-                      <Field
-                        label="Minute"
-                        value={minutes}
-                        style={styles.lapTimeField}
-                        onChangeText={handleOnChange('minutes')}
-                        keyboardType="numeric"
-                        placeholder="00"
-                        error={formError.minutes}
-                      />
-                      <Text style={styles.laptimeSemicolon}>:</Text>
-                    </View>
-                    <View style={styles.lapTimeFieldWrapper}>
-                      <Field
-                        label="Seconds"
-                        value={seconds}
-                        onChangeText={handleOnChange('seconds')}
-                        style={styles.lapTimeField}
-                        keyboardType="numeric"
-                        placeholder="00"
-                        error={formError.seconds}
-                      />
-                      <Text style={styles.laptimeSemicolon}>:</Text>
-                    </View>
-                    <View style={styles.lapTimeFieldWrapper}>
-                      <Field
-                        label="Miliseconds"
-                        value={milliseconds}
-                        onChangeText={handleOnChange('milliseconds')}
-                        style={styles.lapTimeField}
-                        keyboardType="numeric"
-                        placeholder="000"
-                        returnKeyType="done"
-                        error={formError.milliseconds}
-                        onEndEditing={() => {
-                          setCurrentStep(SaveTrackdaySteps.Note)
-                        }}
-                      />
-                    </View>
-                  </View>
-                </Card>
-              ) : (
                 <TouchableOpacity
-                  onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}
+                  onPress={handleCurrentStepChange(SaveTrackdaySteps.Facility)}
                 >
+                  <Card>
+                    <Text>
+                      Facility:{' '}
+                      {getName(facilityRes.data?.facilities || [])(facility)}
+                    </Text>
+                  </Card>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleCurrentStepChange(SaveTrackdaySteps.Track)}
+                >
+                  <Card>
+                    <Text>
+                      Track: {getName(tracksRes.data?.tracks || [])(track)}
+                    </Text>
+                  </Card>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleCurrentStepChange(
+                    SaveTrackdaySteps.Motorcycle
+                  )}
+                >
+                  <Card>
+                    <Text>
+                      Motorcycle:{' '}
+                      {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
+                        motorcycle
+                      )}
+                    </Text>
+                  </Card>
+                </TouchableOpacity>
+                {currentStep === SaveTrackdaySteps.Laptime ? (
                   <Card
                     style={{
                       borderColor: error,
                       borderWidth: laptimeError ? 1 : 0
                     }}
                   >
-                    <Text>
-                      Best lap time: {minutes || '00'}:{seconds || '00'}:
-                      {milliseconds || '000'}
-                    </Text>
+                    <View style={styles.laptimeWrapper}>
+                      <View style={styles.lapTimeFieldWrapper}>
+                        <Field
+                          label="Minute"
+                          value={minutes}
+                          style={styles.lapTimeField}
+                          onChangeText={handleOnChange('minutes')}
+                          keyboardType="numeric"
+                          placeholder="00"
+                          error={formError.minutes}
+                        />
+                        <Text style={styles.laptimeSemicolon}>:</Text>
+                      </View>
+                      <View style={styles.lapTimeFieldWrapper}>
+                        <Field
+                          label="Seconds"
+                          value={seconds}
+                          onChangeText={handleOnChange('seconds')}
+                          style={styles.lapTimeField}
+                          keyboardType="numeric"
+                          placeholder="00"
+                          error={formError.seconds}
+                        />
+                        <Text style={styles.laptimeSemicolon}>:</Text>
+                      </View>
+                      <View style={styles.lapTimeFieldWrapper}>
+                        <Field
+                          label="Miliseconds"
+                          value={milliseconds}
+                          onChangeText={handleOnChange('milliseconds')}
+                          style={styles.lapTimeField}
+                          keyboardType="numeric"
+                          placeholder="000"
+                          error={formError.milliseconds}
+                          onEndEditing={() => {
+                            setCurrentStep(SaveTrackdaySteps.Note)
+                          }}
+                        />
+                      </View>
+                    </View>
                   </Card>
-                </TouchableOpacity>
-              )}
-              {currentStep === SaveTrackdaySteps.Note ? (
-                <Card>
-                  <Field
-                    label="Note"
-                    value={note}
-                    onChangeText={handleOnChange('note')}
-                    numberOfLines={3}
-                    inputStyle={styles.note}
-                    multiline
-                    blurOnSubmit
-                    onSubmitEditing={() => {
-                      setCurrentStep(SaveTrackdaySteps.Submit)
-                      Keyboard.dismiss()
-                    }}
-                    returnKeyType="done"
-                  />
-                </Card>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => setCurrentStep(SaveTrackdaySteps.Note)}
-                >
-                  <Card>
-                    <Text>Note: {note}</Text>
-                  </Card>
-                </TouchableOpacity>
-              )}
-              <View style={styles.btnWrapper}>
-                <Button onPress={handleSubmit}>Save</Button>
-              </View>
-            </View>
-          </KeyboardAvoidingView>
-          <BottomSheet
-            ref={bottomSheetRef}
-            enablePanDownToClose
-            handleComponent={() => (
-              <BottomSheetHandle
-                onPressRight={onPressHandlers()}
-                rightText="Next"
-                onPressLeft={() => setCurrentStep(goBackToPreviousStep)}
-                leftText={
-                  currentStep !== SaveTrackdaySteps.Facility
-                    ? 'Back'
-                    : undefined
-                }
-              />
-            )}
-          >
-            {currentStep === SaveTrackdaySteps.Facility && (
-              <Card>
-                <View style={styles.pickerWrapper}>
-                  <Picker
-                    selectedValue={facility}
-                    onValueChange={handleOnChange('facility')}
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}
                   >
-                    {facilityRes?.data?.facilities.map((m: Facility) => (
-                      <Picker.Item value={m.id} label={m.name} key={m.id} />
-                    ))}
-                  </Picker>
+                    <Card
+                      style={{
+                        borderColor: error,
+                        borderWidth: laptimeError ? 1 : 0
+                      }}
+                    >
+                      <Text>
+                        Best lap time: {minutes || '00'}:{seconds || '00'}:
+                        {milliseconds || '000'}
+                      </Text>
+                    </Card>
+                  </TouchableOpacity>
+                )}
+                {currentStep === SaveTrackdaySteps.Note ? (
+                  <Card>
+                    <Field
+                      label="Note"
+                      value={note}
+                      onChangeText={handleOnChange('note')}
+                      numberOfLines={3}
+                      inputStyle={styles.note}
+                      multiline
+                    />
+                  </Card>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => {
+                      bottomSheetRef.current?.close()
+                      setCurrentStep(SaveTrackdaySteps.Note)
+                    }}
+                  >
+                    <Card>
+                      <Text>Note: {note}</Text>
+                    </Card>
+                  </TouchableOpacity>
+                )}
+                <View style={styles.btnWrapper}>
+                  <Button onPress={handleSubmit}>Save</Button>
                 </View>
-              </Card>
-            )}
-            {currentStep === SaveTrackdaySteps.Track && (
-              <Card>
-                {facility && tracksRes.data && (
+              </View>
+            </KeyboardAvoidingView>
+            <BottomSheet
+              ref={bottomSheetRef}
+              enablePanDownToClose
+              handleComponent={() => (
+                <BottomSheetHandle
+                  onPressRight={onPressHandlers() as () => void}
+                  rightText="Next"
+                  onPressLeft={() => setCurrentStep(goBackToPreviousStep)}
+                  leftText={
+                    currentStep !== SaveTrackdaySteps.Facility
+                      ? 'Back'
+                      : undefined
+                  }
+                />
+              )}
+            >
+              {currentStep === SaveTrackdaySteps.Facility && (
+                <Card>
                   <View style={styles.pickerWrapper}>
                     <Picker
-                      selectedValue={track}
-                      onValueChange={handleOnChange('track')}
+                      selectedValue={facility}
+                      onValueChange={handleOnChange('facility')}
                     >
-                      {tracksRes?.data?.tracks?.map((m: Track) => (
+                      {facilityRes?.data?.facilities.map((m: Facility) => (
                         <Picker.Item value={m.id} label={m.name} key={m.id} />
                       ))}
                     </Picker>
                   </View>
-                )}
-              </Card>
-            )}
-            {currentStep === SaveTrackdaySteps.Motorcycle && (
-              <Card>
-                <View style={styles.pickerWrapper}>
-                  <Picker
-                    selectedValue={motorcycle}
-                    onValueChange={handleOnChange('motorcycle')}
-                  >
-                    {motorcycleRes?.data?.motorcycles.map(
-                      ({ id, year, model }: Motorcycle) => (
-                        <Picker.Item
-                          value={id}
-                          label={`${model.name}(${year})`}
-                          key={id}
-                        />
-                      )
-                    )}
-                  </Picker>
-                </View>
-              </Card>
-            )}
-          </BottomSheet>
-        </>
-      )}
+                </Card>
+              )}
+              {currentStep === SaveTrackdaySteps.Track && (
+                <Card>
+                  {facility && tracksRes.data && (
+                    <View style={styles.pickerWrapper}>
+                      <Picker
+                        selectedValue={track}
+                        onValueChange={handleOnChange('track')}
+                      >
+                        {tracksRes?.data?.tracks?.map((m: Track) => (
+                          <Picker.Item value={m.id} label={m.name} key={m.id} />
+                        ))}
+                      </Picker>
+                    </View>
+                  )}
+                </Card>
+              )}
+              {currentStep === SaveTrackdaySteps.Motorcycle && (
+                <Card>
+                  <View style={styles.pickerWrapper}>
+                    <Picker
+                      selectedValue={motorcycle}
+                      onValueChange={handleOnChange('motorcycle')}
+                    >
+                      {motorcycleRes?.data?.motorcycles.map(
+                        ({ id, year, model }: Motorcycle) => (
+                          <Picker.Item
+                            value={id}
+                            label={`${model.name}(${year})`}
+                            key={id}
+                          />
+                        )
+                      )}
+                    </Picker>
+                  </View>
+                </Card>
+              )}
+            </BottomSheet>
+          </>
+        )}
+      </ScrollView>
     </Container>
   )
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    paddingTop: 16,
+    paddingHorizontal: 20,
+    flex: 1
+  },
   container: {
     rowGap: 16,
-    flex: 1,
-    paddingBottom: 16
+    flex: 1
   },
   laptimeWrapper: {
     width: '100%',
