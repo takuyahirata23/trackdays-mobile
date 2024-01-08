@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView
-} from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import { useNavigation, useLocalSearchParams } from 'expo-router'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
@@ -69,7 +64,7 @@ const goBackToPreviousStep = (prev: SaveTrackdaySteps) => {
     case SaveTrackdaySteps.Laptime:
       return SaveTrackdaySteps.Motorcycle
 
-    default: 
+    default:
       return SaveTrackdaySteps.Facility
   }
 }
@@ -159,8 +154,7 @@ export default function CreateTrackdayNote() {
   }
 
   const handleCurrentStepChange = (step: SaveTrackdaySteps) => () => {
-
-    if(SaveTrackdaySteps.Track === step && !facility) {
+    if (SaveTrackdaySteps.Track === step && !facility) {
       setCurrentStep(SaveTrackdaySteps.Facility)
     } else {
       setCurrentStep(step)
@@ -168,7 +162,7 @@ export default function CreateTrackdayNote() {
     bottomSheetRef.current?.expand()
   }
 
-  const onPressHandlers  = () => {
+  const onPressHandlers = () => {
     switch (currentStep) {
       case SaveTrackdaySteps.Facility:
         return () => {
@@ -377,83 +371,82 @@ export default function CreateTrackdayNote() {
                 </View>
               </View>
             </KeyboardAvoidingView>
-            <BottomSheet
-              ref={bottomSheetRef}
-              enablePanDownToClose
-              handleComponent={() => (
-                <BottomSheetHandle
-                  onPressRight={onPressHandlers() as () => void}
-                  rightText="Next"
-                  onPressLeft={() => setCurrentStep(goBackToPreviousStep)}
-                  leftText={
-                    currentStep !== SaveTrackdaySteps.Facility
-                      ? 'Back'
-                      : undefined
-                  }
-                />
-              )}
-            >
-              {currentStep === SaveTrackdaySteps.Facility && (
-                <Card>
-                  <View style={styles.pickerWrapper}>
-                    <Picker
-                      selectedValue={facility}
-                      onValueChange={handleOnChange('facility')}
-                    >
-                      {facilityRes?.data?.facilities.map((m: Facility) => (
-                        <Picker.Item value={m.id} label={m.name} key={m.id} />
-                      ))}
-                    </Picker>
-                  </View>
-                </Card>
-              )}
-              {currentStep === SaveTrackdaySteps.Track && (
-                <Card>
-                  {facility && tracksRes.data && (
-                    <View style={styles.pickerWrapper}>
-                      <Picker
-                        selectedValue={track}
-                        onValueChange={handleOnChange('track')}
-                      >
-                        {tracksRes?.data?.tracks?.map((m: Track) => (
-                          <Picker.Item value={m.id} label={m.name} key={m.id} />
-                        ))}
-                      </Picker>
-                    </View>
-                  )}
-                </Card>
-              )}
-              {currentStep === SaveTrackdaySteps.Motorcycle && (
-                <Card>
-                  <View style={styles.pickerWrapper}>
-                    <Picker
-                      selectedValue={motorcycle}
-                      onValueChange={handleOnChange('motorcycle')}
-                    >
-                      {motorcycleRes?.data?.motorcycles.map(
-                        ({ id, year, model }: Motorcycle) => (
-                          <Picker.Item
-                            value={id}
-                            label={`${model.name}(${year})`}
-                            key={id}
-                          />
-                        )
-                      )}
-                    </Picker>
-                  </View>
-                </Card>
-              )}
-            </BottomSheet>
           </>
         )}
       </ScrollView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        enablePanDownToClose
+        handleComponent={() => (
+          <BottomSheetHandle
+            onPressRight={onPressHandlers() as () => void}
+            rightText="Next"
+            onPressLeft={() => setCurrentStep(goBackToPreviousStep)}
+            leftText={
+              currentStep !== SaveTrackdaySteps.Facility ? 'Back' : undefined
+            }
+          />
+        )}
+      >
+        {currentStep === SaveTrackdaySteps.Facility && (
+          <Card>
+            <View style={styles.pickerWrapper}>
+              <Picker
+                selectedValue={facility}
+                onValueChange={handleOnChange('facility')}
+              >
+                {facilityRes?.data?.facilities.map((m: Facility) => (
+                  <Picker.Item value={m.id} label={m.name} key={m.id} />
+                ))}
+              </Picker>
+            </View>
+          </Card>
+        )}
+        {currentStep === SaveTrackdaySteps.Track && (
+          <Card>
+            {facility && tracksRes.data && (
+              <View style={styles.pickerWrapper}>
+                <Picker
+                  selectedValue={track}
+                  onValueChange={handleOnChange('track')}
+                >
+                  {tracksRes?.data?.tracks?.map((m: Track) => (
+                    <Picker.Item value={m.id} label={m.name} key={m.id} />
+                  ))}
+                </Picker>
+              </View>
+            )}
+          </Card>
+        )}
+        {currentStep === SaveTrackdaySteps.Motorcycle && (
+          <Card>
+            <View style={styles.pickerWrapper}>
+              <Picker
+                selectedValue={motorcycle}
+                onValueChange={handleOnChange('motorcycle')}
+              >
+                {motorcycleRes?.data?.motorcycles.map(
+                  ({ id, year, model }: Motorcycle) => (
+                    <Picker.Item
+                      value={id}
+                      label={`${model.name}(${year})`}
+                      key={id}
+                    />
+                  )
+                )}
+              </Picker>
+            </View>
+          </Card>
+        )}
+      </BottomSheet>
     </Container>
   )
 }
 
 const styles = StyleSheet.create({
   scrollView: {
-    paddingTop: 16,
+    marginTop: 16,
+    paddingBottom: 32,
     paddingHorizontal: 20,
     flex: 1
   },
