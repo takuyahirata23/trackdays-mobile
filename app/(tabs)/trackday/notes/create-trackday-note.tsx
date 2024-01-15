@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
-import { useNavigation, useLocalSearchParams } from 'expo-router'
+import { useNavigation, useLocalSearchParams, useRouter } from 'expo-router'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
 import { isEmpty } from 'ramda'
@@ -13,6 +13,7 @@ import {
 } from '@graphql/queries'
 import { SAVE_TRACKDAY_NOTE } from 'graphql/mutations'
 import { TRACKDAY_NOTE } from 'graphql/fragments'
+import { TrackdayNoteContext } from '@context/TrackdayNote'
 import { useTheme } from '@hooks/useTheme'
 import {
   Button,
@@ -73,13 +74,16 @@ export default function CreateTrackdayNote() {
   const bottomSheetRef = React.useRef<BottomSheetType>(null)
   const { date: dateParam } = useLocalSearchParams()
   const { goBack } = useNavigation()
+  const { push } = useRouter()
   const motorcycleRes = useQuery(MOTORCYCLES_QUERY)
   const facilityRes = useQuery(FACILITIES_QUERY)
   const [currentStep, setCurrentStep] = React.useState(
     SaveTrackdaySteps.Facility
   )
+
+  const { trackdayNote: { note } } = React.useContext(TrackdayNoteContext)
   const [
-    { date, facility, track, motorcycle, minutes, seconds, milliseconds, note },
+    { date, facility, track, motorcycle, minutes, seconds, milliseconds },
     setFields
   ] = React.useState({
     date: dateParam as string,
@@ -88,8 +92,7 @@ export default function CreateTrackdayNote() {
     motorcycle: '',
     minutes: '',
     seconds: '',
-    milliseconds: '',
-    note: ''
+    milliseconds: ''
   })
   const [getTracks, tracksRes] = useLazyQuery(TRACKS_QUERY, {
     variables: {
@@ -343,30 +346,17 @@ export default function CreateTrackdayNote() {
                     </Card>
                   </TouchableOpacity>
                 )}
-                {currentStep === SaveTrackdaySteps.Note ? (
-                  <Card>
-                    <Field
-                      label="Note"
-                      value={note}
-                      onChangeText={handleOnChange('note')}
-                      numberOfLines={5}
-                      inputStyle={styles.note}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  </Card>
-                ) : (
                   <TouchableOpacity
                     onPress={() => {
                       bottomSheetRef.current?.close()
                       setCurrentStep(SaveTrackdaySteps.Note)
+                      push('/trackday/notes/edit-note')
                     }}
                   >
                     <Card>
                       <Text>Note: {note}</Text>
                     </Card>
                   </TouchableOpacity>
-                )}
                 <View style={styles.btnWrapper}>
                   <Button onPress={handleSubmit}>Save</Button>
                 </View>

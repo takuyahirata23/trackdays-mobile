@@ -14,6 +14,7 @@ import { USER_QUERY } from '@graphql/queries'
 import { getToken } from '@utils/secureStore'
 import { AuthProvider } from '@context/Auth'
 import { ThemeProvider } from '@context/Theme'
+import { TrackdayNoteProvider } from '@context/TrackdayNote'
 
 import { User } from '@type/accounts'
 
@@ -79,20 +80,25 @@ function RootLayoutNav({ user, setUser }: { user: null | User; setUser: any }) {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
         <AuthProvider setUser={setUser}>
-          <ApolloProvider client={client}>
-            <StatusBar style="dark" />
-            <Stack>
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-            </Stack>
-            <ToastManager
-              style={{ width: '100%' }}
-              height={60}
-              positionValue={80}
-              textStyle={{ fontSize: 16 }}
-            />
-          </ApolloProvider>
+          <TrackdayNoteProvider>
+            <ApolloProvider client={client}>
+              <StatusBar style="dark" />
+              <Stack>
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="modal"
+                  options={{ presentation: 'modal' }}
+                />
+              </Stack>
+              <ToastManager
+                style={{ width: '100%' }}
+                height={60}
+                positionValue={80}
+                textStyle={{ fontSize: 16 }}
+              />
+            </ApolloProvider>
+          </TrackdayNoteProvider>
         </AuthProvider>
       </ThemeProvider>
     </GestureHandlerRootView>

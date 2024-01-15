@@ -1,10 +1,10 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
+import { useRouter } from 'expo-router'
 import { Calendar, DateData } from 'react-native-calendars'
-import { Link } from 'expo-router'
-import { Toast } from 'toastify-react-native'
 
+import { TrackdayNoteContext } from '@context/TrackdayNote'
 import { GET_MONTHLY_TRACKDAY_DATA } from '@graphql/queries'
 import {
   Container,
@@ -31,6 +31,7 @@ type Events = {
 }
 
 export default function TrackdayIndex() {
+  const { push } = useRouter()
   const { loading, data, error, refetch } = useQuery(
     GET_MONTHLY_TRACKDAY_DATA,
     {
@@ -51,6 +52,7 @@ export default function TrackdayIndex() {
   const [targetTrackdays, setTargetTrackdays] = React.useState([])
 
   const [date, setDate] = React.useState(today)
+  const { reset } = React.useContext(TrackdayNoteContext)
 
   React.useEffect(() => {
     if (data?.trackdayNotesByMonth || data?.trackdaysByMonth) {
@@ -126,9 +128,20 @@ export default function TrackdayIndex() {
       }
     })
 
+  const navigateToTrackdayNoteAdd = () => {
+    reset()
+    push({
+      pathname: '/trackday/notes/create-trackday-note',
+      params: { date }
+    })
+  }
+
+  console.log('index redner')
+
   return (
     <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
-      <ScrollView showsVerticalScrollIndicator={false}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}
       >
         <View style={{ marginTop: 20 }}>
@@ -149,17 +162,9 @@ export default function TrackdayIndex() {
           {targetTrackdays.map((trackday: Trackday) => (
             <TrackdayLinkCard key={trackday.id} {...trackday} />
           ))}
-          <Link
-            href={{
-              pathname: '/trackday/create-trackday-note',
-              params: { date }
-            }}
-            asChild
-          >
-            <TouchableOpacity>
-              <TrackdayAddCard />
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity onPress={navigateToTrackdayNoteAdd}>
+            <TrackdayAddCard />
+          </TouchableOpacity>
         </View>
         <View style={styles.contentWrapper}></View>
       </ScrollView>

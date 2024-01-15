@@ -21,12 +21,6 @@ export default function TrackdayLayout() {
         }}
       />
       <Stack.Screen
-        name="create-trackday-note"
-        options={{
-          headerShown: true
-        }}
-      />
-      <Stack.Screen
         name="[id]"
         options={{
           headerShown: true,
@@ -40,6 +34,18 @@ export default function TrackdayLayout() {
           headerShown: true,
           title: '',
           headerRight: DeleteTrackdayButton
+        }}
+      />
+      <Stack.Screen
+        name="notes/create-trackday-note"
+        options={{
+          headerShown: true
+        }}
+      />
+      <Stack.Screen
+        name="notes/edit-note"
+        options={{
+          headerShown: true
         }}
       />
       <Stack.Screen
