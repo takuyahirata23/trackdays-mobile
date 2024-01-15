@@ -349,9 +349,10 @@ export default function CreateTrackdayNote() {
                       label="Note"
                       value={note}
                       onChangeText={handleOnChange('note')}
-                      numberOfLines={3}
+                      numberOfLines={5}
                       inputStyle={styles.note}
                       multiline
+                      textAlignVertical="top"
                     />
                   </Card>
                 ) : (
