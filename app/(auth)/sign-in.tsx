@@ -56,7 +56,6 @@ export default function SignIn() {
   }, [isLoading, form, signIn])
 
   return (
-    <SafeAreaView style={[{ backgroundColor: bgPrimary }, styles.safeArea]}>
       <Container>
         <Text style={styles.title}>Welcome back👋</Text>
         <View style={styles.form}>
@@ -85,7 +84,7 @@ export default function SignIn() {
           )}
           <Button onPress={onPress}>Sign in</Button>
         </View>
-        <View style={{ marginTop: 'auto', marginBottom: 64 }}>
+        <View style={{  marginBottom: 64 }}>
           <View style={styles.routerButton}>
             <Text>Need an account? </Text>
             <Button onPress={() => push('/register')} variant="secondary">
@@ -102,14 +101,10 @@ export default function SignIn() {
           </View>
         </View>
       </Container>
-    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1
-  },
   form: {
     rowGap: 16,
     marginTop: 20

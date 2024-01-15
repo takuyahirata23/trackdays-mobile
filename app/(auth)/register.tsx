@@ -78,7 +78,7 @@ export default function Register() {
   }, [isLoading, form, register])
 
   const {
-    colors: { bgPrimary, bgSecondary }
+    colors: {  bgSecondary }
   } = useTheme()
 
   const onChangeText =
