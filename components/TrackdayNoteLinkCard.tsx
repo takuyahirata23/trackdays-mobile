@@ -56,19 +56,28 @@ export function TrackdayNoteLinkCard({
                 }
                 label={motorcycle.model.name}
                 variant="secondary"
+                cardStyle={styles.iconLabelCardStyle}
               />
             )}
             <IconLabel
               icon={<MaterialCommunity name="timer" size={20} color={accent} />}
               label={formatLapTime(Number(lapTime))}
               variant="secondary"
+              cardStyle={styles.iconLabelCardStyle}
             />
             {showDate && (
-            <IconLabel
-              icon={<MaterialCommunity name="calendar-today" size={20} color={accent} />}
-              label={formatDate(new Date(date))}
-              variant="secondary"
-            />
+              <IconLabel
+                icon={
+                  <MaterialCommunity
+                    name="calendar-today"
+                    size={20}
+                    color={accent}
+                  />
+                }
+                label={formatDate(new Date(date))}
+                variant="secondary"
+                cardStyle={styles.iconLabelCardStyle}
+              />
             )}
           </View>
         </Card>
@@ -91,5 +100,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     columnGap: 4,
     alignItems: 'center'
+  },
+  iconLabelCardStyle: {
+    columnGap: 2
   }
 })
