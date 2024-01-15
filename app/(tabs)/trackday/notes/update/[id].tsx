@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocalSearchParams, useNavigation } from 'expo-router'
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
 import { View, StyleSheet, Keyboard, TouchableOpacity } from 'react-native'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import BottomSheet from '@gorhom/bottom-sheet'
@@ -28,6 +28,7 @@ import {
   KeyboardAvoidingView
 } from '@components'
 import { useTheme } from 'hooks/useTheme'
+import { TrackdayNoteContext } from '@context/TrackdayNote'
 
 import type { TrackdayNote } from '@type/event'
 import type { Motorcycle } from '@type/vehicle'
@@ -85,6 +86,7 @@ enum SaveTrackdaySteps {
 
 export default function Update() {
   const bottomSheetRef = React.useRef<BottomSheet>(null)
+  const { push } = useRouter()
   const { goBack } = useNavigation()
   const { id } = useLocalSearchParams()
   const { data } = useQuery(TRACKDAY_NOTE, {
@@ -93,6 +95,11 @@ export default function Update() {
     },
     fetchPolicy: 'cache-only'
   })
+  const {
+    trackdayNote,
+    updateTrackdayNote: updateTrackdayNoteContext,
+    reset
+  } = React.useContext(TrackdayNoteContext)
 
   const [
     { track, motorcycle, minutes, seconds, milliseconds, note, facility },
@@ -122,6 +129,7 @@ export default function Update() {
       console.log('error', e)
     },
     onCompleted() {
+      reset()
       goBack()
     }
   })
@@ -175,6 +183,8 @@ export default function Update() {
     bottomSheetRef.current?.close()
   }
 
+  const hasNoteChanged = trackdayNote.note !== note
+
   React.useEffect(() => {
     if (formError.isValid) {
       updateTrackdayNote({
@@ -184,7 +194,7 @@ export default function Update() {
             lapTime: lapTimeToMilliseconds({ minutes, seconds, milliseconds }),
             motorcycleId: motorcycle,
             trackId: track,
-            note: note
+            note: hasNoteChanged ? trackdayNote.note : note
           }
         }
       })
@@ -196,6 +206,10 @@ export default function Update() {
       getTracks()
     }
   }, [facility])
+
+  React.useEffect(() => {
+    updateTrackdayNoteContext('note')(note || '')
+  }, [])
 
   return (
     <Container>
@@ -302,32 +316,19 @@ export default function Update() {
                 </Card>
               </TouchableOpacity>
             )}
-            {currentStep === SaveTrackdaySteps.Note ? (
+            <TouchableOpacity
+              onPress={() => {
+                updateTrackdayNoteContext('note')(
+                  hasNoteChanged ? trackdayNote.note : note || ''
+                )
+                setCurrentStep(SaveTrackdaySteps.Note)
+                push('/trackday/notes/edit-note')
+              }}
+            >
               <Card>
-                <Field
-                  label="Note"
-                  value={note}
-                  onChangeText={handleOnChange('note')}
-                  numberOfLines={3}
-                  inputStyle={styles.note}
-                  multiline
-                  blurOnSubmit
-                  onSubmitEditing={() => {
-                    setCurrentStep(SaveTrackdaySteps.Submit)
-                    Keyboard.dismiss()
-                  }}
-                  returnKeyType="done"
-                />
+                <Text>{hasNoteChanged ? trackdayNote.note || 'Note: ' : note || 'Note: '}</Text>
               </Card>
-            ) : (
-              <TouchableOpacity
-                onPress={() => setCurrentStep(SaveTrackdaySteps.Note)}
-              >
-                <Card>
-                  <Text>Note: {note}</Text>
-                </Card>
-              </TouchableOpacity>
-            )}
+            </TouchableOpacity>
             <View style={styles.btnWrapper}>
               <Button onPress={handleSubmit}>Save</Button>
             </View>

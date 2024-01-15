@@ -18,6 +18,8 @@ type Props = {
   inputStyle?: ViewStyle
 } & TextInputProps
 
+type Ref = TextInput 
+
 const PasswordVisibilityHandler = ({
   shouldHidePassword,
   onToggle
@@ -39,67 +41,66 @@ const PasswordVisibilityHandler = ({
   )
 }
 
-export function Field({
-  label,
-  error,
-  style,
-  secureTextEntry = false,
-  inputStyle = {},
-  ...rest
-}: Props) {
-  const { colors } = useTheme()
-  const isPassword = secureTextEntry
-  const [shouldHidePassword, setShouldHidePassword] =
-    React.useState(secureTextEntry)
+export const Field = React.forwardRef<Ref, Props>(
+  (
+    { label, error, style, secureTextEntry = false, inputStyle = {}, ...rest },
+    ref
+  ) => {
+    const { colors } = useTheme()
+    const isPassword = secureTextEntry
+    const [shouldHidePassword, setShouldHidePassword] =
+      React.useState(secureTextEntry)
 
-  return (
-    <View style={style}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={{ position: 'relative' }}>
-        <TextInput
-          style={[
-            {
-              backgroundColor: colors.bgSecondary,
-              borderColor: error ? colors.error : colors.bgSecondary
-            },
-            styles.input,
-            inputStyle
-          ]}
-          secureTextEntry={shouldHidePassword}
-          {...rest}
-        />
-        {isPassword && (
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 16,
-              bottom: 0,
-              justifyContent: 'center'
-            }}
-          >
-            <PasswordVisibilityHandler
-              shouldHidePassword={shouldHidePassword}
-              onToggle={() => setShouldHidePassword(prev => !prev)}
-            />
-          </View>
-        )}
-      </View>
-      {error && typeof error === 'string' && (
-        <Text color="error" style={styles.label}>
-          {error}
-        </Text>
-      )}
-      {error &&
-        Array.isArray(error) &&
-        error.map((e: string, i: number) => (
-          <Text color="error" style={styles.label} key={i}>
-            {e}
+    return (
+      <View style={style}>
+        <Text style={styles.label}>{label}</Text>
+        <View style={{ position: 'relative' }}>
+          <TextInput
+            ref={ref}
+            style={[
+              {
+                backgroundColor: colors.bgSecondary,
+                borderColor: error ? colors.error : colors.bgSecondary
+              },
+              styles.input,
+              inputStyle
+            ]}
+            secureTextEntry={shouldHidePassword}
+            {...rest}
+          />
+          {isPassword && (
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 16,
+                bottom: 0,
+                justifyContent: 'center'
+              }}
+            >
+              <PasswordVisibilityHandler
+                shouldHidePassword={shouldHidePassword}
+                onToggle={() => setShouldHidePassword(prev => !prev)}
+              />
+            </View>
+          )}
+        </View>
+        {error && typeof error === 'string' && (
+          <Text color="error" style={styles.label}>
+            {error}
           </Text>
-        ))}
-    </View>
-  )
-}
+        )}
+        {error &&
+          Array.isArray(error) &&
+          error.map((e: string, i: number) => (
+            <Text color="error" style={styles.label} key={i}>
+              {e}
+            </Text>
+          ))}
+      </View>
+    )
+  }
+)
 
 const styles = StyleSheet.create({
   label: {
