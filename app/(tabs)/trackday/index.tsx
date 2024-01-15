@@ -136,8 +136,6 @@ export default function TrackdayIndex() {
     })
   }
 
-  console.log('index redner')
-
   return (
     <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
       <ScrollView

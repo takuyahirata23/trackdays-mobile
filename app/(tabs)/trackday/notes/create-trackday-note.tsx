@@ -81,7 +81,7 @@ export default function CreateTrackdayNote() {
     SaveTrackdaySteps.Facility
   )
 
-  const { trackdayNote: { note } } = React.useContext(TrackdayNoteContext)
+  const { trackdayNote: { note }, reset } = React.useContext(TrackdayNoteContext)
   const [
     { date, facility, track, motorcycle, minutes, seconds, milliseconds },
     setFields
@@ -134,6 +134,7 @@ export default function CreateTrackdayNote() {
       console.log('error', e)
     },
     onCompleted() {
+      reset()
       goBack()
     }
   })
@@ -354,7 +355,7 @@ export default function CreateTrackdayNote() {
                     }}
                   >
                     <Card>
-                      <Text>Note: {note}</Text>
+                      <Text>{note ? note : 'Note:'}</Text>
                     </Card>
                   </TouchableOpacity>
                 <View style={styles.btnWrapper}>

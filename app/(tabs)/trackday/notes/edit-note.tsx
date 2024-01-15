@@ -28,7 +28,8 @@ export default function EditNote() {
           onContentSizeChange={e =>
             setHeight(e.nativeEvent.contentSize.height + (isAndroid ? 0 : 16))
           }
-          inputStyle={{ height, minHeight: 45 }}
+          inputStyle={{ height, minHeight: '30%'  }}
+          style={{ flex: 1 }}
           textAlignVertical="top"
         />
       </Container>
