@@ -4,7 +4,8 @@ import {
   StyleSheet,
   View,
   Pressable,
-  Keyboard
+  Keyboard,
+  ScrollView 
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import { useRouter } from 'expo-router'
@@ -18,7 +19,8 @@ import {
   Field,
   Button,
   BottomSheetHandle,
-  EmailConfirmation
+  EmailConfirmation,
+  KeyboardAvoidingView
 } from '@components'
 import { useTheme } from '@hooks/useTheme'
 import { validateRegisterForm } from '../../functions/validations'
@@ -87,8 +89,13 @@ export default function Register() {
   const navigateToLoginScreen = () => push('/sign-in')
 
   return (
-    <SafeAreaView style={[{ backgroundColor: bgPrimary }, styles.safeArea]}>
-      <Container>
+    <>
+    <KeyboardAvoidingView>
+      <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollView}
+        >
         {hasEmailBeenSent ? (
           <EmailConfirmation message="Verification Email has been sent!">
             <Button onPress={navigateToLoginScreen} variant="secondary">
@@ -147,7 +154,7 @@ export default function Register() {
                 Register
               </Button>
             </View>
-            <View style={{ marginTop: 'auto', marginBottom: 64 }}>
+            <View style={{  marginBottom: 64 }}>
               <View style={styles.routerButton}>
                 <Text>Have an account?</Text>
                 <Button onPress={() => push('/sign-in')} variant="secondary">
@@ -157,7 +164,9 @@ export default function Register() {
             </View>
           </>
         )}
+        </ScrollView>
       </Container>
+    </KeyboardAvoidingView>
       <BottomSheet
         ref={ref}
         index={-1}
@@ -185,13 +194,15 @@ export default function Register() {
           </Picker>
         </View>
       </BottomSheet>
-    </SafeAreaView>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1
+  scrollView: {
+    marginTop: 16,
+    paddingBottom: 32,
+    paddingHorizontal: 20
   },
   form: {
     rowGap: 16,
