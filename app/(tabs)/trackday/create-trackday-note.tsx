@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView
-} from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import { useNavigation, useLocalSearchParams } from 'expo-router'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { Picker } from '@react-native-picker/picker'
@@ -69,7 +64,7 @@ const goBackToPreviousStep = (prev: SaveTrackdaySteps) => {
     case SaveTrackdaySteps.Laptime:
       return SaveTrackdaySteps.Motorcycle
 
-    default: 
+    default:
       return SaveTrackdaySteps.Facility
   }
 }
@@ -159,8 +154,7 @@ export default function CreateTrackdayNote() {
   }
 
   const handleCurrentStepChange = (step: SaveTrackdaySteps) => () => {
-
-    if(SaveTrackdaySteps.Track === step && !facility) {
+    if (SaveTrackdaySteps.Track === step && !facility) {
       setCurrentStep(SaveTrackdaySteps.Facility)
     } else {
       setCurrentStep(step)
@@ -168,7 +162,7 @@ export default function CreateTrackdayNote() {
     bottomSheetRef.current?.expand()
   }
 
-  const onPressHandlers  = () => {
+  const onPressHandlers = () => {
     switch (currentStep) {
       case SaveTrackdaySteps.Facility:
         return () => {
@@ -235,18 +229,18 @@ export default function CreateTrackdayNote() {
   )
 
   return (
-    <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollView}
-      >
-        {motorcycleRes.called &&
-        !motorcycleRes.loading &&
-        isEmpty(motorcycleRes.data.motorcycles) ? (
-          <NoMotorcycleRegisteredError />
-        ) : (
-          <>
-            <KeyboardAvoidingView>
+    <KeyboardAvoidingView>
+      <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollView}
+        >
+          {motorcycleRes.called &&
+          !motorcycleRes.loading &&
+          isEmpty(motorcycleRes.data.motorcycles) ? (
+            <NoMotorcycleRegisteredError />
+          ) : (
+            <View style={{ flex: 1}}>
               <View style={styles.container}>
                 <Card>
                   <Text>Date: {date}</Text>
@@ -355,9 +349,10 @@ export default function CreateTrackdayNote() {
                       label="Note"
                       value={note}
                       onChangeText={handleOnChange('note')}
-                      numberOfLines={3}
+                      numberOfLines={5}
                       inputStyle={styles.note}
                       multiline
+                      textAlignVertical="top"
                     />
                   </Card>
                 ) : (
@@ -376,86 +371,78 @@ export default function CreateTrackdayNote() {
                   <Button onPress={handleSubmit}>Save</Button>
                 </View>
               </View>
-            </KeyboardAvoidingView>
-            <BottomSheet
-              ref={bottomSheetRef}
-              enablePanDownToClose
-              handleComponent={() => (
-                <BottomSheetHandle
-                  onPressRight={onPressHandlers() as () => void}
-                  rightText="Next"
-                  onPressLeft={() => setCurrentStep(goBackToPreviousStep)}
-                  leftText={
-                    currentStep !== SaveTrackdaySteps.Facility
-                      ? 'Back'
-                      : undefined
-                  }
-                />
-              )}
-            >
-              {currentStep === SaveTrackdaySteps.Facility && (
-                <Card>
-                  <View style={styles.pickerWrapper}>
-                    <Picker
-                      selectedValue={facility}
-                      onValueChange={handleOnChange('facility')}
-                    >
-                      {facilityRes?.data?.facilities.map((m: Facility) => (
-                        <Picker.Item value={m.id} label={m.name} key={m.id} />
-                      ))}
-                    </Picker>
-                  </View>
-                </Card>
-              )}
-              {currentStep === SaveTrackdaySteps.Track && (
-                <Card>
-                  {facility && tracksRes.data && (
-                    <View style={styles.pickerWrapper}>
-                      <Picker
-                        selectedValue={track}
-                        onValueChange={handleOnChange('track')}
-                      >
-                        {tracksRes?.data?.tracks?.map((m: Track) => (
-                          <Picker.Item value={m.id} label={m.name} key={m.id} />
-                        ))}
-                      </Picker>
-                    </View>
-                  )}
-                </Card>
-              )}
-              {currentStep === SaveTrackdaySteps.Motorcycle && (
-                <Card>
-                  <View style={styles.pickerWrapper}>
-                    <Picker
-                      selectedValue={motorcycle}
-                      onValueChange={handleOnChange('motorcycle')}
-                    >
-                      {motorcycleRes?.data?.motorcycles.map(
-                        ({ id, year, model }: Motorcycle) => (
-                          <Picker.Item
-                            value={id}
-                            label={`${model.name}(${year})`}
-                            key={id}
-                          />
-                        )
-                      )}
-                    </Picker>
-                  </View>
-                </Card>
-              )}
-            </BottomSheet>
-          </>
+            </View>
+          )}
+        </ScrollView>
+      </Container>
+      <BottomSheet
+        ref={bottomSheetRef}
+        enablePanDownToClose
+        handleComponent={() => (
+          <BottomSheetHandle
+            onPressRight={onPressHandlers() as () => void}
+            rightText="Next"
+            onPressLeft={() => setCurrentStep(goBackToPreviousStep)}
+            leftText={
+              currentStep !== SaveTrackdaySteps.Facility ? 'Back' : undefined
+            }
+          />
         )}
-      </ScrollView>
-    </Container>
+      >
+        {currentStep === SaveTrackdaySteps.Facility && (
+          <View style={styles.pickerWrapper}>
+            <Picker
+              selectedValue={facility}
+              onValueChange={handleOnChange('facility')}
+            >
+              {facilityRes?.data?.facilities.map((m: Facility) => (
+                <Picker.Item value={m.id} label={m.name} key={m.id} />
+              ))}
+            </Picker>
+          </View>
+        )}
+        {currentStep === SaveTrackdaySteps.Track &&
+          facility &&
+          tracksRes.data && (
+            <View style={styles.pickerWrapper}>
+              <Picker
+                selectedValue={track}
+                onValueChange={handleOnChange('track')}
+              >
+                {tracksRes?.data?.tracks?.map((m: Track) => (
+                  <Picker.Item value={m.id} label={m.name} key={m.id} />
+                ))}
+              </Picker>
+            </View>
+          )}
+        {currentStep === SaveTrackdaySteps.Motorcycle && (
+          <View style={styles.pickerWrapper}>
+            <Picker
+              selectedValue={motorcycle}
+              onValueChange={handleOnChange('motorcycle')}
+            >
+              {motorcycleRes?.data?.motorcycles.map(
+                ({ id, year, model }: Motorcycle) => (
+                  <Picker.Item
+                    value={id}
+                    label={`${model.name}(${year})`}
+                    key={id}
+                  />
+                )
+              )}
+            </Picker>
+          </View>
+        )}
+      </BottomSheet>
+    </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
   scrollView: {
-    paddingTop: 16,
-    paddingHorizontal: 20,
-    flex: 1
+    marginTop: 16,
+    paddingBottom: 32,
+    paddingHorizontal: 20
   },
   container: {
     rowGap: 16,
@@ -485,7 +472,6 @@ const styles = StyleSheet.create({
     height: 100
   },
   btnWrapper: {
-    marginTop: 'auto',
     rowGap: 16
   }
 })

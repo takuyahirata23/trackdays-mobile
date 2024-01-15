@@ -146,6 +146,7 @@ export default function ProfileIndex() {
 const styles = StyleSheet.create({
   container: {
     marginTop: 16,
+    paddingBottom: 32,
     rowGap: 32,
     paddingHorizontal: 20
   },
