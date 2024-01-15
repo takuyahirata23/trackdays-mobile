@@ -229,18 +229,18 @@ export default function CreateTrackdayNote() {
   )
 
   return (
-    <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollView}
-      >
-        {motorcycleRes.called &&
-        !motorcycleRes.loading &&
-        isEmpty(motorcycleRes.data.motorcycles) ? (
-          <NoMotorcycleRegisteredError />
-        ) : (
-          <>
-            <KeyboardAvoidingView>
+    <KeyboardAvoidingView>
+      <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollView}
+        >
+          {motorcycleRes.called &&
+          !motorcycleRes.loading &&
+          isEmpty(motorcycleRes.data.motorcycles) ? (
+            <NoMotorcycleRegisteredError />
+          ) : (
+            <View style={{ flex: 1}}>
               <View style={styles.container}>
                 <Card>
                   <Text>Date: {date}</Text>
@@ -370,10 +370,10 @@ export default function CreateTrackdayNote() {
                   <Button onPress={handleSubmit}>Save</Button>
                 </View>
               </View>
-            </KeyboardAvoidingView>
-          </>
-        )}
-      </ScrollView>
+            </View>
+          )}
+        </ScrollView>
+      </Container>
       <BottomSheet
         ref={bottomSheetRef}
         enablePanDownToClose
@@ -389,57 +389,51 @@ export default function CreateTrackdayNote() {
         )}
       >
         {currentStep === SaveTrackdaySteps.Facility && (
-          <Card>
+          <View style={styles.pickerWrapper}>
+            <Picker
+              selectedValue={facility}
+              onValueChange={handleOnChange('facility')}
+            >
+              {facilityRes?.data?.facilities.map((m: Facility) => (
+                <Picker.Item value={m.id} label={m.name} key={m.id} />
+              ))}
+            </Picker>
+          </View>
+        )}
+        {currentStep === SaveTrackdaySteps.Track &&
+          facility &&
+          tracksRes.data && (
             <View style={styles.pickerWrapper}>
               <Picker
-                selectedValue={facility}
-                onValueChange={handleOnChange('facility')}
+                selectedValue={track}
+                onValueChange={handleOnChange('track')}
               >
-                {facilityRes?.data?.facilities.map((m: Facility) => (
+                {tracksRes?.data?.tracks?.map((m: Track) => (
                   <Picker.Item value={m.id} label={m.name} key={m.id} />
                 ))}
               </Picker>
             </View>
-          </Card>
-        )}
-        {currentStep === SaveTrackdaySteps.Track && (
-          <Card>
-            {facility && tracksRes.data && (
-              <View style={styles.pickerWrapper}>
-                <Picker
-                  selectedValue={track}
-                  onValueChange={handleOnChange('track')}
-                >
-                  {tracksRes?.data?.tracks?.map((m: Track) => (
-                    <Picker.Item value={m.id} label={m.name} key={m.id} />
-                  ))}
-                </Picker>
-              </View>
-            )}
-          </Card>
-        )}
+          )}
         {currentStep === SaveTrackdaySteps.Motorcycle && (
-          <Card>
-            <View style={styles.pickerWrapper}>
-              <Picker
-                selectedValue={motorcycle}
-                onValueChange={handleOnChange('motorcycle')}
-              >
-                {motorcycleRes?.data?.motorcycles.map(
-                  ({ id, year, model }: Motorcycle) => (
-                    <Picker.Item
-                      value={id}
-                      label={`${model.name}(${year})`}
-                      key={id}
-                    />
-                  )
-                )}
-              </Picker>
-            </View>
-          </Card>
+          <View style={styles.pickerWrapper}>
+            <Picker
+              selectedValue={motorcycle}
+              onValueChange={handleOnChange('motorcycle')}
+            >
+              {motorcycleRes?.data?.motorcycles.map(
+                ({ id, year, model }: Motorcycle) => (
+                  <Picker.Item
+                    value={id}
+                    label={`${model.name}(${year})`}
+                    key={id}
+                  />
+                )
+              )}
+            </Picker>
+          </View>
         )}
       </BottomSheet>
-    </Container>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -447,8 +441,7 @@ const styles = StyleSheet.create({
   scrollView: {
     marginTop: 16,
     paddingBottom: 32,
-    paddingHorizontal: 20,
-    flex: 1
+    paddingHorizontal: 20
   },
   container: {
     rowGap: 16,
@@ -478,7 +471,6 @@ const styles = StyleSheet.create({
     height: 100
   },
   btnWrapper: {
-    marginTop: 'auto',
     rowGap: 16
   }
 })
