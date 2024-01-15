@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
       "usesNonExemptEncryption": false,
@@ -24,9 +26,11 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "READ_CALENDAR", "WRITE_CALENDAR"
+        "READ_CALENDAR",
+        "WRITE_CALENDAR"
       ],
-      "package": "com.takuya23.trackdaysmobile"
+      "package": "com.takuya23.trackdaysmobile",
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro",

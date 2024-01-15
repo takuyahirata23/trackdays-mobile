@@ -17,6 +17,7 @@
       }
     },
     "production": {
+      "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_DOMAIN_URL": "https://trackdays.gigalixirapp.com"
       }
