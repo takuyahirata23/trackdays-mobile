@@ -23,7 +23,8 @@ import {
   Text,
   Container,
   BottomSheetHandle,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  NoMotorcycleRegisteredError
 } from '@components'
 import { lapTimeToMilliseconds } from '@functions/lapTimeConverters'
 import { validateTrackdayNote } from '@functions/validations'
@@ -49,10 +50,6 @@ export type TrackdayNoteFormErrors = {
   seconds?: string
   milliseconds?: string
 }
-
-const NoMotorcycleRegisteredError = () => (
-  <Text>Please register motorcycle first</Text>
-)
 
 const goBackToPreviousStep = (prev: SaveTrackdaySteps) => {
   switch (prev) {
@@ -81,7 +78,10 @@ export default function CreateTrackdayNote() {
     SaveTrackdaySteps.Facility
   )
 
-  const { trackdayNote: { note }, reset } = React.useContext(TrackdayNoteContext)
+  const {
+    trackdayNote: { note },
+    reset
+  } = React.useContext(TrackdayNoteContext)
   const [
     { date, facility, track, motorcycle, minutes, seconds, milliseconds },
     setFields
@@ -232,141 +232,138 @@ export default function CreateTrackdayNote() {
     formError.minutes || formError.seconds || formError.milliseconds
   )
 
-  return (
+  return motorcycleRes.called &&
+    !motorcycleRes.loading &&
+    isEmpty(motorcycleRes.data.motorcycles) ? (
+    <NoMotorcycleRegisteredError />
+  ) : (
     <KeyboardAvoidingView>
       <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollView}
         >
-          {motorcycleRes.called &&
-          !motorcycleRes.loading &&
-          isEmpty(motorcycleRes.data.motorcycles) ? (
-            <NoMotorcycleRegisteredError />
-          ) : (
-            <View style={{ flex: 1}}>
-              <View style={styles.container}>
+          <View style={{ flex: 1 }}>
+            <View style={styles.container}>
+              <Card>
+                <Text>Date: {date}</Text>
+              </Card>
+              <TouchableOpacity
+                onPress={handleCurrentStepChange(SaveTrackdaySteps.Facility)}
+              >
                 <Card>
-                  <Text>Date: {date}</Text>
+                  <Text>
+                    Facility:{' '}
+                    {getName(facilityRes.data?.facilities || [])(facility)}
+                  </Text>
                 </Card>
-                <TouchableOpacity
-                  onPress={handleCurrentStepChange(SaveTrackdaySteps.Facility)}
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleCurrentStepChange(SaveTrackdaySteps.Track)}
+              >
+                <Card>
+                  <Text>
+                    Track: {getName(tracksRes.data?.tracks || [])(track)}
+                  </Text>
+                </Card>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleCurrentStepChange(SaveTrackdaySteps.Motorcycle)}
+              >
+                <Card>
+                  <Text>
+                    Motorcycle:{' '}
+                    {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
+                      motorcycle
+                    )}
+                  </Text>
+                </Card>
+              </TouchableOpacity>
+              {currentStep === SaveTrackdaySteps.Laptime ? (
+                <Card
+                  style={{
+                    borderColor: error,
+                    borderWidth: laptimeError ? 1 : 0
+                  }}
                 >
-                  <Card>
-                    <Text>
-                      Facility:{' '}
-                      {getName(facilityRes.data?.facilities || [])(facility)}
-                    </Text>
-                  </Card>
-                </TouchableOpacity>
+                  <View style={styles.laptimeWrapper}>
+                    <View style={styles.lapTimeFieldWrapper}>
+                      <Field
+                        label="Minute"
+                        value={minutes}
+                        style={styles.lapTimeField}
+                        onChangeText={handleOnChange('minutes')}
+                        keyboardType="numeric"
+                        placeholder="00"
+                        error={formError.minutes}
+                      />
+                      <Text style={styles.laptimeSemicolon}>:</Text>
+                    </View>
+                    <View style={styles.lapTimeFieldWrapper}>
+                      <Field
+                        label="Seconds"
+                        value={seconds}
+                        onChangeText={handleOnChange('seconds')}
+                        style={styles.lapTimeField}
+                        keyboardType="numeric"
+                        placeholder="00"
+                        error={formError.seconds}
+                      />
+                      <Text style={styles.laptimeSemicolon}>:</Text>
+                    </View>
+                    <View style={styles.lapTimeFieldWrapper}>
+                      <Field
+                        label="Miliseconds"
+                        value={milliseconds}
+                        onChangeText={handleOnChange('milliseconds')}
+                        style={styles.lapTimeField}
+                        keyboardType="numeric"
+                        placeholder="000"
+                        error={formError.milliseconds}
+                        onEndEditing={() => {
+                          setCurrentStep(SaveTrackdaySteps.Note)
+                        }}
+                      />
+                    </View>
+                  </View>
+                </Card>
+              ) : (
                 <TouchableOpacity
-                  onPress={handleCurrentStepChange(SaveTrackdaySteps.Track)}
+                  onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}
                 >
-                  <Card>
-                    <Text>
-                      Track: {getName(tracksRes.data?.tracks || [])(track)}
-                    </Text>
-                  </Card>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={handleCurrentStepChange(
-                    SaveTrackdaySteps.Motorcycle
-                  )}
-                >
-                  <Card>
-                    <Text>
-                      Motorcycle:{' '}
-                      {getMotorcycleName(motorcycleRes.data?.motorcycles || [])(
-                        motorcycle
-                      )}
-                    </Text>
-                  </Card>
-                </TouchableOpacity>
-                {currentStep === SaveTrackdaySteps.Laptime ? (
                   <Card
                     style={{
                       borderColor: error,
                       borderWidth: laptimeError ? 1 : 0
                     }}
                   >
-                    <View style={styles.laptimeWrapper}>
-                      <View style={styles.lapTimeFieldWrapper}>
-                        <Field
-                          label="Minute"
-                          value={minutes}
-                          style={styles.lapTimeField}
-                          onChangeText={handleOnChange('minutes')}
-                          keyboardType="numeric"
-                          placeholder="00"
-                          error={formError.minutes}
-                        />
-                        <Text style={styles.laptimeSemicolon}>:</Text>
-                      </View>
-                      <View style={styles.lapTimeFieldWrapper}>
-                        <Field
-                          label="Seconds"
-                          value={seconds}
-                          onChangeText={handleOnChange('seconds')}
-                          style={styles.lapTimeField}
-                          keyboardType="numeric"
-                          placeholder="00"
-                          error={formError.seconds}
-                        />
-                        <Text style={styles.laptimeSemicolon}>:</Text>
-                      </View>
-                      <View style={styles.lapTimeFieldWrapper}>
-                        <Field
-                          label="Miliseconds"
-                          value={milliseconds}
-                          onChangeText={handleOnChange('milliseconds')}
-                          style={styles.lapTimeField}
-                          keyboardType="numeric"
-                          placeholder="000"
-                          error={formError.milliseconds}
-                          onEndEditing={() => {
-                            setCurrentStep(SaveTrackdaySteps.Note)
-                          }}
-                        />
-                      </View>
-                    </View>
+                    <Text>
+                      Best lap time: {minutes || '00'}:{seconds || '00'}:
+                      {milliseconds || '000'}
+                    </Text>
                   </Card>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}
-                  >
-                    <Card
-                      style={{
-                        borderColor: error,
-                        borderWidth: laptimeError ? 1 : 0
-                      }}
-                    >
-                      <Text>
-                        Best lap time: {minutes || '00'}:{seconds || '00'}:
-                        {milliseconds || '000'}
-                      </Text>
-                    </Card>
-                  </TouchableOpacity>
-                )}
-                  <TouchableOpacity
-                    onPress={() => {
-                      bottomSheetRef.current?.close()
-                      setCurrentStep(SaveTrackdaySteps.Note)
-                      push('/trackday/notes/edit-note')
-                    }}
-                  >
-                    <Card>
-                      <Text>{note ? note : 'Note:'}</Text>
-                    </Card>
-                  </TouchableOpacity>
-                <View style={styles.btnWrapper}>
-                  <Button onPress={handleSubmit}>Save</Button>
-                </View>
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity
+                onPress={() => {
+                  bottomSheetRef.current?.close()
+                  setCurrentStep(SaveTrackdaySteps.Note)
+                  push('/trackday/notes/edit-note')
+                }}
+              >
+                <Card>
+                  <Text>{note ? note : 'Note:'}</Text>
+                </Card>
+              </TouchableOpacity>
+              <View style={styles.btnWrapper}>
+                <Button onPress={handleSubmit}>Save</Button>
               </View>
             </View>
-          )}
+          </View>
         </ScrollView>
       </Container>
       <BottomSheet
+        index={-1}
         ref={bottomSheetRef}
         enablePanDownToClose
         handleComponent={() => (
