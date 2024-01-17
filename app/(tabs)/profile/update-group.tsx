@@ -14,7 +14,6 @@ import {
   Button,
   BottomSheetHandle,
   BottomSheet,
-  BoomSheetItemList
 } from '@components'
 import { GROUPS_DEV, GROUPS_PROD } from '@constants/groups'
 import { useTheme } from '@hooks/useTheme'
