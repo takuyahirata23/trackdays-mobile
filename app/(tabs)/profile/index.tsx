@@ -41,7 +41,7 @@ const uploadImageFromUri = (uri: string) => {
   formData.append('image', {
     uri,
     name: 'profile.jpg',
-    type: 'jpg'
+    type: 'image/jpeg'
   })
 
   return updateProfileImage(formData)

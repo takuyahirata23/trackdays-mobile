@@ -8,6 +8,6 @@ export const updateProfileImage = async (body: any) => {
     path: PROFILE_IMAGE,
     headers: { ...headers, 'Content-Type': 'multipart/form-data' },
     body,
-    stringify: true
+    stringify: false
   })
 }
