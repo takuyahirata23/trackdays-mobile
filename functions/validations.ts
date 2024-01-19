@@ -16,7 +16,7 @@ export const isEmail = (email: string) =>
 
 export const isValidYearFormat = (year: string) => /^[\d]{4}/.test(year)
 
-export const moreThanAvaialbeYear = (year: string) =>
+export const isInRange = (year: string) =>
   Number(year) >= 1800 && Number(year) <= new Date().getFullYear()
 
 export const isValidLaptimeValue = (limit: number) => (minutes: string) =>
@@ -39,7 +39,9 @@ const emailValidation = {
 }
 
 export const motorcycleValidations = {
-  year: Predicate(isValidYearFormat).concat(Predicate(moreThanAvaialbeYear))
+  year: Predicate(isValidYearFormat).concat(Predicate(isInRange)),
+  make: Predicate(validateMinLength(10)), 
+  model: Predicate(validateMinLength(10)) 
 }
 
 export const trackdayNoteValidations = {
@@ -65,3 +67,4 @@ export const validateSignInForm = runValidations(signInValidations)
 export const validateRegisterForm = runValidations(registerValidation)
 export const validateEmailForm = runValidations(emailValidation)
 export const validateTrackdayNote = runValidations(trackdayNoteValidations)
+export const validateMotorcycleForm = runValidations(motorcycleValidations)

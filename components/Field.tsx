@@ -18,7 +18,7 @@ type Props = {
   inputStyle?: ViewStyle
 } & TextInputProps
 
-type Ref = TextInput 
+type Ref = TextInput
 
 const PasswordVisibilityHandler = ({
   shouldHidePassword,
