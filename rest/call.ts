@@ -14,7 +14,7 @@ export const generateAuthHeader = async () => {
   }
 }
 
-export const call = ({ path, headers = {}, body = {}, stringify = true }: Call) =>
+export const call = ({ path, headers = {}, body = {}, stringify = true }: Call) => 
   fetch(path, {
     method: 'POST',
     headers: {
