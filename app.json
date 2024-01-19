@@ -2,7 +2,7 @@
   "expo": {
     "name": "Motorcycle Trackdays",
     "slug": "motorcycle-trackdays",
-    "version": "2.0.5",
+    "version": "2.0.7",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -30,7 +30,7 @@
         "WRITE_CALENDAR"
       ],
       "package": "com.takuya23.trackdaysmobile",
-      "versionCode": 8
+      "versionCode": 11
     },
     "web": {
       "bundler": "metro",
