@@ -1,22 +1,34 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import {  useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { useRouter } from 'expo-router'
 import { useNavigation } from 'expo-router'
 
+import { validateMotorcycleForm } from '@functions/validations'
 import { Card, Container, Text, Button, Field } from '@components'
 import { MotorcycleFormContext } from '@context/MotorcycleForm'
 import { MOTORCYCLE } from 'graphql/fragments'
 import { REGISTER_MOTORCYCLE } from '@graphql/mutations'
 
-type MotorcycleFieldSteps = 'make' | 'model' | 'year' | null
+type MotorcycleFieldSteps = 'make' | 'model' 
 
 export default function RegisterMotorcycle() {
   const { goBack } = useNavigation()
   const { push } = useRouter()
-  const [currentStep, setCurrentStep] =
-    React.useState<MotorcycleFieldSteps>(null)
-  const { fields, handleOnChange, motorcycle } = React.useContext(MotorcycleFormContext)
+  const { fields, handleOnChange, motorcycle } = React.useContext(
+    MotorcycleFormContext
+  )
+  const [formErrors, setFormErrors] = React.useState<{
+    isValid: boolean
+    year?: string
+    make?: string
+    model?: string
+  }>({
+    isValid: false,
+    year: '',
+    make: '',
+    model: ''
+  })
 
   const [registerMotorcycle] = useMutation(REGISTER_MOTORCYCLE, {
     update(cache, { data }) {
@@ -37,37 +49,33 @@ export default function RegisterMotorcycle() {
     }
   })
 
-  const onSubmit = () =>
-    registerMotorcycle({
-      variables: {
-        registerMotorcycleInput: {
-          modelId: fields.model,
-          year: Number(fields.year)
+  const onSubmit = () => setFormErrors(validateMotorcycleForm(fields))
+
+  React.useEffect(() => {
+    if (formErrors.isValid) {
+      registerMotorcycle({
+        variables: {
+          registerMotorcycleInput: {
+            modelId: fields.model,
+            year: Number(fields.year)
+          }
         }
-      }
-    })
+      })
+    }
+  }, [formErrors.isValid])
 
   const filled = Boolean(fields.year && fields.make && fields.model)
 
   return (
     <Container style={styles.container}>
-      {currentStep === 'year' ? (
-        <Field
-          label="Year"
-          value={fields.year}
-          keyboardType="numeric"
-          onChangeText={handleOnChange('year')}
-          onEndEditing={() => setCurrentStep(null)}
-          returnKeyType="done"
-        />
-      ) : (
-        <TouchableOpacity onPress={() => setCurrentStep('year')}>
-          <Card style={styles.fieldWrapper}>
-            <Text>Year: </Text>
-            <Text>{fields.year}</Text>
-          </Card>
-        </TouchableOpacity>
-      )}
+      <Field
+        label="Year"
+        value={fields.year}
+        keyboardType="numeric"
+        onChangeText={handleOnChange('year')}
+        error={formErrors.year}
+        returnKeyType="done"
+      />
       <TouchableOpacity
         onPress={() =>
           push({
@@ -84,14 +92,18 @@ export default function RegisterMotorcycle() {
           <Text>{motorcycle.make}</Text>
         </Card>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() =>
+      <TouchableOpacity
+        onPress={() =>
           push({
             pathname: '/modal',
             params: {
               name: 'motorcycleRegistrationSelect',
               currentStep: 'model'
             }
-          })} disabled={!fields.make}>
+          })
+        }
+        disabled={!fields.make}
+      >
         <Card style={styles.fieldWrapper}>
           <Text>Model: </Text>
           <Text>{motorcycle.model}</Text>

@@ -51,6 +51,8 @@ export const Field = React.forwardRef<Ref, Props>(
     const [shouldHidePassword, setShouldHidePassword] =
       React.useState(secureTextEntry)
 
+      console.log(error)
+
     return (
       <View style={style}>
         <Text style={styles.label}>{label}</Text>
