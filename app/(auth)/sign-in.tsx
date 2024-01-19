@@ -1,13 +1,12 @@
 import React from 'react'
 import {
-  SafeAreaView,
   StyleSheet,
   View,
 } from 'react-native'
 import { useRouter } from 'expo-router'
 
 import { AuthContext } from '@context/Auth'
-import { Container, Text, Field, Button, EmailConfirmation } from '@components'
+import { Container, Text, Field, Button } from '@components'
 import { useTheme } from '@hooks/useTheme'
 import { validateSignInForm } from '../../functions/validations'
 
