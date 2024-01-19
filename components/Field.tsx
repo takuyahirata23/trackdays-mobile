@@ -18,7 +18,7 @@ type Props = {
   inputStyle?: ViewStyle
 } & TextInputProps
 
-type Ref = TextInput 
+type Ref = TextInput
 
 const PasswordVisibilityHandler = ({
   shouldHidePassword,
@@ -50,8 +50,6 @@ export const Field = React.forwardRef<Ref, Props>(
     const isPassword = secureTextEntry
     const [shouldHidePassword, setShouldHidePassword] =
       React.useState(secureTextEntry)
-
-      console.log(error)
 
     return (
       <View style={style}>

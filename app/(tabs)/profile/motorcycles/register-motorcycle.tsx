@@ -10,8 +10,6 @@ import { MotorcycleFormContext } from '@context/MotorcycleForm'
 import { MOTORCYCLE } from 'graphql/fragments'
 import { REGISTER_MOTORCYCLE } from '@graphql/mutations'
 
-type MotorcycleFieldSteps = 'make' | 'model' 
-
 export default function RegisterMotorcycle() {
   const { goBack } = useNavigation()
   const { push } = useRouter()
