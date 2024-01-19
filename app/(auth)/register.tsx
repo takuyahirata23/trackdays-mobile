@@ -49,9 +49,17 @@ export default function Register() {
 
   React.useEffect(() => {
     if (isLoading) {
-      register(form, _d => {
+      register(form, d => {
         setIsLoading(false)
-        setHasEmailBeenSent(true)
+        if (d.error) {
+          setFormErrors({
+            isValid: false,
+            ...d.errors
+          })
+        } else {
+          setHasEmailBeenSent(true)
+          setFormErrors({ isValid: false })
+        }
       })
     }
 
