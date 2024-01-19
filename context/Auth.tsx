@@ -81,7 +81,7 @@ export function AuthProvider({ children, setUser }: Props) {
   const signIn = (body: SignInFields) =>
     sendLoginRequest(body)
       .then(handleResponse(handleUserLoginResponse))
-      .catch(e => {
+      .catch(() => {
         setError({ message: 'User not found. Please try again.' })
       })
 
