@@ -30,7 +30,7 @@ export default function UpdateGroup() {
 
   return (
     <Container style={styles.container}>
-      <GroupSelect onChange={setGroupId} selected={groupId} />
+      <GroupSelect onChange={setGroupId} selected={groupId} titleStyle={styles.group} />
       <View style={styles.button}>
         <Button onPress={handleSubmit} disabled={!groupId || loading}>
           Save new group
@@ -42,8 +42,6 @@ export default function UpdateGroup() {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   groupContainer: {
     marginTop: 24,
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
     rowGap: 8
   },
   group: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '600'
   },
   button: {

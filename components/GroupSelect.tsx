@@ -1,9 +1,9 @@
 import React from 'react'
-import { View, StyleSheet, Pressable } from 'react-native'
-import { MaterialIcons } from '@expo/vector-icons'
+import { View, StyleSheet,  StyleProp, TextStyle } from 'react-native'
 
 import { GROUPS_DEV, GROUPS_PROD } from '@constants/groups'
 import { Text } from './Text'
+import { RadioOption } from './RadioOption'
 import { useTheme } from '@hooks/useTheme'
 
 const groups = process.env.NODE_ENV === 'development' ? GROUPS_DEV : GROUPS_PROD
@@ -12,15 +12,16 @@ type Props = {
   selected?: string
   onChange: (_id: string) => void
   error?: string
+  titleStyle?: StyleProp<TextStyle>
 }
 
-export function GroupSelect({ selected, onChange, error }: Props) {
+export function GroupSelect({ selected, onChange, error, titleStyle }: Props) {
   const {
     colors: { error: errorColor }
   } = useTheme()
   return (
     <View>
-      <Text>Riding group</Text>
+      <Text style={titleStyle}>Riding group</Text>
       {error && (
         <Text style={{ color: errorColor, marginTop: 8, fontSize: 14 }}>
           {error}
@@ -28,18 +29,12 @@ export function GroupSelect({ selected, onChange, error }: Props) {
       )}
       <View style={styles.groupWrapper}>
         {groups.map(({ id, name }) => (
-          <Pressable
-            key={id}
-            style={styles.option}
+          <RadioOption
             onPress={() => onChange(id)}
-          >
-            {id === selected ? (
-              <MaterialIcons name="radio-button-on" size={20} />
-            ) : (
-              <MaterialIcons name="radio-button-off" size={20} />
-            )}
-            <Text>{name}</Text>
-          </Pressable>
+            label={name}
+            isSelected={selected === id}
+            key={id}
+          />
         ))}
       </View>
     </View>
