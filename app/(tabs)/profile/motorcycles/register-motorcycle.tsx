@@ -9,11 +9,12 @@ import { Card, Container, Text, Button, Field } from '@components'
 import { MotorcycleFormContext } from '@context/MotorcycleForm'
 import { MOTORCYCLE } from 'graphql/fragments'
 import { REGISTER_MOTORCYCLE } from '@graphql/mutations'
+import { Toast } from 'toastify-react-native'
 
 export default function RegisterMotorcycle() {
   const { goBack } = useNavigation()
   const { push } = useRouter()
-  const { fields, handleOnChange, motorcycle } = React.useContext(
+  const { fields, handleOnChange, motorcycle, reset } = React.useContext(
     MotorcycleFormContext
   )
   const [formErrors, setFormErrors] = React.useState<{
@@ -42,7 +43,11 @@ export default function RegisterMotorcycle() {
         }
       })
     },
+    onError() {
+      Toast.error('Something went wrong. Please try later.', 'bottom')
+    },
     onCompleted() {
+      reset()
       goBack()
     }
   })
@@ -60,7 +65,7 @@ export default function RegisterMotorcycle() {
         }
       })
     }
-  }, [formErrors.isValid])
+  }, [formErrors.isValid, fields])
 
   const filled = Boolean(fields.year && fields.make && fields.model)
 

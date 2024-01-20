@@ -11,7 +11,10 @@ type TrackdayNoteContextType = {
 }
 
 const iv = {
-  note: ''
+  note: '',
+  motorcycle: '',
+  facility: '',
+  track: ''
 }
 
 export const TrackdayNoteFormContext = React.createContext({
