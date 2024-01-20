@@ -286,6 +286,23 @@ export default function CreateTrackdayNote() {
                   <Text>Facility: {names.facility}</Text>
                 </Card>
               </TouchableOpacity>
+              <TouchableOpacity
+                disabled={!fields.facility}
+                onPress={() =>
+                  push({
+                    pathname: '/modal',
+                    params: {
+                      name: 'trackdayNoteSelect',
+                      currentStep: 'track',
+                      facilityId: fields.facility
+                    }
+                  })
+                }
+              >
+                <Card>
+                  <Text>Track: {names.track}</Text>
+                </Card>
+              </TouchableOpacity>
               {/* 
               <TouchableOpacity
                 onPress={handleCurrentStepChange(SaveTrackdaySteps.Track)}

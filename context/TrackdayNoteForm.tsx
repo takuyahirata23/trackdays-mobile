@@ -4,10 +4,10 @@ type Props = {
   children: React.ReactNode
 }
 
-type Fields = 'note' | 'facility'
+type Fields = 'note' | 'facility' | 'track'
 
 type TrackdayNoteContextType = {
-  fields: { note: string; facility: string }
+  fields: { [key in Fields]: string }
   handleOnChange: (_field: Fields) => (_value: string, _name?: string) => void
   reset: () => void
   names: {
@@ -28,7 +28,8 @@ type TrackdayNoteContextType = {
 // }
 const iv = {
   note: '',
-  facility: ''
+  facility: '',
+  track: ''
 }
 
 const namesInitialValue = {
@@ -46,9 +47,14 @@ export function TrackdayNoteFormProvider({ children }: Props) {
   const [names, setNames] = React.useState(namesInitialValue)
 
   const handleOnChange = (field: Fields) => (value: string, name?: string) => {
-    setFields(prev => ({ ...prev, [field]: value }))
-    if (name) {
-      setNames(prev => ({ ...prev, [field]: name }))
+    if (field === 'facility') {
+      setFields(prev => ({ ...prev, facility: value, track: '' }))
+      setNames(prev => ({ ...prev, facility: name as string, track: '' }))
+    } else {
+      setFields(prev => ({ ...prev, [field]: value }))
+      if (name) {
+        setNames(prev => ({ ...prev, [field]: name }))
+      }
     }
   }
 
