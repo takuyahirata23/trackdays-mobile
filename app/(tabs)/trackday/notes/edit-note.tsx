@@ -13,8 +13,8 @@ const isAndroid = Platform.OS === 'android'
 export default function EditNote() {
   const ref = React.useRef<TextInput>(null)
   const {
-    trackdayNote: { note },
-    updateTrackdayNote
+    fields: { note },
+    handleOnChange
   } = React.useContext(TrackdayNoteFormContext)
   const [height, setHeight] = React.useState(0)
 
@@ -30,7 +30,7 @@ export default function EditNote() {
           label="Note"
           value={note}
           multiline
-          onChangeText={updateTrackdayNote('note')}
+          onChangeText={handleOnChange('note')}
           onContentSizeChange={e =>
             setHeight(e.nativeEvent.contentSize.height + (isAndroid ? 0 : 16))
           }

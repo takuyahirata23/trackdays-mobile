@@ -4,7 +4,7 @@ type Props = {
   children: React.ReactNode
 }
 
-type Fields = 'note' | 'facility' | 'track' | 'motorcycle'
+type Fields = 'note' | 'facility' | 'track' | 'motorcycle' | 'minutes' | 'seconds' | 'milliseconds'
 
 type TrackdayNoteContextType = {
   fields: { [key in Fields]: string }
@@ -17,20 +17,14 @@ type TrackdayNoteContextType = {
   }
 }
 
-// const iv = {
-//   note: '',
-//   motorcycle: '',
-//   facility: '',
-//   track: '',
-//   minutes: '',
-//   seconds: '',
-//   milliseconds: ''
-// }
 const iv = {
   note: '',
   facility: '',
   track: '',
-  motorcycle: ''
+  motorcycle: '',
+  minutes: '',
+  seconds: '',
+  milliseconds: ''
 }
 
 const namesInitialValue = {
@@ -59,7 +53,10 @@ export function TrackdayNoteFormProvider({ children }: Props) {
     }
   }
 
-  const reset = () => setFields(iv)
+  const reset = () => {
+    setFields(iv)
+    setNames(namesInitialValue)
+  }
 
   return (
     <TrackdayNoteFormContext.Provider

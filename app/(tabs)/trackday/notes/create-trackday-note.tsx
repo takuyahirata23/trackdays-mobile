@@ -1,19 +1,16 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import { useNavigation, useLocalSearchParams, useRouter } from 'expo-router'
-import { useQuery , useMutation } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { isEmpty } from 'ramda'
 
-import {
-  MOTORCYCLES_QUERY
-} from '@graphql/queries'
+import { MOTORCYCLES_QUERY } from '@graphql/queries'
 import { SAVE_TRACKDAY_NOTE } from 'graphql/mutations'
 import { TRACKDAY_NOTE } from 'graphql/fragments'
 import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 import { useTheme } from '@hooks/useTheme'
 import {
   Button,
-  Card,
   Field,
   Text,
   Container,
@@ -33,34 +30,37 @@ export type TrackdayNoteFormErrors = {
   milliseconds?: string
 }
 
+const formErrorInitialValues =  {
+    isValid: false,
+    track: '',
+    motorcycle: '',
+    minutes: '',
+    seconds: '',
+    milliseconds: ''
+}
+
 export default function CreateTrackdayNote() {
-  const { date: dateParam } = useLocalSearchParams()
+  const { date } = useLocalSearchParams()
   const { goBack } = useNavigation()
   const { push } = useRouter()
   const motorcycleRes = useQuery(MOTORCYCLES_QUERY)
 
-  const { fields, names, reset } = React.useContext(TrackdayNoteFormContext)
-  const [
-    { date, track, motorcycle, minutes, seconds, milliseconds },
-    setFields
-  ] = React.useState({
-    date: dateParam as string,
-    track: '',
-    motorcycle: '',
-    minutes: '',
-    seconds: '',
-    milliseconds: ''
-  })
+  const {
+    fields: {
+      note,
+      motorcycle,
+      facility,
+      track,
+      minutes,
+      seconds,
+      milliseconds
+    },
+    handleOnChange,
+    names,
+    reset
+  } = React.useContext(TrackdayNoteFormContext)
 
-  const [formError, setFormError] = React.useState<TrackdayNoteFormErrors>({
-    isValid: false,
-    date: '',
-    track: '',
-    motorcycle: '',
-    minutes: '',
-    seconds: '',
-    milliseconds: ''
-  })
+  const [formError, setFormError] = React.useState<TrackdayNoteFormErrors>(formErrorInitialValues)
 
   const [saveTrackdayNote] = useMutation(SAVE_TRACKDAY_NOTE, {
     update(cache, { data }) {
@@ -87,27 +87,20 @@ export default function CreateTrackdayNote() {
       console.log('error', e)
     },
     onCompleted() {
+      setFormError(formErrorInitialValues)
       reset()
       goBack()
     }
   })
 
   const {
-    colors: { error }
+    colors: { error, bgSecondary }
   } = useTheme()
-
-  const handleOnChange = (field: string) => (value: string) => {
-    if (field === 'facility') {
-      setFields(prev => ({ ...prev, [field]: value, track: '' }))
-    } else {
-      setFields(prev => ({ ...prev, [field]: value }))
-    }
-  }
 
   const handleSubmit = () =>
     setFormError(
       validateTrackdayNote({
-        date,
+        date: date as string,
         track,
         motorcycle,
         minutes,
@@ -125,7 +118,7 @@ export default function CreateTrackdayNote() {
             lapTime: lapTimeToMilliseconds({ minutes, seconds, milliseconds }),
             motorcycleId: motorcycle,
             trackId: track,
-            note: fields.note
+            note: note
           }
         }
       })
@@ -149,9 +142,12 @@ export default function CreateTrackdayNote() {
         >
           <View style={{ flex: 1 }}>
             <View style={styles.container}>
-              <Card>
-                <Text>Date: {date}</Text>
-              </Card>
+              <Field
+                label="Date"
+                value={date as string}
+                editable={false}
+                pointerEvents="none"
+              />
               <View style={styles.laptimeWrapper}>
                 <View style={styles.lapTimeFieldWrapper}>
                   <Field
@@ -161,7 +157,6 @@ export default function CreateTrackdayNote() {
                     onChangeText={handleOnChange('minutes')}
                     keyboardType="numeric"
                     placeholder="00"
-                    error={formError.minutes}
                   />
                   <Text style={styles.laptimeSemicolon}>:</Text>
                 </View>
@@ -173,7 +168,6 @@ export default function CreateTrackdayNote() {
                     style={styles.lapTimeField}
                     keyboardType="numeric"
                     placeholder="00"
-                    error={formError.seconds}
                   />
                   <Text style={styles.laptimeSemicolon}>:</Text>
                 </View>
@@ -185,10 +179,29 @@ export default function CreateTrackdayNote() {
                     style={styles.lapTimeField}
                     keyboardType="numeric"
                     placeholder="000"
-                    error={formError.milliseconds}
+                    returnKeyType="done"
                   />
                 </View>
               </View>
+              {laptimeError && (
+                <View>
+                  {formError.minutes && (
+                    <Text style={{ color: error, fontSize: 14 }}>
+                      {formError.minutes}
+                    </Text>
+                  )}
+                  {formError.seconds && (
+                    <Text style={{ color: error, fontSize: 14 }}>
+                      {formError.seconds}
+                    </Text>
+                  )}
+                  {formError.milliseconds && (
+                    <Text style={{ color: error, fontSize: 14 }}>
+                      {formError.milliseconds}
+                    </Text>
+                  )}
+                </View>
+              )}
               <TouchableOpacity
                 onPress={() =>
                   push({
@@ -200,26 +213,33 @@ export default function CreateTrackdayNote() {
                   })
                 }
               >
-                <Card>
-                  <Text>Facility: {names.facility}</Text>
-                </Card>
+                <Field
+                  pointerEvents="none"
+                  value={names.facility}
+                  editable={false}
+                  label="Facility"
+                />
               </TouchableOpacity>
               <TouchableOpacity
-                disabled={!fields.facility}
+                disabled={!facility}
                 onPress={() =>
                   push({
                     pathname: '/modal',
                     params: {
                       name: 'trackdayNoteSelect',
                       currentStep: 'track',
-                      facilityId: fields.facility
+                      facilityId: facility
                     }
                   })
                 }
               >
-                <Card>
-                  <Text>Track: {names.track}</Text>
-                </Card>
+                <Field
+                  value={names.track}
+                  label="Track"
+                  editable={false}
+                  pointerEvents="none"
+                  error={formError.track}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
@@ -232,21 +252,29 @@ export default function CreateTrackdayNote() {
                   })
                 }
               >
-                <Card>
-                  <Text>
-                    Motorcycle:{' '}
-                    {names.motorcycle}
-                  </Text>
-                </Card>
+                <Field
+                  label="Motorcycle"
+                  value={names.motorcycle}
+                  editable={false}
+                  pointerEvents="none"
+                  error={formError.motorcycle}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
                   push('/trackday/notes/edit-note')
                 }}
               >
-                <Card>
-                  <Text>{fields.note ? fields.note : 'Note:'}</Text>
-                </Card>
+                <View
+                  style={{
+                    backgroundColor: bgSecondary,
+                    paddingVertical: 16,
+                    paddingHorizontal: 8,
+                    borderRadius: 4
+                  }}
+                >
+                  <Text>{note || 'Note:'}</Text>
+                </View>
               </TouchableOpacity>
               <View style={styles.btnWrapper}>
                 <Button onPress={handleSubmit}>Save</Button>
@@ -285,6 +313,9 @@ const styles = StyleSheet.create({
   laptimeSemicolon: {
     marginTop: 16,
     marginHorizontal: 8
+  },
+  errorMessage: {
+    fontSize: 14
   },
   btnWrapper: {
     rowGap: 16
