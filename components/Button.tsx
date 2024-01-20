@@ -27,6 +27,7 @@ export function Button({
 
   return (
     <TouchableOpacity
+      disabled={disabled}
       style={[
         {
           backgroundColor: isPrimary ? btnBgPrimary : btnBgSecondary,

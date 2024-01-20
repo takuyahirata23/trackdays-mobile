@@ -21,17 +21,20 @@ type MotorcycleFormContextType = {
   fields: Fields,
   motorcycle: Motorcycle,
   handleOnChange: (_f: Field) => (_value: string) => void
-  setMotorcycle: any 
+  setMotorcycle: any,
+  reset: () => void
 }
 
 export const MotorcycleFormContext = React.createContext({} as MotorcycleFormContextType)
 
-export function MotorcycleFormProvider({ children }: Props) {
-  const [fields, setFields] = React.useState<Fields>({
+const iv = {
     year: '',
     make: '',
     model: ''
-  })
+  }
+
+export function MotorcycleFormProvider({ children }: Props) {
+  const [fields, setFields] = React.useState<Fields>(iv)
   const [motorcycle, setMotorcycle] = React.useState<Motorcycle>({
     make: '',
     model: ''
@@ -41,11 +44,17 @@ export function MotorcycleFormProvider({ children }: Props) {
     setFields(prev => ({ ...prev, [field]: value }))
   }
 
+  const reset = () => {
+    setFields(iv)
+    setMotorcycle({make: '', model: ''})
+  }
+
   const value = {
     fields,
     handleOnChange,
     motorcycle,
-    setMotorcycle
+    setMotorcycle,
+    reset
   }
 
   return (

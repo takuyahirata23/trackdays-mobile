@@ -4,7 +4,7 @@ import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
 import { useRouter } from 'expo-router'
 import { Calendar, DateData } from 'react-native-calendars'
 
-import { TrackdayNoteContext } from '@context/TrackdayNote'
+import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 import { GET_MONTHLY_TRACKDAY_DATA } from '@graphql/queries'
 import {
   Container,
@@ -52,7 +52,7 @@ export default function TrackdayIndex() {
   const [targetTrackdays, setTargetTrackdays] = React.useState([])
 
   const [date, setDate] = React.useState(today)
-  const { reset } = React.useContext(TrackdayNoteContext)
+  const { reset } = React.useContext(TrackdayNoteFormContext)
 
   React.useEffect(() => {
     if (data?.trackdayNotesByMonth || data?.trackdaysByMonth) {

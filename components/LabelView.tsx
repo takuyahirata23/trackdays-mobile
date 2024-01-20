@@ -13,7 +13,7 @@ export function LabelView({ label, value, style, ...rest }: Props) {
     <View style={style} {...rest}>
       <Text numberOfLines={1} ellipsizeMode="tail">
         <Text style={styles.label}>{label}:&nbsp;</Text>
-        <Text style={styles.value}>{value}</Text>
+        <Text>{value}</Text>
       </Text>
     </View>
   )
@@ -22,9 +22,5 @@ export function LabelView({ label, value, style, ...rest }: Props) {
 const styles = StyleSheet.create({
   label: {
     fontWeight: '600',
-    fontSize: 18
-  },
-  value: {
-    fontSize: 18
   }
 })

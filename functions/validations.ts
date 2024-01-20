@@ -19,8 +19,8 @@ export const isValidYearFormat = (year: string) => /^[\d]{4}/.test(year)
 export const isInRange = (year: string) =>
   Number(year) >= 1800 && Number(year) <= new Date().getFullYear()
 
-export const isValidLaptimeValue = (limit: number) => (minutes: string) =>
-  Number(minutes) <= limit
+export const isValidLaptimeValue = (limit: number) => (value: string) =>
+  Number(value) <= limit
 
 const signInValidations = {
   email: Predicate(isEmail),
@@ -58,7 +58,7 @@ export const runValidations = (predicates: Predicates) => (form: Form) =>
     (acc, [key, value]) =>
       predicates[key].run(value)
         ? acc
-        : { ...acc, isValid: false, [key]: `validationErroMessages.${key}` },
+        : { ...acc, isValid: false, [key]: `validationErrorMessages.${key}` },
     { isValid: true },
     Object.entries(form)
   )
