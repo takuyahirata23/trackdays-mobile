@@ -24,7 +24,7 @@ export function RadioOption({ onPress, label, isSelected, style }: Props) {
   return (
     <TouchableOpacity onPress={onPress} style={style}>
       <Card style={styles.option}>
-        <Ionicons name={getIconName(isSelected)} size={24} color={accent} />
+        <Ionicons name={getIconName(isSelected)} size={20} color={accent} />
         <Text style={styles.optionText}>{label}</Text>
       </Card>
     </TouchableOpacity>
@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   optionText: {
-    fontSize: 20
+    fontSize: 16
   }
 })

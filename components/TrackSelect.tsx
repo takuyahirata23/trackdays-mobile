@@ -27,7 +27,8 @@ export function TrackSelect() {
   }
 
   if (error) {
-    return Toast.error('Error. Please try it later', 'bottom')
+    Toast.error('Error. Please try it later', 'bottom')
+    return null
   }
 
   const onPress = (id: string, name: string) => {

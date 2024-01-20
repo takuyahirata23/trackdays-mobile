@@ -4,7 +4,7 @@ type Props = {
   children: React.ReactNode
 }
 
-type Fields = 'note' | 'facility' | 'track'
+type Fields = 'note' | 'facility' | 'track' | 'motorcycle'
 
 type TrackdayNoteContextType = {
   fields: { [key in Fields]: string }
@@ -29,7 +29,8 @@ type TrackdayNoteContextType = {
 const iv = {
   note: '',
   facility: '',
-  track: ''
+  track: '',
+  motorcycle: ''
 }
 
 const namesInitialValue = {

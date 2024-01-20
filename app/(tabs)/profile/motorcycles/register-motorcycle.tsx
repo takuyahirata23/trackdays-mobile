@@ -47,6 +47,12 @@ export default function RegisterMotorcycle() {
       Toast.error('Something went wrong. Please try later.', 'bottom')
     },
     onCompleted() {
+      setFormErrors({
+        isValid: false,
+        year: '',
+        make: '',
+        model: ''
+      })
       reset()
       goBack()
     }
