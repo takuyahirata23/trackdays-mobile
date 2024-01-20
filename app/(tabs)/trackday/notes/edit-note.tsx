@@ -1,7 +1,7 @@
 import React from 'react'
 import {  Platform, TextInput } from 'react-native'
 
-import { TrackdayNoteContext } from '@context/TrackdayNote'
+import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 import {
   Container,
   Field,
@@ -15,7 +15,7 @@ export default function EditNote() {
   const {
     trackdayNote: { note },
     updateTrackdayNote
-  } = React.useContext(TrackdayNoteContext)
+  } = React.useContext(TrackdayNoteFormContext)
   const [height, setHeight] = React.useState(0)
 
   React.useEffect(() => {

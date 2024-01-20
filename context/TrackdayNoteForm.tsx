@@ -14,11 +14,11 @@ const iv = {
   note: ''
 }
 
-export const TrackdayNoteContext = React.createContext({
+export const TrackdayNoteFormContext = React.createContext({
   trackdayNote: { note: '' }
 } as TrackdayNoteContextType)
 
-export function TrackdayNoteProvider({ children }: Props) {
+export function TrackdayNoteFormProvider({ children }: Props) {
   const [trackdayNote, setTrackdayNote] = React.useState(iv)
 
   const updateTrackdayNote = (field: string) => (value: string) =>
@@ -27,7 +27,7 @@ export function TrackdayNoteProvider({ children }: Props) {
   const reset = () => setTrackdayNote(iv)
 
   return (
-    <TrackdayNoteContext.Provider
+    <TrackdayNoteFormContext.Provider
       value={{
         trackdayNote,
         updateTrackdayNote,
@@ -35,6 +35,6 @@ export function TrackdayNoteProvider({ children }: Props) {
       }}
     >
       {children}
-    </TrackdayNoteContext.Provider>
+    </TrackdayNoteFormContext.Provider>
   )
 }

@@ -13,7 +13,7 @@ import {
 } from '@graphql/queries'
 import { SAVE_TRACKDAY_NOTE } from 'graphql/mutations'
 import { TRACKDAY_NOTE } from 'graphql/fragments'
-import { TrackdayNoteContext } from '@context/TrackdayNote'
+import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 import { useTheme } from '@hooks/useTheme'
 import {
   Button,
@@ -81,7 +81,7 @@ export default function CreateTrackdayNote() {
   const {
     trackdayNote: { note },
     reset
-  } = React.useContext(TrackdayNoteContext)
+  } = React.useContext(TrackdayNoteFormContext)
   const [
     { date, facility, track, motorcycle, minutes, seconds, milliseconds },
     setFields

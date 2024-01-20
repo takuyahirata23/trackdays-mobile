@@ -28,7 +28,7 @@ import {
   KeyboardAvoidingView
 } from '@components'
 import { useTheme } from 'hooks/useTheme'
-import { TrackdayNoteContext } from '@context/TrackdayNote'
+import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 
 import type { TrackdayNote } from '@type/event'
 import type { Motorcycle } from '@type/vehicle'
@@ -99,7 +99,7 @@ export default function Update() {
     trackdayNote,
     updateTrackdayNote: updateTrackdayNoteContext,
     reset
-  } = React.useContext(TrackdayNoteContext)
+  } = React.useContext(TrackdayNoteFormContext)
 
   const [
     { track, motorcycle, minutes, seconds, milliseconds, note, facility },
@@ -326,7 +326,11 @@ export default function Update() {
               }}
             >
               <Card>
-                <Text>{hasNoteChanged ? trackdayNote.note || 'Note: ' : note || 'Note: '}</Text>
+                <Text>
+                  {hasNoteChanged
+                    ? trackdayNote.note || 'Note: '
+                    : note || 'Note: '}
+                </Text>
               </Card>
             </TouchableOpacity>
             <View style={styles.btnWrapper}>
