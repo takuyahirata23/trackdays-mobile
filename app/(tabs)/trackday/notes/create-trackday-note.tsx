@@ -78,27 +78,23 @@ export default function CreateTrackdayNote() {
     SaveTrackdaySteps.Facility
   )
 
-  const {
-    trackdayNote: { note },
-    reset
-  } = React.useContext(TrackdayNoteFormContext)
+  const { fields, names, reset } = React.useContext(TrackdayNoteFormContext)
   const [
-    { date, facility, track, motorcycle, minutes, seconds, milliseconds },
+    { date, track, motorcycle, minutes, seconds, milliseconds },
     setFields
   ] = React.useState({
     date: dateParam as string,
-    facility: '',
     track: '',
     motorcycle: '',
     minutes: '',
     seconds: '',
     milliseconds: ''
   })
-  const [getTracks, tracksRes] = useLazyQuery(TRACKS_QUERY, {
-    variables: {
-      facilityId: facility
-    }
-  })
+  // const [getTracks, tracksRes] = useLazyQuery(TRACKS_QUERY, {
+  //   variables: {
+  //     facilityId: facility
+  //   }
+  // })
   const [formError, setFormError] = React.useState<TrackdayNoteFormErrors>({
     isValid: false,
     date: '',
@@ -143,12 +139,6 @@ export default function CreateTrackdayNote() {
     colors: { error }
   } = useTheme()
 
-  React.useEffect(() => {
-    if (facility) {
-      getTracks()
-    }
-  }, [facility])
-
   const handleOnChange = (field: string) => (value: string) => {
     if (field === 'facility') {
       setFields(prev => ({ ...prev, [field]: value, track: '' }))
@@ -168,13 +158,6 @@ export default function CreateTrackdayNote() {
 
   const onPressHandlers = () => {
     switch (currentStep) {
-      case SaveTrackdaySteps.Facility:
-        return () => {
-          if (!facility) {
-            handleOnChange('facility')(facilityRes.data.facilities[0].id)
-          }
-          setCurrentStep(SaveTrackdaySteps.Track)
-        }
       case SaveTrackdaySteps.Track:
         return () => {
           if (!track) {
@@ -221,7 +204,7 @@ export default function CreateTrackdayNote() {
             lapTime: lapTimeToMilliseconds({ minutes, seconds, milliseconds }),
             motorcycleId: motorcycle,
             trackId: track,
-            note: note
+            note: fields.note
           }
         }
       })
@@ -248,16 +231,62 @@ export default function CreateTrackdayNote() {
               <Card>
                 <Text>Date: {date}</Text>
               </Card>
+              <View style={styles.laptimeWrapper}>
+                <View style={styles.lapTimeFieldWrapper}>
+                  <Field
+                    label="Minute"
+                    value={minutes}
+                    style={styles.lapTimeField}
+                    onChangeText={handleOnChange('minutes')}
+                    keyboardType="numeric"
+                    placeholder="00"
+                    error={formError.minutes}
+                  />
+                  <Text style={styles.laptimeSemicolon}>:</Text>
+                </View>
+                <View style={styles.lapTimeFieldWrapper}>
+                  <Field
+                    label="Seconds"
+                    value={seconds}
+                    onChangeText={handleOnChange('seconds')}
+                    style={styles.lapTimeField}
+                    keyboardType="numeric"
+                    placeholder="00"
+                    error={formError.seconds}
+                  />
+                  <Text style={styles.laptimeSemicolon}>:</Text>
+                </View>
+                <View style={styles.lapTimeFieldWrapper}>
+                  <Field
+                    label="Miliseconds"
+                    value={milliseconds}
+                    onChangeText={handleOnChange('milliseconds')}
+                    style={styles.lapTimeField}
+                    keyboardType="numeric"
+                    placeholder="000"
+                    error={formError.milliseconds}
+                    onEndEditing={() => {
+                      setCurrentStep(SaveTrackdaySteps.Note)
+                    }}
+                  />
+                </View>
+              </View>
               <TouchableOpacity
-                onPress={handleCurrentStepChange(SaveTrackdaySteps.Facility)}
+                onPress={() =>
+                  push({
+                    pathname: '/modal',
+                    params: {
+                      name: 'trackdayNoteSelect',
+                      currentStep: 'facility'
+                    }
+                  })
+                }
               >
                 <Card>
-                  <Text>
-                    Facility:{' '}
-                    {getName(facilityRes.data?.facilities || [])(facility)}
-                  </Text>
+                  <Text>Facility: {names.facility}</Text>
                 </Card>
               </TouchableOpacity>
+              {/* 
               <TouchableOpacity
                 onPress={handleCurrentStepChange(SaveTrackdaySteps.Track)}
               >
@@ -279,71 +308,7 @@ export default function CreateTrackdayNote() {
                   </Text>
                 </Card>
               </TouchableOpacity>
-              {currentStep === SaveTrackdaySteps.Laptime ? (
-                <Card
-                  style={{
-                    borderColor: error,
-                    borderWidth: laptimeError ? 1 : 0
-                  }}
-                >
-                  <View style={styles.laptimeWrapper}>
-                    <View style={styles.lapTimeFieldWrapper}>
-                      <Field
-                        label="Minute"
-                        value={minutes}
-                        style={styles.lapTimeField}
-                        onChangeText={handleOnChange('minutes')}
-                        keyboardType="numeric"
-                        placeholder="00"
-                        error={formError.minutes}
-                      />
-                      <Text style={styles.laptimeSemicolon}>:</Text>
-                    </View>
-                    <View style={styles.lapTimeFieldWrapper}>
-                      <Field
-                        label="Seconds"
-                        value={seconds}
-                        onChangeText={handleOnChange('seconds')}
-                        style={styles.lapTimeField}
-                        keyboardType="numeric"
-                        placeholder="00"
-                        error={formError.seconds}
-                      />
-                      <Text style={styles.laptimeSemicolon}>:</Text>
-                    </View>
-                    <View style={styles.lapTimeFieldWrapper}>
-                      <Field
-                        label="Miliseconds"
-                        value={milliseconds}
-                        onChangeText={handleOnChange('milliseconds')}
-                        style={styles.lapTimeField}
-                        keyboardType="numeric"
-                        placeholder="000"
-                        error={formError.milliseconds}
-                        onEndEditing={() => {
-                          setCurrentStep(SaveTrackdaySteps.Note)
-                        }}
-                      />
-                    </View>
-                  </View>
-                </Card>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => setCurrentStep(SaveTrackdaySteps.Laptime)}
-                >
-                  <Card
-                    style={{
-                      borderColor: error,
-                      borderWidth: laptimeError ? 1 : 0
-                    }}
-                  >
-                    <Text>
-                      Best lap time: {minutes || '00'}:{seconds || '00'}:
-                      {milliseconds || '000'}
-                    </Text>
-                  </Card>
-                </TouchableOpacity>
-              )}
+              */}
               <TouchableOpacity
                 onPress={() => {
                   bottomSheetRef.current?.close()
@@ -352,7 +317,7 @@ export default function CreateTrackdayNote() {
                 }}
               >
                 <Card>
-                  <Text>{note ? note : 'Note:'}</Text>
+                  <Text>{fields.note ? fields.note : 'Note:'}</Text>
                 </Card>
               </TouchableOpacity>
               <View style={styles.btnWrapper}>
@@ -377,7 +342,7 @@ export default function CreateTrackdayNote() {
           />
         )}
       >
-        {currentStep === SaveTrackdaySteps.Facility && (
+        {/* currentStep === SaveTrackdaySteps.Facility && (
           <View style={styles.pickerWrapper}>
             <Picker
               selectedValue={facility}
@@ -388,8 +353,8 @@ export default function CreateTrackdayNote() {
               ))}
             </Picker>
           </View>
-        )}
-        {currentStep === SaveTrackdaySteps.Track &&
+        )*/}
+        {/* currentStep === SaveTrackdaySteps.Track &&
           facility &&
           tracksRes.data && (
             <View style={styles.pickerWrapper}>
@@ -402,7 +367,7 @@ export default function CreateTrackdayNote() {
                 ))}
               </Picker>
             </View>
-          )}
+          ) */}
         {currentStep === SaveTrackdaySteps.Motorcycle && (
           <View style={styles.pickerWrapper}>
             <Picker

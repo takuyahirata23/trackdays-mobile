@@ -9,3 +9,4 @@ export {
 } from './DeleteTrackdayNoteConfirmation'
 
 export { MotorcycleRegistrationSelect } from './MotorcycleRegistrationSelect'
+export { TrackdayNoteSelect } from './TrackdayNoteSelect'

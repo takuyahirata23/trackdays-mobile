@@ -1,9 +1,13 @@
 import React from 'react'
 import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import {  useRouter } from 'expo-router'
 import { useQuery } from '@apollo/client'
 
-import { MotorcycleFormContext, Motorcycle, Field } from '@context/MotorcycleForm'
+import {
+  MotorcycleFormContext,
+  Motorcycle,
+  Field
+} from '@context/MotorcycleForm'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
 
 import { Text } from '../Text'
@@ -14,13 +18,13 @@ const headers = {
 }
 
 type Props = {
-  handleOnChange: (field: Field) => (value: string) => void,
+  handleOnChange: (field: Field) => (value: string) => void
   setMotorcycle: (_motorcycle: any) => void
 }
 
 function MakeSelection({ handleOnChange, setMotorcycle }: Props) {
   const { loading, error, data } = useQuery(MAKES_QUERY)
-  const {  back } = useRouter()
+  const { back } = useRouter()
 
   if (loading) {
     return <Text>loading...</Text>
@@ -51,14 +55,17 @@ function MakeSelection({ handleOnChange, setMotorcycle }: Props) {
   )
 }
 
-function ModelSelection({ handleOnChange, setMotorcycle, makeId }: Props & { makeId: string }) {
+function ModelSelection({
+  handleOnChange,
+  setMotorcycle,
+  makeId
+}: Props & { makeId: string }) {
   const { data, loading, error } = useQuery(MODELS_QUERY, {
     variables: {
       makeId
     }
   })
   const { back } = useRouter()
-
 
   if (loading) {
     return <Text>loading...</Text>
@@ -89,18 +96,30 @@ function ModelSelection({ handleOnChange, setMotorcycle, makeId }: Props & { mak
   )
 }
 
-export function MotorcycleRegistrationSelect() {
-  const { currentStep } = useLocalSearchParams()
-  const { handleOnChange, setMotorcycle, fields } = React.useContext(MotorcycleFormContext)
+type P = {
+  currentStep: 'make' | 'model'
+}
+
+export function MotorcycleRegistrationSelect({ currentStep }: P) {
+  const { handleOnChange, setMotorcycle, fields } = React.useContext(
+    MotorcycleFormContext
+  )
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>{headers[currentStep]}</Text>
       {currentStep === 'make' && (
-        <MakeSelection handleOnChange={handleOnChange} setMotorcycle={setMotorcycle}/>
+        <MakeSelection
+          handleOnChange={handleOnChange}
+          setMotorcycle={setMotorcycle}
+        />
       )}
       {currentStep === 'model' && (
-        <ModelSelection handleOnChange={handleOnChange} setMotorcycle={setMotorcycle} makeId={fields.make}/>
+        <ModelSelection
+          handleOnChange={handleOnChange}
+          setMotorcycle={setMotorcycle}
+          makeId={fields.make}
+        />
       )}
     </View>
   )

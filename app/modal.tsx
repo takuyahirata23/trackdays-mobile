@@ -7,19 +7,22 @@ import { Container, KeyboardAvoidingView } from '@components'
 import {
   DeleteTrackdayNoteConfirmation,
   DeleteMotorcycleConfirmation,
-  MotorcycleRegistrationSelect
+  MotorcycleRegistrationSelect,
+  TrackdayNoteSelect
 } from '@components/modalContents'
 
 const titleMap: { [key: string]: string } = {
   deleteTrackdayConfirmation: 'Delete Trackday Note',
   deleteMotorcycleConfirmation: 'Delete Motorcycle',
-  motorcycleRegistrationSelect: 'New Motorcycle'
+  motorcycleRegistrationSelect: 'New Motorcycle',
+  trackdayNoteSelect: 'Trackday Note'
 }
 
 const contentMap: { [key: string]: React.FC<any> } = {
   deleteTrackdayConfirmation: DeleteTrackdayNoteConfirmation,
   deleteMotorcycleConfirmation: DeleteMotorcycleConfirmation,
-  motorcycleRegistrationSelect: MotorcycleRegistrationSelect
+  motorcycleRegistrationSelect: MotorcycleRegistrationSelect,
+  trackdayNoteSelect: TrackdayNoteSelect
 }
 
 export default function ModalScreen() {
