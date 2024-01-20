@@ -60,7 +60,8 @@ export const Field = React.forwardRef<Ref, Props>(
             style={[
               {
                 backgroundColor: colors.bgSecondary,
-                borderColor: error ? colors.error : colors.bgSecondary
+                borderColor: error ? colors.error : colors.bgSecondary,
+                color: colors.primary
               },
               styles.input,
               inputStyle

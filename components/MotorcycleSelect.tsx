@@ -43,7 +43,7 @@ export function MotorcycleSelect() {
             onPress(item.id, `${item.model.make.name} ${item.model.name}`)
           }
           label={`${item.model.make.name} ${item.model.name}`}
-          isSelected={fields.track === item.id}
+          isSelected={fields.motorcycle === item.id}
           style={styles.radioOption}
         />
       )}

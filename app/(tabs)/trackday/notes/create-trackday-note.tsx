@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import { useNavigation, useLocalSearchParams, useRouter } from 'expo-router'
 import { useQuery, useMutation } from '@apollo/client'
 import { isEmpty } from 'ramda'
+import Toast from 'toastify-react-native'
 
 import { MOTORCYCLES_QUERY } from '@graphql/queries'
 import { SAVE_TRACKDAY_NOTE } from 'graphql/mutations'
@@ -62,7 +63,7 @@ export default function CreateTrackdayNote() {
 
   const [formError, setFormError] = React.useState<TrackdayNoteFormErrors>(formErrorInitialValues)
 
-  const [saveTrackdayNote] = useMutation(SAVE_TRACKDAY_NOTE, {
+  const [saveTrackdayNote, { loading }] = useMutation(SAVE_TRACKDAY_NOTE, {
     update(cache, { data }) {
       cache.modify({
         fields: {
@@ -83,8 +84,8 @@ export default function CreateTrackdayNote() {
         }
       })
     },
-    onError(e) {
-      console.log('error', e)
+    onError() {
+      Toast.error('Error. Please try it later', 'bottom')
     },
     onCompleted() {
       setFormError(formErrorInitialValues)
@@ -277,7 +278,7 @@ export default function CreateTrackdayNote() {
                 </View>
               </TouchableOpacity>
               <View style={styles.btnWrapper}>
-                <Button onPress={handleSubmit}>Save</Button>
+                <Button onPress={handleSubmit} disabled={loading}>Save</Button>
               </View>
             </View>
           </View>
