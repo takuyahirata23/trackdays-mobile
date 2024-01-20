@@ -2,17 +2,22 @@ import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'expo-router'
-import { useNavigation } from 'expo-router'
 
 import { validateMotorcycleForm } from '@functions/validations'
-import { Card, Container, Text, Button, Field } from '@components'
+import {  Container, Button, Field } from '@components'
 import { MotorcycleFormContext } from '@context/MotorcycleForm'
 import { MOTORCYCLE } from 'graphql/fragments'
 import { REGISTER_MOTORCYCLE } from '@graphql/mutations'
 import { Toast } from 'toastify-react-native'
 
+const formErrorsInitialValue = {
+  isValid: false,
+  year: '',
+  make: '',
+  model: ''
+}
+
 export default function RegisterMotorcycle() {
-  const { goBack } = useNavigation()
   const { push } = useRouter()
   const { fields, handleOnChange, motorcycle, reset } = React.useContext(
     MotorcycleFormContext
@@ -22,12 +27,7 @@ export default function RegisterMotorcycle() {
     year?: string
     make?: string
     model?: string
-  }>({
-    isValid: false,
-    year: '',
-    make: '',
-    model: ''
-  })
+  }>(formErrorsInitialValue)
 
   const [registerMotorcycle] = useMutation(REGISTER_MOTORCYCLE, {
     update(cache, { data }) {
@@ -47,14 +47,9 @@ export default function RegisterMotorcycle() {
       Toast.error('Something went wrong. Please try later.', 'bottom')
     },
     onCompleted() {
-      setFormErrors({
-        isValid: false,
-        year: '',
-        make: '',
-        model: ''
-      })
+      setFormErrors(formErrorsInitialValue)
       reset()
-      goBack()
+      push('/profile')
     }
   })
 
@@ -96,10 +91,13 @@ export default function RegisterMotorcycle() {
           })
         }
       >
-        <Card style={styles.fieldWrapper}>
-          <Text>Make: </Text>
-          <Text>{motorcycle.make}</Text>
-        </Card>
+        <Field
+          label="Make"
+          value={motorcycle.make}
+          editable={false}
+          pointerEvents="none"
+          error={formErrors.make}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() =>
@@ -113,10 +111,13 @@ export default function RegisterMotorcycle() {
         }
         disabled={!fields.make}
       >
-        <Card style={styles.fieldWrapper}>
-          <Text>Model: </Text>
-          <Text>{motorcycle.model}</Text>
-        </Card>
+        <Field
+          label="Model"
+          value={motorcycle.model}
+          editable={false}
+          pointerEvents="none"
+          error={formErrors.model}
+        />
       </TouchableOpacity>
       <View style={styles.btnWrapper}>
         <Button onPress={onSubmit} disabled={!filled}>
