@@ -16,7 +16,7 @@ describe('validations', () => {
   )
 
   test.each(['hello world', 'my name is joe', ' username hi  '])(
-    'should return ture if value has enough length',
+    'should return true if value has enough length',
     value => {
       expect(validateMinLength(8)(value)).toBeTruthy()
     }
@@ -69,7 +69,7 @@ describe('runValidations', () => {
 
     expect(result.isValid).toBeFalsy()
     expect(result).not.toHaveProperty('name')
-    expect(result).toHaveProperty('username', 'validationErroMessages.username')
+    expect(result).toHaveProperty('username', 'validationErrorMessages.username')
   })
 })
 
