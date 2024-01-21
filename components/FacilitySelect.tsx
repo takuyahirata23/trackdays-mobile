@@ -6,10 +6,10 @@ import Toast from 'toastify-react-native'
 import { FACILITIES_QUERY } from '@graphql/queries'
 import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 
-import { FlatList, View, StyleSheet } from 'react-native'
+import { FlatList, StyleSheet } from 'react-native'
 
+import { ActivityIndicator } from './ActivityIndicator'
 import { RadioOption } from './RadioOption'
-import { Text } from './Text'
 
 export function FacilitySelect() {
   const { loading, error, data } = useQuery(FACILITIES_QUERY)
@@ -17,11 +17,7 @@ export function FacilitySelect() {
   const { back } = useRouter()
 
   if (loading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    )
+    return <ActivityIndicator />
   }
 
   if (error) {

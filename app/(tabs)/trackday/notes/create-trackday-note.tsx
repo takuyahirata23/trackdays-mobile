@@ -1,5 +1,11 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Keyboard
+} from 'react-native'
 import { useNavigation, useLocalSearchParams, useRouter } from 'expo-router'
 import { useQuery, useMutation } from '@apollo/client'
 import { isEmpty } from 'ramda'
@@ -31,13 +37,13 @@ export type TrackdayNoteFormErrors = {
   milliseconds?: string
 }
 
-const formErrorInitialValues =  {
-    isValid: false,
-    track: '',
-    motorcycle: '',
-    minutes: '',
-    seconds: '',
-    milliseconds: ''
+const formErrorInitialValues = {
+  isValid: false,
+  track: '',
+  motorcycle: '',
+  minutes: '',
+  seconds: '',
+  milliseconds: ''
 }
 
 export default function CreateTrackdayNote() {
@@ -61,7 +67,9 @@ export default function CreateTrackdayNote() {
     reset
   } = React.useContext(TrackdayNoteFormContext)
 
-  const [formError, setFormError] = React.useState<TrackdayNoteFormErrors>(formErrorInitialValues)
+  const [formError, setFormError] = React.useState<TrackdayNoteFormErrors>(
+    formErrorInitialValues
+  )
 
   const [saveTrackdayNote, { loading }] = useMutation(SAVE_TRACKDAY_NOTE, {
     update(cache, { data }) {
@@ -130,6 +138,17 @@ export default function CreateTrackdayNote() {
     formError.minutes || formError.seconds || formError.milliseconds
   )
 
+  const navigateToSelectModal =
+    (params: { currentStep: string; facilityId?: string }) => () => {
+      push({
+        pathname: '/modal',
+        params: {
+          name: 'trackdayNoteSelect',
+          ...params
+        }
+      })
+    }
+
   return motorcycleRes.called &&
     !motorcycleRes.loading &&
     isEmpty(motorcycleRes.data.motorcycles) ? (
@@ -148,6 +167,7 @@ export default function CreateTrackdayNote() {
                 value={date as string}
                 editable={false}
                 pointerEvents="none"
+                onBlur={Keyboard.dismiss}
               />
               <View style={styles.laptimeWrapper}>
                 <View style={styles.lapTimeFieldWrapper}>
@@ -158,6 +178,7 @@ export default function CreateTrackdayNote() {
                     onChangeText={handleOnChange('minutes')}
                     keyboardType="numeric"
                     placeholder="00"
+                    onBlur={Keyboard.dismiss}
                   />
                   <Text style={styles.laptimeSemicolon}>:</Text>
                 </View>
@@ -169,6 +190,7 @@ export default function CreateTrackdayNote() {
                     style={styles.lapTimeField}
                     keyboardType="numeric"
                     placeholder="00"
+                    onBlur={Keyboard.dismiss}
                   />
                   <Text style={styles.laptimeSemicolon}>:</Text>
                 </View>
@@ -204,15 +226,7 @@ export default function CreateTrackdayNote() {
                 </View>
               )}
               <TouchableOpacity
-                onPress={() =>
-                  push({
-                    pathname: '/modal',
-                    params: {
-                      name: 'trackdayNoteSelect',
-                      currentStep: 'facility'
-                    }
-                  })
-                }
+                onPress={navigateToSelectModal({ currentStep: 'facility' })}
               >
                 <Field
                   pointerEvents="none"
@@ -222,17 +236,16 @@ export default function CreateTrackdayNote() {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                disabled={!facility}
-                onPress={() =>
-                  push({
-                    pathname: '/modal',
-                    params: {
-                      name: 'trackdayNoteSelect',
+                onPress={() => {
+                  if (facility) {
+                    navigateToSelectModal({
                       currentStep: 'track',
                       facilityId: facility
-                    }
-                  })
-                }
+                    })()
+                  } else {
+                    Toast.error('Please choose facility', 'bottom')
+                  }
+                }}
               >
                 <Field
                   value={names.track}
@@ -243,15 +256,7 @@ export default function CreateTrackdayNote() {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>
-                  push({
-                    pathname: '/modal',
-                    params: {
-                      name: 'trackdayNoteSelect',
-                      currentStep: 'motorcycle'
-                    }
-                  })
-                }
+                onPress={navigateToSelectModal({ currentStep: 'motorcycle' })}
               >
                 <Field
                   label="Motorcycle"
@@ -262,9 +267,7 @@ export default function CreateTrackdayNote() {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                  push('/trackday/notes/edit-note')
-                }}
+                onPress={() => push('/trackday/notes/edit-note')}
               >
                 <View
                   style={{
@@ -278,7 +281,9 @@ export default function CreateTrackdayNote() {
                 </View>
               </TouchableOpacity>
               <View style={styles.btnWrapper}>
-                <Button onPress={handleSubmit} disabled={loading}>Save</Button>
+                <Button onPress={handleSubmit} disabled={loading}>
+                  Save
+                </Button>
               </View>
             </View>
           </View>

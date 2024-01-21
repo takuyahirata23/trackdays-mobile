@@ -3,12 +3,13 @@ import { useQuery } from '@apollo/client'
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
 import { useRouter } from 'expo-router'
 import { Calendar, DateData } from 'react-native-calendars'
+import Toast from 'toastify-react-native'
 
 import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 import { GET_MONTHLY_TRACKDAY_DATA } from '@graphql/queries'
 import {
+  ActivityIndicator,
   Container,
-  Text,
   Card,
   TrackdayLinkCard,
   TrackdayNoteLinkCard,
@@ -68,16 +69,12 @@ export default function TrackdayIndex() {
   }, [date, data])
 
   if (error) {
-    console.log('error', error)
+    Toast.error('Error. Please try it later', 'bottom')
     return null
   }
 
   if (loading) {
-    return (
-      <Container>
-        <Text>Loading</Text>
-      </Container>
-    )
+    return <ActivityIndicator />
   }
 
   const formatToDateString = (dateTime: string) => dateTime.split(' ')[0]

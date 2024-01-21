@@ -6,10 +6,10 @@ import Toast from 'toastify-react-native'
 import { TRACKS_QUERY } from '@graphql/queries'
 import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 
-import { FlatList, View, StyleSheet } from 'react-native'
+import { FlatList, StyleSheet } from 'react-native'
 
+import { ActivityIndicator } from './ActivityIndicator'
 import { RadioOption } from './RadioOption'
-import { Text } from './Text'
 
 export function TrackSelect() {
   const { handleOnChange, fields } = React.useContext(TrackdayNoteFormContext)
@@ -19,11 +19,7 @@ export function TrackSelect() {
   const { back } = useRouter()
 
   if (loading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    )
+    return <ActivityIndicator />
   }
 
   if (error) {
