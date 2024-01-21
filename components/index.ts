@@ -1,3 +1,4 @@
+export { ActivityIndicator } from './ActivityIndicator'
 export { AddTrackdayToCalendar } from './AddTrackdayToCalendar'
 export { Button } from './Button'
 export { Card } from './Card'

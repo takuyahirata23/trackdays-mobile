@@ -121,6 +121,17 @@ export default function Update() {
     }
   }, [track, motorcycle, minutes, seconds, milliseconds, formError])
 
+  const navigateToSelectModal =
+    (params: { currentStep: string; facilityId?: string }) => () => {
+      push({
+        pathname: '/modal',
+        params: {
+          name: 'trackdayNoteSelect',
+          ...params
+        }
+      })
+    }
+
   return (
     <Container>
       <KeyboardAvoidingView>
@@ -186,15 +197,7 @@ export default function Update() {
             </View>
           )}
           <TouchableOpacity
-            onPress={() =>
-              push({
-                pathname: '/modal',
-                params: {
-                  name: 'trackdayNoteSelect',
-                  currentStep: 'facility'
-                }
-              })
-            }
+            onPress={navigateToSelectModal({ currentStep: 'facility' })}
           >
             <Field
               editable={false}
@@ -205,16 +208,10 @@ export default function Update() {
           </TouchableOpacity>
           <TouchableOpacity
             disabled={!facility}
-            onPress={() =>
-              push({
-                pathname: '/modal',
-                params: {
-                  name: 'trackdayNoteSelect',
-                  currentStep: 'track',
-                  facilityId: facility
-                }
-              })
-            }
+            onPress={navigateToSelectModal({
+              currentStep: 'track',
+              facilityId: facility
+            })}
           >
             <Field
               editable={false}
@@ -225,15 +222,7 @@ export default function Update() {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() =>
-              push({
-                pathname: '/modal',
-                params: {
-                  name: 'trackdayNoteSelect',
-                  currentStep: 'motorcycle'
-                }
-              })
-            }
+            onPress={navigateToSelectModal({ currentStep: 'motorcycle' })}
           >
             <Field
               editable={false}
@@ -260,7 +249,9 @@ export default function Update() {
             </View>
           </TouchableOpacity>
           <View style={styles.btnWrapper}>
-            <Button onPress={handleSubmit} disabled={loading}>Save</Button>
+            <Button onPress={handleSubmit} disabled={loading}>
+              Save
+            </Button>
           </View>
         </View>
       </KeyboardAvoidingView>
