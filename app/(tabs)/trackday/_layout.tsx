@@ -1,7 +1,7 @@
 import React from 'react'
 import { Stack } from 'expo-router'
 
-import { Header, AddTrackdayToCalendar } from '@components'
+import { Header, AddTrackdayToCalendar, NoteEditDone, NoteEditCancel } from '@components'
 import { DeleteTrackdayButton } from '@components/modalContents'
 
 export default function TrackdayLayout() {
@@ -11,7 +11,8 @@ export default function TrackdayLayout() {
       screenOptions={{
         headerBackTitleVisible: false,
         headerTitle: () => <Header />,
-        headerShadowVisible: true
+        headerShadowVisible: true,
+        headerTitleAlign: 'center'
       }}
     >
       <Stack.Screen
@@ -45,7 +46,10 @@ export default function TrackdayLayout() {
       <Stack.Screen
         name="notes/edit-note"
         options={{
-          headerShown: true
+          headerShown: true,
+          headerBackVisible: false,
+          headerLeft: NoteEditCancel,
+          headerRight: NoteEditDone
         }}
       />
       <Stack.Screen

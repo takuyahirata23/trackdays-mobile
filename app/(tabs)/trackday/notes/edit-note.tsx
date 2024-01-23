@@ -1,26 +1,22 @@
 import React from 'react'
-import {  Platform, TextInput } from 'react-native'
+import { Platform, TextInput } from 'react-native'
 
 import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
-import {
-  Container,
-  Field,
-  KeyboardAvoidingView
-} from '@components'
+import { Container, Field, KeyboardAvoidingView } from '@components'
 
 const isAndroid = Platform.OS === 'android'
 
 export default function EditNote() {
   const ref = React.useRef<TextInput>(null)
   const {
-    fields: { note },
+    fields: { noteEdit },
     handleOnChange
   } = React.useContext(TrackdayNoteFormContext)
   const [height, setHeight] = React.useState(0)
 
   React.useEffect(() => {
     ref.current?.focus()
-    }, [])
+  }, [])
 
   return (
     <KeyboardAvoidingView>
@@ -28,13 +24,13 @@ export default function EditNote() {
         <Field
           ref={ref}
           label="Note"
-          value={note}
+          value={noteEdit}
           multiline
-          onChangeText={handleOnChange('note')}
+          onChangeText={handleOnChange('noteEdit')}
           onContentSizeChange={e =>
             setHeight(e.nativeEvent.contentSize.height + (isAndroid ? 0 : 16))
           }
-          inputStyle={{ height, minHeight: '30%'  }}
+          inputStyle={{ height, minHeight: '30%' }}
           style={{ flex: 1 }}
           textAlignVertical="top"
         />

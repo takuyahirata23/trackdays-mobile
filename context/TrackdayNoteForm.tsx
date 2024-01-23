@@ -19,6 +19,7 @@ type Fields =
   | 'minutes'
   | 'seconds'
   | 'milliseconds'
+  | 'noteEdit'
 
 type TrackdayNoteContextType = {
   fields: { [key in Fields]: string }
@@ -58,6 +59,7 @@ const trackdayNoteToFields = ({
     track: track.id,
     motorcycle: motorcycle.id,
     note,
+    noteEdit: note,
     facility: track.facility.id,
     ...timeToFields(lapTime || 0)
   }
@@ -78,7 +80,8 @@ const iv = {
   motorcycle: '',
   minutes: '',
   seconds: '',
-  milliseconds: ''
+  milliseconds: '',
+  noteEdit: ''
 }
 
 const namesInitialValue = {
