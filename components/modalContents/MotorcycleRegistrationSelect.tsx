@@ -10,6 +10,7 @@ import {
 } from '@context/MotorcycleForm'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
 
+import { RadioOption } from '../RadioOption'
 import { Text } from '../Text'
 
 const headers = {
@@ -19,10 +20,11 @@ const headers = {
 
 type Props = {
   handleOnChange: (field: Field) => (value: string) => void
-  setMotorcycle: (_motorcycle: any) => void
+  setMotorcycle: (_motorcycle: any) => void,
+  selected: string
 }
 
-function MakeSelection({ handleOnChange, setMotorcycle }: Props) {
+function MakeSelection({ handleOnChange, setMotorcycle, selected }: Props) {
   const { loading, error, data } = useQuery(MAKES_QUERY)
   const { back } = useRouter()
 
@@ -43,12 +45,12 @@ function MakeSelection({ handleOnChange, setMotorcycle }: Props) {
     <FlatList
       data={data.makes}
       renderItem={({ item }) => (
-        <TouchableOpacity
+        <RadioOption
           style={styles.optionContainer}
           onPress={() => onPress(item.id, item.name)}
-        >
-          <Text style={styles.optionText}>{item.name}</Text>
-        </TouchableOpacity>
+          label={item.name}
+          isSelected={selected === item.id}
+        />
       )}
       keyExtractor={item => item.id}
     />
@@ -58,7 +60,8 @@ function MakeSelection({ handleOnChange, setMotorcycle }: Props) {
 function ModelSelection({
   handleOnChange,
   setMotorcycle,
-  makeId
+  makeId,
+  selected
 }: Props & { makeId: string }) {
   const { data, loading, error } = useQuery(MODELS_QUERY, {
     variables: {
@@ -84,12 +87,12 @@ function ModelSelection({
     <FlatList
       data={data.models}
       renderItem={({ item }) => (
-        <TouchableOpacity
+        <RadioOption
           style={styles.optionContainer}
           onPress={() => onPress(item.id, item.name)}
-        >
-          <Text style={styles.optionText}>{item.name}</Text>
-        </TouchableOpacity>
+          isSelected={selected === item.id}
+          label={item.name}
+       / >
       )}
       keyExtractor={item => item.id}
     />
@@ -112,6 +115,7 @@ export function MotorcycleRegistrationSelect({ currentStep }: P) {
         <MakeSelection
           handleOnChange={handleOnChange}
           setMotorcycle={setMotorcycle}
+          selected={fields.make}
         />
       )}
       {currentStep === 'model' && (
@@ -119,6 +123,7 @@ export function MotorcycleRegistrationSelect({ currentStep }: P) {
           handleOnChange={handleOnChange}
           setMotorcycle={setMotorcycle}
           makeId={fields.make}
+          selected={fields.model}
         />
       )}
     </View>
@@ -134,7 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   optionContainer: {
-    paddingVertical: 16
+    marginBottom: 16
   },
   optionText: {
     fontSize: 18
