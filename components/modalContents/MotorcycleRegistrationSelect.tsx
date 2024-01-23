@@ -1,7 +1,8 @@
 import React from 'react'
-import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { FlatList, View, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useQuery } from '@apollo/client'
+import Toast from 'toastify-react-native'
 
 import {
   MotorcycleFormContext,
@@ -10,13 +11,9 @@ import {
 } from '@context/MotorcycleForm'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
 
+import { ActivityIndicator } from '../ActivityIndicator'
 import { RadioOption } from '../RadioOption'
 import { Text } from '../Text'
-
-const headers = {
-  make: 'Pick your motorcycle make',
-  model: 'Pick your motorcycle model'
-}
 
 type Props = {
   handleOnChange: (field: Field) => (value: string) => void
@@ -29,10 +26,11 @@ function MakeSelection({ handleOnChange, setMotorcycle, selected }: Props) {
   const { back } = useRouter()
 
   if (loading) {
-    return <Text>loading...</Text>
+    return <ActivityIndicator />
   }
 
   if (error) {
+    Toast.error('Error. Please try it later', 'bottom')
     return null
   }
 
@@ -42,22 +40,25 @@ function MakeSelection({ handleOnChange, setMotorcycle, selected }: Props) {
     back()
   }
   return (
-    <FlatList
-      data={data.makes}
-      renderItem={({ item, index }) => (
-        <RadioOption
-          onPress={() => onPress(item.id, item.name)}
-          label={item.name}
-          isSelected={selected === item.id}
-          style={{
-            paddingHorizontal: 16,
-            paddingBottom: 8,
-            paddingTop: index ? 8 : 16
-          }}
-        />
-      )}
-      keyExtractor={item => item.id}
-    />
+    <>
+      <Text style={styles.header}>Choose model</Text>
+      <FlatList
+        data={data.makes}
+        renderItem={({ item, index }) => (
+          <RadioOption
+            onPress={() => onPress(item.id, item.name)}
+            label={item.name}
+            isSelected={selected === item.id}
+            style={{
+              paddingHorizontal: 16,
+              paddingBottom: 8,
+              paddingTop: index ? 8 : 16
+            }}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
+    </>
   )
 }
 
@@ -75,10 +76,11 @@ function ModelSelection({
   const { back } = useRouter()
 
   if (loading) {
-    return <Text>loading...</Text>
+    return <ActivityIndicator />
   }
 
   if (error) {
+    Toast.error('Error. Please try it later', 'bottom')
     return null
   }
 
@@ -88,22 +90,25 @@ function ModelSelection({
     back()
   }
   return (
-    <FlatList
-      data={data.models}
-      renderItem={({ item, index }) => (
-        <RadioOption
-          onPress={() => onPress(item.id, item.name)}
-          isSelected={selected === item.id}
-          label={item.name}
-          style={{
-            paddingHorizontal: 16,
-            paddingBottom: 8,
-            paddingTop: index ? 8 : 16
-          }}
-        />
-      )}
-      keyExtractor={item => item.id}
-    />
+    <View>
+      <Text style={styles.header}>Choose model</Text>
+      <FlatList
+        data={data.models}
+        renderItem={({ item, index }) => (
+          <RadioOption
+            onPress={() => onPress(item.id, item.name)}
+            isSelected={selected === item.id}
+            label={item.name}
+            style={{
+              paddingHorizontal: 16,
+              paddingBottom: 8,
+              paddingTop: index ? 8 : 16
+            }}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
+    </View>
   )
 }
 
@@ -118,7 +123,6 @@ export function MotorcycleRegistrationSelect({ currentStep }: P) {
 
   return (
     <View>
-      <Text style={styles.header}>{headers[currentStep]}</Text>
       {currentStep === 'make' && (
         <MakeSelection
           handleOnChange={handleOnChange}
