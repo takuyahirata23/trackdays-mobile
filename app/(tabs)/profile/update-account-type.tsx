@@ -78,6 +78,7 @@ export default function UpdateAccountType() {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 16,
     rowGap: 20
   },
   heading: {

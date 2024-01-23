@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   container: {
     rowGap: 16,
     flex: 1,
-    paddingBottom: 16
+    padding: 16
   },
   laptimeWrapper: {
     width: '100%',

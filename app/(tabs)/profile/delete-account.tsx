@@ -45,6 +45,7 @@ export default function DeleteAccount() {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 16,
     justifyContent: 'center',
     rowGap: 24
   },

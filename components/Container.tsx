@@ -22,8 +22,6 @@ export function Container({ children, style }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: 'rgba(39, 155, 72, .1)' 

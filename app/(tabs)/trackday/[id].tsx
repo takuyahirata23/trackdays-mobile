@@ -121,7 +121,8 @@ export default function TrackdayDetail() {
 const styles = StyleSheet.create({
   container: {
     rowGap: 16,
-    paddingBottom: 16
+    paddingVertical: 16,
+    paddingHorizontal: 20
   },
   card: {
     flexDirection: 'column',
@@ -142,5 +143,3 @@ const styles = StyleSheet.create({
   }
 })
 
-    //const calendarId = '7BF21A38-4515-473D-A094-B2A1F3B3EB78'
-    //const calendarId = '6'

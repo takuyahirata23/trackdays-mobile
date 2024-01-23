@@ -130,8 +130,8 @@ export default function RegisterMotorcycle() {
 
 const styles = StyleSheet.create({
   container: {
-    rowGap: 12,
-    paddingBottom: 20
+    padding: 16,
+    rowGap: 12
   },
   fieldWrapper: {
     flexDirection: 'row',

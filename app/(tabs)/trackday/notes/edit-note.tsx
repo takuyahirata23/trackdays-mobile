@@ -24,7 +24,7 @@ export default function EditNote() {
 
   return (
     <KeyboardAvoidingView>
-      <Container>
+      <Container style={{ padding: 16 }}>
         <Field
           ref={ref}
           label="Note"

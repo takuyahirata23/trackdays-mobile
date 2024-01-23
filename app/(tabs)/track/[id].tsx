@@ -60,6 +60,7 @@ export default function Facility() {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 16,
     rowGap: 24
   },
   facilityWrapper: {

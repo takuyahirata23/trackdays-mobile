@@ -22,7 +22,7 @@ export default function Motorcycle() {
   const { model, year, trackdayNotes } = data.motorcycle
 
   return (
-    <Container>
+    <Container style={styles.container}>
       <View style={styles.vehicleWrapper}>
         <Text style={styles.name}>
           {model.make.name} ({year})
@@ -46,7 +46,9 @@ export default function Motorcycle() {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    padding: 16
+  },
   vehicleWrapper: {
     rowGap: 4
   },

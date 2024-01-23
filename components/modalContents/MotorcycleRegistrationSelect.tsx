@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
-import {  useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { useQuery } from '@apollo/client'
 
 import {
@@ -10,6 +10,7 @@ import {
 } from '@context/MotorcycleForm'
 import { MAKES_QUERY, MODELS_QUERY } from '@graphql/queries'
 
+import { RadioOption } from '../RadioOption'
 import { Text } from '../Text'
 
 const headers = {
@@ -20,9 +21,10 @@ const headers = {
 type Props = {
   handleOnChange: (field: Field) => (value: string) => void
   setMotorcycle: (_motorcycle: any) => void
+  selected: string
 }
 
-function MakeSelection({ handleOnChange, setMotorcycle }: Props) {
+function MakeSelection({ handleOnChange, setMotorcycle, selected }: Props) {
   const { loading, error, data } = useQuery(MAKES_QUERY)
   const { back } = useRouter()
 
@@ -42,13 +44,17 @@ function MakeSelection({ handleOnChange, setMotorcycle }: Props) {
   return (
     <FlatList
       data={data.makes}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          style={styles.optionContainer}
+      renderItem={({ item, index }) => (
+        <RadioOption
           onPress={() => onPress(item.id, item.name)}
-        >
-          <Text style={styles.optionText}>{item.name}</Text>
-        </TouchableOpacity>
+          label={item.name}
+          isSelected={selected === item.id}
+          style={{
+            paddingHorizontal: 16,
+            paddingBottom: 8,
+            paddingTop: index ? 8 : 16
+          }}
+        />
       )}
       keyExtractor={item => item.id}
     />
@@ -58,7 +64,8 @@ function MakeSelection({ handleOnChange, setMotorcycle }: Props) {
 function ModelSelection({
   handleOnChange,
   setMotorcycle,
-  makeId
+  makeId,
+  selected
 }: Props & { makeId: string }) {
   const { data, loading, error } = useQuery(MODELS_QUERY, {
     variables: {
@@ -83,13 +90,17 @@ function ModelSelection({
   return (
     <FlatList
       data={data.models}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          style={styles.optionContainer}
+      renderItem={({ item, index }) => (
+        <RadioOption
           onPress={() => onPress(item.id, item.name)}
-        >
-          <Text style={styles.optionText}>{item.name}</Text>
-        </TouchableOpacity>
+          isSelected={selected === item.id}
+          label={item.name}
+          style={{
+            paddingHorizontal: 16,
+            paddingBottom: 8,
+            paddingTop: index ? 8 : 16
+          }}
+        />
       )}
       keyExtractor={item => item.id}
     />
@@ -106,12 +117,13 @@ export function MotorcycleRegistrationSelect({ currentStep }: P) {
   )
 
   return (
-    <View style={styles.container}>
+    <View>
       <Text style={styles.header}>{headers[currentStep]}</Text>
       {currentStep === 'make' && (
         <MakeSelection
           handleOnChange={handleOnChange}
           setMotorcycle={setMotorcycle}
+          selected={fields.make}
         />
       )}
       {currentStep === 'model' && (
@@ -119,6 +131,7 @@ export function MotorcycleRegistrationSelect({ currentStep }: P) {
           handleOnChange={handleOnChange}
           setMotorcycle={setMotorcycle}
           makeId={fields.make}
+          selected={fields.model}
         />
       )}
     </View>
@@ -126,17 +139,10 @@ export function MotorcycleRegistrationSelect({ currentStep }: P) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    rowGap: 20
-  },
   header: {
     fontWeight: '600',
-    fontSize: 18
-  },
-  optionContainer: {
-    paddingVertical: 16
-  },
-  optionText: {
-    fontSize: 18
+    fontSize: 18,
+    paddingHorizontal: 16,
+    marginTop: 16
   }
 })
