@@ -10,6 +10,7 @@ import { Toast } from 'toastify-react-native'
 import { useTheme } from '@hooks/useTheme'
 import { USER_QUERY, BEST_LAP_FOR_EACH_TRACK } from '@graphql/queries'
 import {
+  ActivityIndicator,
   Card,
   Text,
   Container,
@@ -76,12 +77,12 @@ export default function ProfileIndex() {
   }, [profileImage])
 
   if (error || bestLapsRes.error) {
-    console.error(error)
+    Toast.error('Error. Please try it later', 'bottom')
     return null
   }
 
   if (loading || bestLapsRes.loading) {
-    return null
+    return <ActivityIndicator />
   }
 
   const { name, imageUrl, group } = data.user
