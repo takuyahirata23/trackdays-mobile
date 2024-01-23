@@ -42,6 +42,7 @@ export default function UpdateGroup() {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 16
   },
   groupContainer: {
     marginTop: 24,

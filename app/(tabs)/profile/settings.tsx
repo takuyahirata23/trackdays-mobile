@@ -110,15 +110,14 @@ export default function Setting() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 24
-  },
-  menuWrapper: {
-    rowGap: 24
+    paddingHorizontal: 16,
+    paddingBottom: 16
   },
   buttonWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingVertical: 12
   },
   buttonText: {
     fontSize: 18,

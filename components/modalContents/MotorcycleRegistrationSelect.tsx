@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
-import {  useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { useQuery } from '@apollo/client'
 
 import {
@@ -20,7 +20,7 @@ const headers = {
 
 type Props = {
   handleOnChange: (field: Field) => (value: string) => void
-  setMotorcycle: (_motorcycle: any) => void,
+  setMotorcycle: (_motorcycle: any) => void
   selected: string
 }
 
@@ -44,12 +44,16 @@ function MakeSelection({ handleOnChange, setMotorcycle, selected }: Props) {
   return (
     <FlatList
       data={data.makes}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <RadioOption
-          style={styles.optionContainer}
           onPress={() => onPress(item.id, item.name)}
           label={item.name}
           isSelected={selected === item.id}
+          style={{
+            paddingHorizontal: 16,
+            paddingBottom: 8,
+            paddingTop: index ? 8 : 16
+          }}
         />
       )}
       keyExtractor={item => item.id}
@@ -86,13 +90,17 @@ function ModelSelection({
   return (
     <FlatList
       data={data.models}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <RadioOption
-          style={styles.optionContainer}
           onPress={() => onPress(item.id, item.name)}
           isSelected={selected === item.id}
           label={item.name}
-       / >
+          style={{
+            paddingHorizontal: 16,
+            paddingBottom: 8,
+            paddingTop: index ? 8 : 16
+          }}
+        />
       )}
       keyExtractor={item => item.id}
     />
@@ -109,7 +117,7 @@ export function MotorcycleRegistrationSelect({ currentStep }: P) {
   )
 
   return (
-    <View style={styles.container}>
+    <View>
       <Text style={styles.header}>{headers[currentStep]}</Text>
       {currentStep === 'make' && (
         <MakeSelection
@@ -131,19 +139,10 @@ export function MotorcycleRegistrationSelect({ currentStep }: P) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    rowGap: 20
-  },
   header: {
     fontWeight: '600',
     fontSize: 18,
-    paddingHorizontal: 20
-  },
-  optionContainer: {
-    marginBottom: 16,
-    paddingHorizontal: 20,
-  },
-  optionText: {
-    fontSize: 18
+    paddingHorizontal: 16,
+    marginTop: 16
   }
 })

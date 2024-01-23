@@ -5,7 +5,7 @@ import { Container, Text, ExternalLink } from '@components'
 
 export default function FAQ() {
   return (
-    <Container style={{ paddingTop: 0 }}>
+    <Container style={{ padding: 16 }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}
@@ -51,9 +51,6 @@ export default function FAQ() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 20
-  },
   title: {
     fontSize: 20,
     fontWeight: '600'

@@ -103,6 +103,7 @@ export default function ChangeEmail() {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 16,
     rowGap: 16
   },
   warningWrapper: {
