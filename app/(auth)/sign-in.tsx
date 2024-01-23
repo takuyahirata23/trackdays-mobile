@@ -55,7 +55,7 @@ export default function SignIn() {
   }, [isLoading, form, signIn])
 
   return (
-      <Container>
+      <Container style={{ padding: 16 }}>
         <Text style={styles.title}>Welcome back👋</Text>
         <View style={styles.form}>
           <Field

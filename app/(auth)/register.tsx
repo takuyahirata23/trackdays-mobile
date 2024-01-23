@@ -78,7 +78,7 @@ export default function Register() {
 
   return (
     <KeyboardAvoidingView>
-      <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
+      <Container>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollView}
