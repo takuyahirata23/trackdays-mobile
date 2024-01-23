@@ -134,22 +134,20 @@ export default function TrackdayIndex() {
   }
 
   return (
-    <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
+    <Container>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}
       >
-        <View style={{ marginTop: 20 }}>
-          <Card>
-            <Calendar
-              initialDate={today}
-              markedDates={trackdays}
-              onDayPress={onDayPress}
-              onMonthChange={onMonthChange}
-              markingType="multi-dot"
-            />
-          </Card>
-        </View>
+        <Card>
+          <Calendar
+            initialDate={today}
+            markedDates={trackdays}
+            onDayPress={onDayPress}
+            onMonthChange={onMonthChange}
+            markingType="multi-dot"
+          />
+        </Card>
         <View style={styles.contentWrapper}>
           {targetNotes.map((note: TrackdayNote) => (
             <TrackdayNoteLinkCard {...note} key={note.id} />
@@ -169,10 +167,10 @@ export default function TrackdayIndex() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20
+    padding: 16
   },
   contentWrapper: {
     marginTop: 16,
-    rowGap: 8
+    rowGap: 12
   }
 })

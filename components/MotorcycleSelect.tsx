@@ -6,7 +6,7 @@ import Toast from 'toastify-react-native'
 import { MOTORCYCLES_QUERY } from '@graphql/queries'
 import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 
-import { FlatList,  StyleSheet } from 'react-native'
+import { FlatList } from 'react-native'
 
 import { ActivityIndicator } from './ActivityIndicator'
 import { RadioOption } from './RadioOption'
@@ -33,23 +33,21 @@ export function MotorcycleSelect() {
   return (
     <FlatList
       data={data.motorcycles}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <RadioOption
           onPress={() =>
             onPress(item.id, `${item.model.make.name} ${item.model.name}`)
           }
           label={`${item.model.make.name} ${item.model.name}`}
           isSelected={fields.motorcycle === item.id}
-          style={styles.radioOption}
+          style={{
+            paddingHorizontal: 16,
+            paddingBottom: 8,
+            paddingTop: index ? 8 : 16
+          }}
         />
       )}
       keyExtractor={item => item.id}
     />
   )
 }
-
-const styles = StyleSheet.create({
-  radioOption: {
-    marginBottom: 12
-  }
-})

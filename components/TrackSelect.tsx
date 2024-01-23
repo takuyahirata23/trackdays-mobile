@@ -6,7 +6,7 @@ import Toast from 'toastify-react-native'
 import { TRACKS_QUERY } from '@graphql/queries'
 import { TrackdayNoteFormContext } from '@context/TrackdayNoteForm'
 
-import { FlatList, StyleSheet } from 'react-native'
+import { FlatList } from 'react-native'
 
 import { ActivityIndicator } from './ActivityIndicator'
 import { RadioOption } from './RadioOption'
@@ -35,21 +35,19 @@ export function TrackSelect() {
   return (
     <FlatList
       data={data.tracks}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <RadioOption
           onPress={() => onPress(item.id, item.name)}
           label={item.name}
           isSelected={fields.track === item.id}
-          style={styles.radioOption}
+          style={{
+            paddingHorizontal: 16,
+            paddingBottom: 8,
+            paddingTop: index ? 8 : 16
+          }}
         />
       )}
       keyExtractor={item => item.id}
     />
   )
 }
-
-const styles = StyleSheet.create({
-  radioOption: {
-    marginBottom: 12
-  }
-})

@@ -47,5 +47,7 @@ export default function ModalScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {}
+  container: {
+    paddingHorizontal: 0
+  }
 })

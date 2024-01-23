@@ -136,10 +136,12 @@ const styles = StyleSheet.create({
   },
   header: {
     fontWeight: '600',
-    fontSize: 18
+    fontSize: 18,
+    paddingHorizontal: 20
   },
   optionContainer: {
-    marginBottom: 16
+    marginBottom: 16,
+    paddingHorizontal: 20,
   },
   optionText: {
     fontSize: 18

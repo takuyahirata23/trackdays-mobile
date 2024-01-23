@@ -1,5 +1,5 @@
 import React from 'react'
-import {  useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@apollo/client'
@@ -100,7 +100,7 @@ export default function TrackdayDetail() {
 const styles = StyleSheet.create({
   container: {
     rowGap: 16,
-    paddingBottom: 16
+    padding: 16
   },
   card: {
     flexDirection: 'column',

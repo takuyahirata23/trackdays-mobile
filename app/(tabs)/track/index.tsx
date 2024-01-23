@@ -22,7 +22,7 @@ export default function Leaderboard() {
   }
 
   return (
-    <Container style={styles.container}>
+    <Container>
       <ScrollView
         contentContainerStyle={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -53,15 +53,9 @@ export default function Leaderboard() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 0,
-    paddingHorizontal: 0
-  },
   scrollView: {
-    marginTop: 16,
-    paddingBottom: 32,
     rowGap: 16,
-    paddingHorizontal: 20
+    padding: 16
   },
   card: {
     rowGap: 8
