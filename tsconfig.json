@@ -16,6 +16,7 @@
       "@functions/*": ["functions/*"]
     },
     "strict": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "include": ["./jest-setup.js"]
   }
 }
