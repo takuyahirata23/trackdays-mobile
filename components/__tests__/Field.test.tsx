@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react-native'
 
 import { Field } from '../Field'
 
-describe('Display error', () => {
+describe('Display Error', () => {
   test('should render error message', () => {
     render(<Field label="Text" onChangeText={() => null} error="Error" />)
     const res = screen.getByText('Error')
