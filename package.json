@@ -11,7 +11,11 @@
   "jest": {
     "preset": "jest-expo",
     "collectCoverageFrom": [
-      "./**/*{js,jsx,ts,tsx}"
+      "**/*.{ts,tsx}",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/jest.setup.js"
     ],
     "collectCoverage": true,
     "roots": [
