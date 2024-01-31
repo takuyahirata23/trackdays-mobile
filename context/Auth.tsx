@@ -59,7 +59,6 @@ export const AuthContext = React.createContext<AuthContextType>({
 
 export function AuthProvider({ children, setUser }: Props) {
   const [error, setError] = React.useState<null | Error>(null)
-  const { replace } = useRouter()
 
   const handleErrorFromAPI = (data: ErrorsFromAPI) => {
     setError({

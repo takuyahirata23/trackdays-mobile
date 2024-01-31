@@ -25,7 +25,7 @@ export default function TrackdayDetail() {
     }
   })
   const {
-    colors: { primary, secondary, tertiary,  btnSecondary, btnBgSecondary }
+    colors: { primary, secondary, tertiary, btnSecondary, btnBgSecondary }
   } = useTheme()
 
   if (loading || error) {
@@ -52,7 +52,9 @@ export default function TrackdayDetail() {
             size={18}
             color={tertiary}
           />
-          <Text style={{ color: secondary, fontSize: 14 }}>{startDatetime}</Text>
+          <Text style={{ color: secondary, fontSize: 14 }}>
+            {startDatetime}
+          </Text>
         </View>
         <Text style={{ fontSize: 18, fontWeight: '500' }}>
           {track.facility.name}
@@ -63,7 +65,7 @@ export default function TrackdayDetail() {
             size={18}
             color={tertiary}
           />
-          <Text style={{ fontSize: 14}}>{track.name}</Text>
+          <Text style={{ fontSize: 14 }}>{track.name}</Text>
         </View>
       </Card>
       <Card style={{ rowGap: 20 }} sidebarVariant="secondary">
@@ -78,7 +80,9 @@ export default function TrackdayDetail() {
             style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}
           >
             <FontAwesome name="dollar" size={18} color={tertiary} />
-            <Text style={{ color: secondary, fontSize: 14 }}>{String(price)}</Text>
+            <Text style={{ color: secondary, fontSize: 14 }}>
+              {String(price)}
+            </Text>
           </View>
           {organization.homepageUrl && (
             <ExternalLink href={organization.homepageUrl} asChild>
@@ -93,27 +97,29 @@ export default function TrackdayDetail() {
         </Text>
         {description && <Text>{description}</Text>}
       </Card>
-      <View style={styles.buttonWrapper}>
-        <ExternalLink
-          href={
-            trackdaysRegistrationUrl || organization.trackdaysRegistrationUrl
-          }
-          asChild
-        >
-          <TouchableOpacity
-            style={{
-              backgroundColor: btnBgSecondary,
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-              borderRadius: 8
-            }}
+      {trackdaysRegistrationUrl || organization.trackdaysRegistrationUrl ? (
+        <View style={styles.buttonWrapper}>
+          <ExternalLink
+            href={
+              trackdaysRegistrationUrl || organization.trackdaysRegistrationUrl
+            }
+            asChild
           >
-            <Text style={[styles.buttonText, { color: btnSecondary }]}>
-              Book Now!
-            </Text>
-          </TouchableOpacity>
-        </ExternalLink>
-      </View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: btnBgSecondary,
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+                borderRadius: 8
+              }}
+            >
+              <Text style={[styles.buttonText, { color: btnSecondary }]}>
+                Book Now!
+              </Text>
+            </TouchableOpacity>
+          </ExternalLink>
+        </View>
+      ) : null}
     </Container>
   )
 }
@@ -142,4 +148,3 @@ const styles = StyleSheet.create({
     columnGap: 8
   }
 })
-
