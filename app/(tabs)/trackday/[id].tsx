@@ -96,9 +96,16 @@ export default function TrackdayDetail() {
           {organization.name}
         </Text>
       </Card>
-      {description && <Card  sidebarVariant="secondary">
-        <Text style={{ lineHeight: 22}}>{description}</Text>
-      </Card>}
+      {organization.defaultNote || description ? (
+        <Card sidebarVariant="secondary">
+          {description && <Text style={styles.note}>{description}</Text>}
+          {organization.defaultNote && (
+            <Text
+              style={[styles.note, { marginTop: description ? 16 : 0 }]}
+            >{`${organization.defaultNote}`}</Text>
+          )}
+        </Card>
+      ) : null}
       {trackdaysRegistrationUrl || organization.trackdaysRegistrationUrl ? (
         <View style={styles.buttonWrapper}>
           <ExternalLink
@@ -148,5 +155,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 8
+  },
+  note: {
+    lineHeight: 22,
+    fontSize: 15
   }
 })

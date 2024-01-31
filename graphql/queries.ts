@@ -158,6 +158,7 @@ export const TRACKDAY = gql`
         trackdaysRegistrationUrl
         homepageUrl
         trackdaysRegistrationUrl
+        defaultNote
       }
       track {
         id
