@@ -68,7 +68,7 @@ export default function TrackdayDetail() {
           <Text style={{ fontSize: 14 }}>{track.name}</Text>
         </View>
       </Card>
-      <Card style={{ rowGap: 20 }} sidebarVariant="secondary">
+      <Card style={{ rowGap: 12 }} sidebarVariant="secondary">
         <View
           style={{
             flexDirection: 'row',
@@ -95,8 +95,10 @@ export default function TrackdayDetail() {
         <Text style={{ fontSize: 18, fontWeight: '500' }}>
           {organization.name}
         </Text>
-        {description && <Text>{description}</Text>}
       </Card>
+      {description && <Card  sidebarVariant="secondary">
+        <Text style={{ lineHeight: 22}}>{description}</Text>
+      </Card>}
       {trackdaysRegistrationUrl || organization.trackdaysRegistrationUrl ? (
         <View style={styles.buttonWrapper}>
           <ExternalLink
