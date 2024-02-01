@@ -11,10 +11,10 @@ export async function createCalendar() {
   const defaultCalendarSource =
     Platform.OS === 'ios'
       ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: 'Trackdays' }
+      : { isLocalAccount: true, name: 'Motorcycle Trackdays' }
 
   const calendarId = await Calendar.createCalendarAsync({
-    title: 'Trackdays',
+    title: 'Motorcycle Trackdays',
     color: '#279B47',
     entityType: Calendar.EntityTypes.EVENT,
     sourceId: defaultCalendarSource.id,

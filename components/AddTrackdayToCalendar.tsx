@@ -74,33 +74,55 @@ export function AddTrackdayToCalendar() {
   }
 
   const handleUserTrackdayAddition = async () => {
-    if (status?.granted && typeof id === 'string') {
-      let calendarId = await getCalendarId()
+    try {
+      if (status?.granted && typeof id === 'string') {
+        let calendarId = await getCalendarId()
 
-      if (!calendarId) {
-        calendarId = await createCalendar()
-      }
-
-      const eventId = await Calendar.createEventAsync(calendarId, {
-        organizer: organization.name,
-        startDate: new Date(startDatetime),
-        endDate: new Date(endDatetime),
-        title: `${track.facility.name}(${track.name})`
-      })
-
-      saveUserTrackdayCalendar({
-        variables: {
-          saveUserTrackdayCalendarInput: {
-            calendarId,
-            eventId,
-            trackdayId: id
-          }
+        if (!calendarId) {
+          calendarId = await createCalendar()
         }
-      })
-    } else if (status?.canAskAgain) {
-      await requestPermission()
-    } else {
-      Toast.error('Please grant calendar access', 'bottom')
+
+        const eventId = await Calendar.createEventAsync(calendarId, {
+          organizer: organization.name,
+          startDate: new Date(startDatetime),
+          endDate: new Date(endDatetime),
+          title: `${track.facility.name}(${track.name})`
+        })
+
+        saveUserTrackdayCalendar({
+          variables: {
+            saveUserTrackdayCalendarInput: {
+              calendarId,
+              eventId,
+              trackdayId: id
+            }
+          }
+        })
+      } else if (status?.canAskAgain) {
+        await requestPermission()
+      } else {
+        Toast.error('Error. There was a problem', 'bottom')
+      }
+    } catch (e:any) {
+      if(e.code === "E_INVALID_CALENDAR_ID") {
+        const calendarId = await createCalendar()
+        const eventId = await Calendar.createEventAsync(calendarId, {
+          organizer: organization.name,
+          startDate: new Date(startDatetime),
+          endDate: new Date(endDatetime),
+          title: `${track.facility.name}(${track.name})`
+        })
+
+        saveUserTrackdayCalendar({
+          variables: {
+            saveUserTrackdayCalendarInput: {
+              calendarId,
+              eventId,
+              trackdayId: id
+            }
+          }
+        })
+      }
     }
   }
 
@@ -114,7 +136,7 @@ export function AddTrackdayToCalendar() {
     try {
       Calendar.deleteEventAsync(eventId)
     } catch (e) {
-      console.log(e)
+      Toast.error('Error. There was a problem', 'bottom')
     }
   }
 
