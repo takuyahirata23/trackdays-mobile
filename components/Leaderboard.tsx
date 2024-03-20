@@ -27,6 +27,7 @@ export function Leaderboard({ trackdayNotes }: any) {
 
   return isEmpty(trackdayNotes) ? null : (
     <Card style={styles.card}>
+      <Text style={styles.heading}>Fastest riders</Text>
       {trackdayNotes.map(({ user, motorcycle, lapTime }: LeaderboardItem, i: number) => (
         <View
           key={user.id}
@@ -87,5 +88,8 @@ const styles = StyleSheet.create({
   },
   small: {
     fontSize: 13
-  }
+  },
+  heading: {
+    fontWeight: '500',
+  },
 })

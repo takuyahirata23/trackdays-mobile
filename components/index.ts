@@ -1,5 +1,6 @@
 export { ActivityIndicator } from './ActivityIndicator'
 export { AddTrackdayToCalendar } from './AddTrackdayToCalendar'
+export { AverageLapTimes } from './AverageLapTimes'
 export { Button } from './Button'
 export { Card } from './Card'
 export { Container } from './Container'

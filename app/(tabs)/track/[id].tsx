@@ -3,10 +3,10 @@ import { View, StyleSheet } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@apollo/client'
 
-import { FACILITY_LEADERBOARD_QUERY } from '@graphql/queries'
-import { Container, Text, Leaderboard } from '@components'
+import { FACILITY_LEADERBOARD_AND_AVERAGE_TIMES_QUERY } from '@graphql/queries'
+import {AverageLapTimes ,Container, Text, Leaderboard } from '@components'
 
-import type { User } from '@type/accounts'
+import type { User, Group } from '@type/accounts'
 import type { Motorcycle } from '@type/vehicle'
 
 type LeaderboardItem = {
@@ -15,23 +15,34 @@ type LeaderboardItem = {
   time: number
 }
 
+type AverageLapTime = {
+  group: Group
+  averageLapTime: number
+}
+
 type Track = {
+  id: string
   name: string
   length: number
   trackdayNotes: LeaderboardItem
+  averageLapTimes: AverageLapTime[]
 }
 
 export default function Facility() {
   const { id } = useLocalSearchParams()
-  const { data, loading, error } = useQuery(FACILITY_LEADERBOARD_QUERY, {
-    variables: {
-      facilityId: id
+  const { data, loading, error } = useQuery(
+    FACILITY_LEADERBOARD_AND_AVERAGE_TIMES_QUERY,
+    {
+      variables: {
+        facilityId: id
+      }
     }
-  })
+  )
 
   if (loading || error) {
     return null
   }
+
 
   const { name, description } = data.facility
 
@@ -42,16 +53,19 @@ export default function Facility() {
         <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.trackWrapper}>
-        {data.tracksWithLeaderboard.map(
-          ({ name, length, trackdayNotes }: Track, i: number) => (
-            <View key={i}>
-              <View style={styles.trackDetails}>
-                <Text style={styles.facilityName}>{name}</Text>
-                <Text>{length}km</Text>
+        {data.tracksWithLeaderboardAndAverageLapTimes.map(
+          ({ name, length, trackdayNotes, averageLapTimes}: Track, i: number) => {
+            return (
+              <View key={i} style={styles.eachTrackWrapper}>
+                <View style={styles.trackDetails}>
+                  <Text style={styles.facilityName}>{name}</Text>
+                  <Text>{length}km</Text>
+                </View>
+                <AverageLapTimes averageLapTimes={averageLapTimes}/>
+                <Leaderboard trackdayNotes={trackdayNotes} />
               </View>
-              <Leaderboard trackdayNotes={trackdayNotes} />
-            </View>
-          )
+            )
+          }
         )}
       </View>
     </Container>
@@ -75,6 +89,9 @@ const styles = StyleSheet.create({
   },
   trackWrapper: {
     rowGap: 24
+  },
+  eachTrackWrapper: {
+    rowGap: 16
   },
   trackDetails: {
     marginBottom: 4,

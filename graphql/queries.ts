@@ -239,17 +239,24 @@ export const UPCOMING_TRACKDAYS = gql`
   }
 `
 
-export const FACILITY_LEADERBOARD_QUERY = gql`
-  query getFacilityLeaderboard($facilityId: ID!) {
+export const FACILITY_LEADERBOARD_AND_AVERAGE_TIMES_QUERY = gql`
+  query getFacilityLeaderboardAndAverageLapTimes($facilityId: ID!) {
     facility(id: $facilityId) {
       id
       name
       description
     }
-    tracksWithLeaderboard(facilityId: $facilityId) {
+    tracksWithLeaderboardAndAverageLapTimes(facilityId: $facilityId) {
       id
       name
       length
+      averageLapTimes {
+        group {
+          id
+          name
+        }
+        averageLapTime
+      }
       trackdayNotes {
         user {
           id
