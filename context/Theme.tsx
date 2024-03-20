@@ -1,8 +1,6 @@
 import React from 'react'
-import { useColorScheme } from 'react-native'
 import {
   ThemeProvider as TP,
-  DarkTheme as DT,
   DefaultTheme
 } from '@react-navigation/native'
 

@@ -5,16 +5,10 @@ import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 import { useTheme } from '@hooks/useTheme'
 
 import { formatLapTime } from '@functions/lapTimeConverters'
-import { Card } from './Card'
 import { IconLabel } from './IconLabel'
 import { Text } from './Text'
 
-import type { Group } from '@type/accounts'
-
-type AverageLapTime = {
-  group: Group
-  averageLapTime: number
-}
+import type { AverageLapTime } from '@type/event'
 
 type Props = {
   averageLapTimes: AverageLapTime[]
@@ -22,10 +16,10 @@ type Props = {
 
 export function AverageLapTimes({ averageLapTimes }: Props) {
   const {
-    colors: { accent }
+    colors: { accent, secondary }
   } = useTheme()
   return isEmpty(averageLapTimes) ? null : (
-    <Card style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.heading}>Average lap times for group</Text>
       <View
         style={[
@@ -37,7 +31,7 @@ export function AverageLapTimes({ averageLapTimes }: Props) {
       >
         {averageLapTimes.map(({ group, averageLapTime }: AverageLapTime) => (
           <View key={group.id} style={styles.lapTimeWrapper}>
-            <Text>{group.name}</Text>
+            <Text style={{ color: secondary}}>{group.name}</Text>
             <IconLabel
               icon={<MaterialCommunity name="timer" size={16} color={accent} />}
               cardStyle={{ columnGap: 4 }}
@@ -48,7 +42,7 @@ export function AverageLapTimes({ averageLapTimes }: Props) {
           </View>
         ))}
       </View>
-    </Card>
+    </View>
   )
 }
 

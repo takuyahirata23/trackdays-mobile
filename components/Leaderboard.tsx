@@ -6,7 +6,6 @@ import { Feather } from '@expo/vector-icons'
 import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons'
 
 import { useTheme } from '@hooks/useTheme'
-import { Card } from './Card'
 import { Text } from './Text'
 import { IconLabel } from './IconLabel'
 import { formatLapTime } from '@functions/lapTimeConverters'
@@ -26,7 +25,7 @@ export function Leaderboard({ trackdayNotes }: any) {
   } = useTheme()
 
   return isEmpty(trackdayNotes) ? null : (
-    <Card style={styles.card}>
+    <View style={styles.card}>
       <Text style={styles.heading}>Fastest riders</Text>
       {trackdayNotes.map(({ user, motorcycle, lapTime }: LeaderboardItem, i: number) => (
         <View
@@ -67,7 +66,7 @@ export function Leaderboard({ trackdayNotes }: any) {
           </View>
         </View>
       ))}
-    </Card>
+    </View>
   )
 }
 const styles = StyleSheet.create({
