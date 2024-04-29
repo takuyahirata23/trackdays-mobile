@@ -3,8 +3,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
-  Keyboard
+  ScrollView
 } from 'react-native'
 import { useNavigation, useLocalSearchParams, useRouter } from 'expo-router'
 import { useQuery, useMutation } from '@apollo/client'
@@ -167,7 +166,6 @@ export default function CreateTrackdayNote() {
                 value={date as string}
                 editable={false}
                 pointerEvents="none"
-                onBlur={Keyboard.dismiss}
               />
               <View style={styles.laptimeWrapper}>
                 <View style={styles.lapTimeFieldWrapper}>
@@ -178,7 +176,6 @@ export default function CreateTrackdayNote() {
                     onChangeText={handleOnChange('minutes')}
                     keyboardType="numeric"
                     placeholder="00"
-                    onBlur={Keyboard.dismiss}
                   />
                   <Text style={styles.laptimeSemicolon}>:</Text>
                 </View>
@@ -190,7 +187,6 @@ export default function CreateTrackdayNote() {
                     style={styles.lapTimeField}
                     keyboardType="numeric"
                     placeholder="00"
-                    onBlur={Keyboard.dismiss}
                   />
                   <Text style={styles.laptimeSemicolon}>:</Text>
                 </View>
