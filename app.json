@@ -19,7 +19,7 @@
       "supportsTablet": false,
       "usesNonExemptEncryption": false,
       "bundleIdentifier": "com.takuya23.trackdaysmobile",
-      "buildNumber": "5"
+      "buildNumber": "6"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +31,7 @@
         "WRITE_CALENDAR"
       ],
       "package": "com.takuya23.trackdaysmobile",
-      "versionCode": 16
+      "versionCode": 18
     },
     "web": {
       "bundler": "metro",
