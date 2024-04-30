@@ -72,6 +72,9 @@ export default function ProfileLayout() {
       <Stack.Screen
         name="faq"
       />
+      <Stack.Screen
+        name="donation"
+      />
     </Stack>
   )
 }
