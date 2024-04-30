@@ -17,7 +17,6 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "usesNonExemptEncryption": false,
       "bundleIdentifier": "com.takuya23.trackdaysmobile",
       "buildNumber": "6"
     },

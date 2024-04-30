@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useFonts } from 'expo-font'
 import { StatusBar } from 'expo-status-bar'

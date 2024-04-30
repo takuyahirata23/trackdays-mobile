@@ -3,20 +3,45 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "*": ["./*"],
-      "@components/*": ["components/*"],
-      "@components": ["components"],
-      "@context/*": ["context/*"],
-      "@constants/*": ["constants/*"],
-      "@graphql/*": ["graphql/*"],
-      "@hooks/*": ["hooks/*"],
-      "@rest/*": ["rest/*"],
-      "@utils/*": ["utils/*"],
-      "@type/*": ["type/*"],
-      "@functions/*": ["functions/*"]
+      "*": [
+        "./*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@components": [
+        "components"
+      ],
+      "@context/*": [
+        "context/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@graphql/*": [
+        "graphql/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@rest/*": [
+        "rest/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@type/*": [
+        "type/*"
+      ],
+      "@functions/*": [
+        "functions/*"
+      ]
     },
-    "strict": true,
-    "moduleResolution": "node",
-    "include": ["./jest-setup.js"]
-  }
+    "strict": true
+  },
+  "include": [
+    "./jest-setup.js",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
