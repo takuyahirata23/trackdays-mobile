@@ -51,7 +51,9 @@
         {
           "calendarPermission": "The app needs to access your calendar if you would like the app to add trackdays to your calendar."
         }
-      ]
+      ],
+      "expo-font",
+      "expo-secure-store"
     ],
     "owner": "takuya23"
   }
